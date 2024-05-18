@@ -1,0 +1,69 @@
+---
+title: Packed Executables
+---
+
+Brioche aims to make it easy to create portable executables on Linux, meaning the executable should be able to be placed anywhere on the system and run regardless of what dependencies the host may or may not have installed, even when using dynamically-linked dependencies and without using containerization. Depending on how much you know about how ELF executables work on Linux, this may sound like an impossible problem!
+
+Brioche employs a scheme similar to executable packers like [UPX](https://upx.github.io/): rather than providing an executable as-is, we instead replace it with a sort of wrapper executable that knows how to run the original executable. Unlike UPX, this "packed executable" doesn't get shipped as a single file, but instead as an entrypoint executable with some metadata, along with a standardized directory structure.
+
+Let's say you use Brioche to compile a simple C program with gcc:
+
+```ts
+// TODO: This is untested
+import * as std from "std";
+
+export default function () {
+  const src = std.directory({
+    "hello.c": std.file(std.indoc`
+      #include <stdio.h>
+      int main() {
+        printf("Hello world!\\n");
+        return 0;
+      }
+    `)
+  });
+  return std.runBash`
+    mkdir -p "$BRIOCHE_OUTPUT/bin"
+    gcc hello.c -o "$BRIOCHE_OUTPUT/bin/hello"
+  `
+    .dependencies(std.toolchain())
+    .workDir(src);
+}
+```
+
+If you were to run `brioche build -p . -o output`, you would end up with a directory structure like this:
+
+```
+output
+├── bin/
+│   └── hello
+└── brioche-pack.d/
+    ├── blobs/
+    │   └── ...
+    └── aliases/
+        └── ...
+```
+
+`output/bin/hello` is a **packed executable**. The original executable was shoved somewhere into the `brioche-pack.d` directory, and the executable `brioche-packed-userland-exec` was copied in to replace it, with some metadata added alongside it.
+
+The metadata was attached to the `hello` executable (née `brioche-packed-userland-exec`) directly. You can parse this metadata by running the command `brioche-packer read outputs/bin/hello`, which will return output like this:
+
+```json
+{
+  "program": "aliases/d96e04f74ba9ef5150639baf55b3a45eff19e3f955ff846e2626b19807e0cf17.x/hello",
+  "interpreter": {
+    "type": "ld_linux",
+    "path": "aliases/4c2cf04a285dcfa97a07d884f5b2a0e1cdb33cf5f3cd62586b749804010d1018.x/ld-linux-x86-64.so.2",
+    "libraryPaths": [
+      "aliases%2F92bc4b8147e9de0c1a1e5c573eefded52a6b6641ca15f0b81c5ab42b0f05bd24.x",
+      "aliases%2Fd7f334f1dd1cd368dab95b4ddfb2b35250a3e4078229ec3b294b165eacdd46bf.x",
+      "aliases%2F31a15d626ff98be3e6f0cfde99b4100260be441f622c2ff99f9892ce31372b3f.x",
+      "aliases%2Fc9bea786c1eb98b187827ce053f41df6e3497f78abeb532a63849ac9890dc944.x"
+    ]
+  }
+}
+```
+
+`brioche-packed-userland-exec` reads this metadata, then loads and executes the ELF interpreter directly (`ld-linux-x86-64.so.2` in this case), passing it the path to the real `hello` binary along with any dynamically-linked library paths. `ld-linux-x86-64.so.2` then proceeds to load the dynamically-linked libraries, then finally executes `hello`.
+
+`ld-linux-x86-64.so.2` is not executed using a normal `execve` invocation. Doing so would work, but would end up leading to the process seeing a different value if it were to read the symlink `/proc/self/exe`. It turns out that lots of programs depend on this symlink to function correctly (any program that calls [`std::env::current_exe()`](https://doc.rust-lang.org/stable/std/env/fn.current_exe.html) in Rust for example, which includes the Rust compiler itself). To work around this problem, `brioche-packed-userland-exec` uses an implementation of [userland exec](https://grugq.github.io/docs/ul_exec.txt)-- basically, the program is manually loaded into memory and jumped to directly.
