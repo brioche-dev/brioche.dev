@@ -10,6 +10,10 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "Brioche",
+      logo: {
+        light: "./src/assets/brioche-logo-light.svg",
+        dark: "./src/assets/brioche-logo-dark.svg",
+      },
       social: {
         github: "https://github.com/brioche-dev",
       },
