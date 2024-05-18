@@ -78,6 +78,63 @@ export default defineConfig({
         },
       ],
       customCss: ["./src/tailwind.css"],
+      head: [
+        {
+          tag: "link",
+          attrs: {
+            rel: "apple-touch-icon",
+            sizes: "180x180",
+            href: "/apple-touch-icon.png",
+          },
+        },
+        {
+          tag: "link",
+          attrs: {
+            rel: "icon",
+            type: "image/png",
+            sizes: "32x32",
+            href: "/favicon-32x32.png",
+          },
+        },
+        {
+          tag: "link",
+          attrs: {
+            rel: "icon",
+            type: "image/png",
+            sizes: "16x16",
+            href: "/favicon-16x16.png",
+          },
+        },
+        {
+          tag: "link",
+          attrs: {
+            rel: "manifest",
+            href: "/site.webmanifest",
+          },
+        },
+        {
+          tag: "link",
+          attrs: {
+            rel: "mask-icon",
+            href: "/safari-pinned-tab.svg",
+            color: "#e9c193",
+          },
+        },
+        {
+          tag: "meta",
+          attrs: {
+            name: "msapplication-TileColor",
+            content: "#da532c",
+          },
+        },
+        {
+          tag: "meta",
+          attrs: {
+            name: "theme-color",
+            content: "#41362f",
+          },
+        },
+      ],
     }),
     tailwind({ applyBaseStyles: false }),
   ],
