@@ -1,0 +1,54 @@
+---
+import ThemeSelect from "@astrojs/starlight/components/ThemeSelect.astro";
+import type { icons } from "../assets/icons";
+import Logo from "../assets/Logo.astro";
+import Icon from "../assets/Icon.astro";
+import { starlightProps } from "../utils/starlight-props";
+
+interface SocialLink {
+  label: string;
+  icon: keyof typeof icons;
+  href: string;
+}
+
+const socialLinks: SocialLink[] = [
+  {
+    label: "GitHub",
+    icon: "github",
+    href: "https://github.com/brioche-dev",
+  },
+];
+---
+
+<header
+  class="h-16 w-full bg-gray-100 text-accent-600 px-6 py-3 border-gray-200 border-b flex flex-row items-center dark:bg-gray-800 dark:text-accent-200 dark:border-gray-900"
+>
+  <div class="flex-grow flex items-center">
+    <a
+      href="#"
+      class="text-2xl font-semibold inline-flex items-center gap-4 lg:gap-6"
+    >
+      <span class="inline-block w-10 h-10">
+        <Logo />
+      </span>
+      Brioche
+    </a>
+  </div>
+  <div
+    class="flex flex-row items-center gap-4 divide-x divide-gray-300 dark:divide-gray-700"
+  >
+    <div>
+      {
+        socialLinks.map((link) => (
+          <a href={link.href} class="hover:opacity-65">
+            <span class="sr-only">{link.label}</span>
+            <Icon name={link.icon} />
+          </a>
+        ))
+      }
+    </div>
+    <div class="pl-4 text-sm">
+      <ThemeSelect {...starlightProps} />
+    </div>
+  </div>
+</header>

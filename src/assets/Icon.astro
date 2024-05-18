@@ -1,0 +1,17 @@
+---
+import { icons } from "./icons";
+
+interface Props {
+  class?: string;
+  name: keyof typeof icons;
+}
+---
+
+<svg
+  class={Astro.props.class}
+  width="16"
+  height="16"
+  viewBox="0 0 24 24"
+  fill="currentColor"
+  set:html={icons[Astro.props.name]}
+/>

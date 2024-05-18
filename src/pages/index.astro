@@ -1,0 +1,115 @@
+---
+import { Code } from "astro:components";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import { indoc } from "../utils/indoc";
+
+const codeExampleSnippet = indoc`
+  import * as std from "std";
+  import { cargoBuild } from "rust";
+
+  export default function () {
+    // Build a Rust project
+    const server = cargoBuild({
+      crate: Brioche.glob("src", "Cargo.*"),
+    });
+
+    // Turn it into a container image
+    return std.container({
+      entrypoint: std.tpl\`\${server}/bin/server\`,
+    });
+  }
+`;
+
+const installSnippet = indoc`
+  mkdir -p ~/.local/bin
+  curl -o ~/.local/bin/brioche -L https://development-content.brioche.dev/github.com/brioche-dev/brioche/branches/main/x86_64-linux/brioche
+  chmod +x ~/.local/bin/brioche
+`;
+---
+
+<BaseLayout>
+  <Header />
+  <main class="w-full max-w-4xl mx-auto p-4 space-y-4">
+    <section class="flex flex-col md:flex-row">
+      <div class="flex-0 md:max-w-96">
+        <h1 class="text-6xl font-extrabold text-accent-600 dark:text-accent-200"
+          >Brioche</h1
+        >
+        <p class="font-bold text-xl my-4 md:mx-6 md:my-12">
+          A delicious package manager for building and running your most complex
+          software projects
+        </p>
+        <div class="flex flex-col items-center">
+          <a
+            href="/docs"
+            class="bg-gray-700 hover:bg-opacity-85 text-accent-200 font-bold rounded-full p-4 text-lg mb-6 dark:bg-accent-200 dark:text-gray-900 dark:hover:bg-opacity-85"
+            >Read the Docs</a
+          >
+        </div>
+      </div>
+      <Code
+        code={codeExampleSnippet}
+        lang="typescript"
+        theme="vitesse-dark"
+        class="flex-1 p-4 rounded-2xl border border-gray-300 dark:border-gray-700"
+      />
+    </section>
+    <section class="md:max-w-xl md:mx-auto">
+      <h2
+        class="text-4xl font-extrabold text-accent-600 dark:text-accent-200 md:-ml-12 my-4"
+        >Get Started</h2
+      >
+      <p class="text-xl"
+        >Install on Linux in seconds, no root permissions required:</p
+      >
+      <Code
+        code={installSnippet}
+        lang="shell"
+        theme="vitesse-dark"
+        class="flex-1 p-4 rounded-2xl border border-gray-300 dark:border-gray-700 my-4"
+      />
+      <p class="text-xl"
+        >...or <a
+          class="text-accent-600 dark:text-accent-200 hover:text-gray-900 dark:hover:text-white underline"
+          href="/docs/installation">view the docs</a
+        > for more installation options</p
+      >
+    </section>
+    <section class="md:max-w-xl md:mx-auto">
+      <h2
+        class="text-4xl font-extrabold text-accent-600 dark:text-accent-200 md:-ml-12 my-4"
+        >Features</h2
+      >
+      <ul class="list-disc text-xl space-y-4 mx-4 md:mx-0">
+        <li
+          ><strong>Caching</strong> - All build artifacts are saved and re-used between
+          builds, saving you time when only a part of your project changes. You can
+          even share the cache between machines using a self-hosted registry</li
+        >
+        <li
+          ><strong>Lockfiles</strong> - All of your dependencies are automatically
+          saved in a lockfile, making your builds super reliable for everyone on
+          your team</li
+        >
+        <li>
+          <strong>TypeScript</strong> - Build scripts are written in <a
+            class="text-accent-600 dark:text-accent-200 hover:text-gray-900 dark:hover:text-white underline"
+            href="https://www.typescriptlang.org/">TypeScript</a
+          >, giving you the flexibility of a familiar full programming langauge
+          (with great type checking and editor completions!)
+        </li>
+        <li>
+          <strong>Cross-compilation</strong>
+          <span class="text-neutral-400">(work in progress)</span> - Easily build
+          your project <em>from</em> any platform, <em>to</em> any platform
+        </li>
+        <li>
+          <strong>Dev environments</strong>
+          <span class="text-neutral-400">(work in progress)</span> - Set up a suite
+          of tools to help onboard new team members quickly
+        </li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>
