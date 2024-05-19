@@ -4,12 +4,33 @@ import type { icons } from "../assets/icons";
 import Logo from "../assets/Logo.astro";
 import Icon from "../assets/Icon.astro";
 import { starlightProps } from "../utils/starlight-props";
+import Link from "./Link.astro";
+
+interface NavLink {
+  label: string;
+  href: string;
+}
 
 interface SocialLink {
   label: string;
   icon: keyof typeof icons;
   href: string;
 }
+
+const navLinks: NavLink[] = [
+  {
+    label: "Docs",
+    href: "/docs",
+  },
+  {
+    label: "Packages",
+    href: "#",
+  },
+  {
+    label: "Blog",
+    href: "#",
+  },
+];
 
 const socialLinks: SocialLink[] = [
   {
@@ -20,24 +41,61 @@ const socialLinks: SocialLink[] = [
 ];
 ---
 
-<header
-  class="h-16 w-full bg-gray-100 text-accent-600 px-6 py-3 border-gray-200 border-b flex flex-row items-center dark:bg-gray-800 dark:text-accent-200 dark:border-gray-900"
->
-  <div class="flex-grow flex items-center">
-    <a
-      href="/"
-      class="text-2xl font-semibold inline-flex items-center gap-4 lg:gap-6"
+<header>
+  <div
+    class="h-16 w-full bg-gray-100 text-accent-600 px-6 py-3 border-gray-200 border-b flex flex-row items-center dark:bg-gray-800 dark:text-accent-200 dark:border-gray-900"
+  >
+    <div class="flex-grow flex items-center gap-8">
+      <a
+        href="/"
+        class="text-2xl font-semibold inline-flex items-center gap-4 lg:gap-6"
+      >
+        <span class="inline-block w-10 h-10">
+          <Logo />
+        </span>
+        Brioche
+      </a>
+      <nav class="hidden gap-4 mt-[0.40rem] sm:inline-flex">
+        {
+          navLinks.map((link) => (
+            <Link href={link.href} class="!no-underline">
+              {link.label}
+            </Link>
+          ))
+        }
+      </nav>
+    </div>
+    <div
+      class="flex flex-row items-center gap-4 sm:divide-x divide-gray-300 dark:divide-gray-700"
     >
-      <span class="inline-block w-10 h-10">
-        <Logo />
-      </span>
-      Brioche
-    </a>
+      <div class="hidden sm:block">
+        {
+          socialLinks.map((link) => (
+            <a href={link.href} class="hover:opacity-65">
+              <span class="sr-only">{link.label}</span>
+              <Icon name={link.icon} />
+            </a>
+          ))
+        }
+      </div>
+      <div class="pl-4 text-sm">
+        <ThemeSelect {...starlightProps} />
+      </div>
+    </div>
   </div>
   <div
-    class="flex flex-row items-center gap-4 divide-x divide-gray-300 dark:divide-gray-700"
+    class="h-12 w-full bg-gray-100 text-accent-600 px-6 py-3 border-gray-200 border-b flex flex-row justify-between dark:bg-gray-800 dark:text-accent-200 dark:border-gray-900 sm:hidden"
   >
-    <div>
+    <nav class="flex flex-row gap-4 items-center">
+      {
+        navLinks.map((link) => (
+          <Link href={link.href} class="!no-underline">
+            {link.label}
+          </Link>
+        ))
+      }</nav
+    >
+    <nav>
       {
         socialLinks.map((link) => (
           <a href={link.href} class="hover:opacity-65">
@@ -46,9 +104,6 @@ const socialLinks: SocialLink[] = [
           </a>
         ))
       }
-    </div>
-    <div class="pl-4 text-sm">
-      <ThemeSelect {...starlightProps} />
-    </div>
+    </nav>
   </div>
 </header>
