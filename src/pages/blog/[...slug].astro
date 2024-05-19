@@ -1,0 +1,36 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection("blog");
+  return blogEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<BaseLayout>
+  <Header />
+  <main class="w-full max-w-2xl mx-auto">
+    <header class="my-8 space-y-2">
+      <h1 class="text-4xl font-extrabold text-accent-600 dark:text-accent-200"
+        >{entry.data.title}</h1
+      >
+      <span
+        class="text-sm font-semibold text-accent-600 dark:text-accent-200 opacity-80"
+        title={entry.data.pubDate.toISOString()}
+        >Published on
+        <time datetime={entry.data.pubDate.toISOString()}
+          >{entry.data.pubDate.toISOString().slice(0, 10)}</time
+        ></span
+      >
+    </header>
+    <Content />
+  </main>
+</BaseLayout>
