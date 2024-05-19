@@ -102,7 +102,33 @@ std.process({
 });
 ```
 
-## `Artifact.cast`
+## `std.sync`
+
+Sync a recipe to the [registry](./registry.md) explicitly. This is a fairly low-level tool that is only used for optimizing the time to sync from the registry.
+
+Normally, only the intermediate recipes of a build are synced to the registry, as doing so allows for better cache reuse for partial rebuilds and reduces the storage use for the registry.
+
+You can wrap any recipe with `std.sync` to sync it to the registry too (the intermediate recipes will still be synced). This will use more storage in the registry and will take longer to sync to the registry, but can speed up the time to sync complex recipes from the registry.
+
+```ts
+const hello = std.process({
+  command: std.tpl`${std.tools()}/bin/bash`,
+  args: ["-c", "echo hello > \"$BRIOCHE_OUTPUT/hello.txt\""],
+  outputScaffold: std.directory(),
+}).cast("directory");
+const world = std.process({
+  command: std.tpl`${std.tools()}/bin/bash`,
+  args: ["-c", "echo hello > \"$BRIOCHE_OUTPUT/world.txt\""],
+  outputScaffold: std.directory(),
+}).cast("directory");
+
+// `merged` gets synced to the registry, meaning users can
+// fetch it directly without first fetching the recipes
+// `hello`, `world`, or `std.tools()`
+const merged = std.sync(std.merge(hello, world));
+```
+
+## `Recipe.cast`
 
 Lazily cast a recipe from one type to another. Returns an error when baked if the recipe doesn't match the casted type. Effectively, this acts as a sort of assert that the recipe matches the expected type.
 
@@ -122,7 +148,7 @@ const file: std.Recipe<std.File> = recipe.cast("file");
 const executableFile = file.withPermissions({ executable: true });
 ```
 
-## `Artifact.bake`
+## `Recipe.bake`
 
 Eagerly [bake](./baking) a recipe, returning a `Promise<Artifact>`.
 
@@ -148,11 +174,11 @@ std.file(std.indoc`
 `).withPermissions({ executable: true });
 ```
 
-## `File.unpack`
+## `File.unarchive`
 
-Unpack a (possibly compressed) directory archive, such as a `.tar.gz` file.
+Unarchive a (possibly compressed) archive of a directory, such as a `.tar.gz` file.
 
-Calling `.unpack()` is pretty limited. If you need more advanced unpacking options, consider using a process or Bash script to call a program such as `tar` instead.
+Calling `.unarchive()` is pretty limited. If you need more advanced unarchiving options, consider using a process or Bash script to call a program such as `tar` directly instead.
 
 ```ts
 std.download({
@@ -161,7 +187,7 @@ std.download({
     "13720965b5f4fc3a0d4b61dd37e7565c741da9a5be24edc2ae00182fc1b3588c",
   ),
 })
-.unpack("tar", "gzip");
+.unarchive("tar", "gzip");
 ```
 
 ## `File.readBytes`
