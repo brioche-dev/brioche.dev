@@ -37,6 +37,7 @@ There are lots and lots of different package managers to choose from, and all of
 - **Reliable**: All external dependencies are pinned in a lockfile, making it much easier to ensure all of your build inputs don't change out from underneath you. Even if you live life on the bleeding edge, this gives you great auditability.
 - **Cacheable**: Brioche hashes all input files to tell when previous build artifacts can be re-used. Builds without any changes finish fast, and intermediate artifacts can be synced remotely for use between different machines.
 - **Cross-platform**: Brioche makes it easy to build and run your projects on any supported platform, including hassle-free cross-compilation.
+- **Cross-ecosystem**: Mix and match different languages and tools within a project and across multiple projects.
 - **Composable**: Bring in all of your tools, and re-use them across build scripts, test runners, Docker images, and local dev environments.
 
 ## Installation
