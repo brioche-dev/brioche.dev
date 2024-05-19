@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Link from "../components/Link.astro";
+import Button from "../components/Button.astro";
+---
+
+<BaseLayout>
+  <Header />
+  <main class="w-full max-w-xl mx-auto my-8 p-4">
+    <h1
+      class="text-4xl font-extrabold text-accent-600 dark:text-accent-200 mb-4"
+      >Brioche Packages</h1
+    >
+    <p
+      >Packages are automatically published to the registry from the <Link
+        href="https://github.com/brioche-dev/brioche-packages/"
+        >brioche-packages</Link
+      > GitHub repository. See that repo for a full list of published packages, or
+      submit an Issue or Pull Request to suggest new packages to be added!</p
+    >
+    <p class="my-8 text-center">
+      <Button href="https://github.com/brioche-dev/brioche-packages/"
+        >Explore Packages</Button
+      >
+    </p>
+  </main>
+</BaseLayout>
