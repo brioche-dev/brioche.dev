@@ -2,6 +2,7 @@
 import { Code } from "astro:components";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
+import Link from "../components/Link.astro";
 import { indoc } from "../utils/indoc";
 
 const codeExampleSnippet = indoc`
@@ -71,10 +72,8 @@ const installSnippet = indoc`
         class="flex-1 p-4 rounded-2xl border border-gray-300 dark:border-gray-700 my-4"
       />
       <p class="text-xl"
-        >...or <a
-          class="text-accent-600 dark:text-accent-200 hover:text-gray-900 dark:hover:text-white underline"
-          href="/docs/installation">view the docs</a
-        > for more installation options</p
+        >...or <Link href="/docs/installation">view the docs</Link> for more installation
+        options</p
       >
     </section>
     <section class="md:max-w-xl md:mx-auto">
@@ -93,13 +92,10 @@ const installSnippet = indoc`
           saved in a lockfile, making your builds super reliable for everyone on
           your team</li
         >
-        <li>
-          <strong>TypeScript</strong> - Build scripts are written in <a
-            class="text-accent-600 dark:text-accent-200 hover:text-gray-900 dark:hover:text-white underline"
-            href="https://www.typescriptlang.org/">TypeScript</a
-          >, giving you the flexibility of a familiar full programming langauge
-          (with great type checking and editor completions!)
-        </li>
+        <strong>TypeScript</strong> - Build scripts are written in <Link
+          href="https://www.typescriptlang.org/">TypeScript</Link
+        >, giving you the flexibility of a familiar full programming langauge
+        (with great type checking and editor completions!)
         <li>
           <strong>Cross-compilation</strong>
           <span class="text-neutral-400">(work in progress)</span> - Easily build
