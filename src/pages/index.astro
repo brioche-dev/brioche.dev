@@ -4,6 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 import Link from "../components/Link.astro";
 import { indoc } from "../utils/indoc";
+import Button from "../components/Button.astro";
 
 const codeExampleSnippet = indoc`
   import * as std from "std";
@@ -42,12 +43,8 @@ const installSnippet = indoc`
           A delicious package manager for building and running your most complex
           software projects
         </p>
-        <div class="flex flex-col items-center">
-          <a
-            href="/docs"
-            class="bg-gray-700 hover:bg-opacity-85 text-accent-200 font-bold rounded-full p-4 text-lg mb-6 dark:bg-accent-200 dark:text-gray-900 dark:hover:bg-opacity-85"
-            >Read the Docs</a
-          >
+        <div class="flex flex-col items-center mb-4">
+          <Button href="/docs">Read the Docs</Button>
         </div>
       </div>
       <Code

@@ -1,0 +1,16 @@
+---
+import { clsx } from "clsx";
+
+interface Props {
+  href: string;
+  class?: string;
+}
+---
+
+<a
+  href={Astro.props.href}
+  class={clsx(
+    "bg-gray-700 hover:bg-opacity-85 text-accent-200 font-bold rounded-full p-4 text-lg dark:bg-accent-200 dark:text-gray-900 dark:hover:bg-opacity-85",
+    Astro.props.class,
+  )}><slot /></a
+>
