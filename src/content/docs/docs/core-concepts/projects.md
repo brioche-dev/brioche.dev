@@ -34,15 +34,51 @@ Brioche supports a few different JavaScript import specifiers:
 
 - **Relative imports**: Import a `.bri` file relative to the current module. Must start with `./` or `../`. If the specifier points to the project root directory, then the root module (`project.bri`) will be imported. If the path points to a subdirectory of the project, then the module `index.bri` within the directory will be imported. Example: `import "./module.bri";`
 - **Project root import**: Import a `.bri` file relative to the project root. Must start with `/`. Follows the same rules as a relative import, but starts from the project root path. Example: `import "/module.bri";`
-- **External project import**: Import the root module of an external project. Example: `import "std";`
+- **External project import**: Import the root module of an external project. This will normally be resolved to a dependency from the registry, but this can changed in the project definition. Example: `import "std";`
+
+## Dependencies
+
+When you import an external project, such as when writing `import "std";`, the name `std` is a **dependency**, which then gets resolved to another project.
+
+### Explicit dependencies
+
+The most specific way to resolve the dependency is by adding a dependency declaration in the project definition, like in the following code snippet:
+
+```ts
+import "std";
+
+export const project = {
+  dependencies: {
+    std: "*",
+  },
+};
+```
+
+Here, the field `std: "*"` within the project definition is a dependency declaration that specifies where the project `std` comes from. In this case, it's a wildcard dependency, meaning the latest version of the dependency is imported from the registry.
+
+### Implicit dependencies
+
+If you use an `import` statement without including dependency declaration explicitly, the dependency will be implicitly imported, such as in this code snippet:
+
+```ts
+import "std";
+
+export const project = {
+  dependencies: {
+    // ... std is not listed here ...
+  }
+}
+```
+
+Here, `std` will be resolved exactly the same as if you had included an explicit dependency declaration of `std: "*"`.
 
 ## Dependency declarations
 
-Dependencies must first be declared in the project metadata before being imported. Here are the supported types of dependency declarations:
+Dependency declarations can be added to the project definition to specify exactly how an imported dependency should be resolved.
 
-**Wildcard dependency**
+### Wildcard dependency
 
-Pull in the latest version of a dependency (which will be pinned in the lockfile).
+Pull in the latest version of a dependency from the registry (which will be pinned in the lockfile). If the same dependency name is found in the [workspace](./workspaces.md), then the workspace dependency will be used.
 
 ```ts
 export const project = {
@@ -52,7 +88,7 @@ export const project = {
 };
 ```
 
-**Path dependency**
+### Path dependency
 
 Pull in a dependency from the local filesystem.
 
@@ -68,7 +104,7 @@ export const project = {
 
 `.bri` files are normal TypeScript files, so `project.bri` can export values using the JavaScript `export` keyword. These exports can be used by submodules or dependent projects.
 
-Exports also serve as the actual entrypoint to builds. Running `brioche build -p project_path` will run the default export from the root module (`project.bri`). This can be changed to a different export explicitly with the `-e` flag, which names a different exported function to run. Here's a minimal example:
+Exports also serve as the actual entrypoint to builds. Running `brioche build -p project_path` will call the default export from the root module (`project.bri`). This can be changed to a different export explicitly with the `-e` flag, which names a different exported function to call. Here's a minimal example:
 
 ```ts
 // Project structure:
@@ -97,7 +133,7 @@ export function backend (): std.Recipe {
 }
 ```
 
-You can then run `brioche build -e frontend` or `brioche build -e backend` to run the frontend or backend functions, respectively (don't forget the `-o` flag if you want to put the output somewhere!)
+You can then run `brioche build -e frontend` or `brioche build -e backend` to call the frontend or backend functions, respectively (don't forget the `-o` flag if you want to put the output somewhere!)
 
 The export used by `brioche build` should be a function that can be called with no arguments and should return the type `std.Recipe` or a compatible subtype (it's good pratice to use a more specific type if possible, such as `std.Recipe<std.Directory>` if the function returns a directory recipe).
 
