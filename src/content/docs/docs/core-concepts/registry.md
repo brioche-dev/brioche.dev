@@ -16,7 +16,7 @@ Run `brioche publish -p project_path` to publish a project to the registry. This
 
 Run `brioche build -p project_path --sync` to sync recipes baked during the project build. This will build the project as normal, plus it will upload some of the baked recipes to the registry (recipes that are fast to bake will generally not be uploaded). When other machines using Brioche use the same registry, they will pull the pre-baked recipes from the registry, avoiding the need to bake the recipes themselves.
 
-Publishing and syncing are completely independent. You can sync a build without publishing the built project to the registry, meaning that the recipes will be cached when someone else builds the same project (or a different project that includes the same recipes under the hood). Or, you can publish without syncing, which will let anyone add the project as a dependency by name, but they will need to bake recipes from the project themselves during the build.
+Publishing and syncing are completely independent. You can sync a build without publishing the built project to the registry, meaning that the recipes will be cached when someone else builds the same project (or a different project that uses the same recipes). Or, you can publish without syncing, which will let anyone add the project as a dependency by name, but they will need to bake recipes from the project themselves during the build.
 
 You can also sync multiple different builds of a project to a registry. For example, you may want to sync multiple project exports from the same project to the registry, which could look like this:
 
