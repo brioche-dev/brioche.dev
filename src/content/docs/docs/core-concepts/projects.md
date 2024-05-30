@@ -36,6 +36,18 @@ Brioche supports a few different JavaScript import specifiers:
 - **Project root import**: Import a `.bri` file relative to the project root. Must start with `/`. Follows the same rules as a relative import, but starts from the project root path. Example: `import "/module.bri";`
 - **External project import**: Import the root module of an external project. This will normally be resolved to a dependency from the registry, but this can changed in the project definition. Example: `import "std";`
 
+## Includes
+
+Brioche is designed to live side-by-side with your source code, so you can pull your source code (or any files, really) into your project with special include functions:
+
+- `Brioche.includeFile("main.c")`: Returns a [file recipe](./recipes.md#stdfile) from a file in your project
+- `Brioche.includeDirectory("src")`: Returns a [directory recipe](./recipes.md#stddirectory) from a directory in your project
+- `Brioche.glob("scripts/*.js", "public/*.html", "styles/*.css")`: Returns a [directory recipe](./recipes.md#stddirectory) containing all the files matching the specified glob patterns (matched using the [`globset`](https://docs.rs/globset/0.4.14/globset/index.html) Rust crate). The directory structure of files are preserved relative to the current Brioche module.
+
+Includes are resolved relative to the module that uses them. All includes **must** use string literal arguments, since includes are statically analyzed from the module source code. Additionally, **you cannot include files from outside the root of your Brioche project!**
+
+When a project uses includes, all included files will be published along with your project when publishing to the [registry](./registry.md).
+
 ## Dependencies
 
 When you import an external project, such as when writing `import "std";`, the name `std` is a **dependency**, which then gets resolved to another project.
@@ -123,12 +135,12 @@ export function frontend (): std.Recipe {
     mv dist "$BRIOCHE_OUTPUT"
   `
     .dependencies(node())
-    .workDir(Brioche.get("frontend"));
+    .workDir(Brioche.includeDirectory("frontend"));
 }
 
 export function backend (): std.Recipe {
   return cargoBuild({
-    crate: Brioche.get("backend"),
+    crate: Brioche.includeDirectory("backend"),
   });
 }
 ```
