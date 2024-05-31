@@ -71,6 +71,10 @@ export default defineConfig({
               link: "/docs/how-it-works/sandboxing",
             },
             {
+              label: "Runnables",
+              link: "/docs/how-it-works/runnables",
+            },
+            {
               label: "Tick Encoding",
               link: "/docs/how-it-works/tick-encoding",
             },
