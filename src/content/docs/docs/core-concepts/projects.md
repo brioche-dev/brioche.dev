@@ -40,13 +40,13 @@ Brioche supports a few different JavaScript import specifiers:
 
 Brioche is designed to live side-by-side with your source code, so you can pull your source code (or any files, really) into your project with special include functions:
 
-- `Brioche.includeFile("main.c")`: Returns a [file recipe](./recipes.md#stdfile) from a file in your project
-- `Brioche.includeDirectory("src")`: Returns a [directory recipe](./recipes.md#stddirectory) from a directory in your project
-- `Brioche.glob("scripts/*.js", "public/*.html", "styles/*.css")`: Returns a [directory recipe](./recipes.md#stddirectory) containing all the files matching the specified glob patterns (matched using the [`globset`](https://docs.rs/globset/0.4.14/globset/index.html) Rust crate). The directory structure of files are preserved relative to the current Brioche module.
+- `Brioche.includeFile("main.c")`: Returns a [file recipe](./recipes#stdfile) from a file in your project
+- `Brioche.includeDirectory("src")`: Returns a [directory recipe](./recipes#stddirectory) from a directory in your project
+- `Brioche.glob("scripts/*.js", "public/*.html", "styles/*.css")`: Returns a [directory recipe](./recipes#stddirectory) containing all the files matching the specified glob patterns (matched using the [`globset`](https://docs.rs/globset/0.4.14/globset/index.html) Rust crate). The directory structure of files are preserved relative to the current Brioche module.
 
 Includes are resolved relative to the module that uses them. All includes **must** use string literal arguments, since includes are statically analyzed from the module source code. Additionally, **you cannot include files from outside the root of your Brioche project!**
 
-When a project uses includes, all included files will be published along with your project when publishing to the [registry](./registry.md).
+When a project uses includes, all included files will be published along with your project when publishing to the [registry](./registry).
 
 ## Dependencies
 
@@ -90,7 +90,7 @@ Dependency declarations can be added to the project definition to specify exactl
 
 ### Wildcard dependency
 
-Pull in the latest version of a dependency from the registry (which will be pinned in the lockfile). If the same dependency name is found in the [workspace](./workspaces.md), then the workspace dependency will be used.
+Pull in the latest version of a dependency from the registry (which will be pinned in the lockfile). If the same dependency name is found in the [workspace](./workspaces), then the workspace dependency will be used.
 
 ```ts
 export const project = {

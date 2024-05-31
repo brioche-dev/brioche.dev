@@ -2,13 +2,13 @@
 title: Registry
 ---
 
-The **registry** is a central server that serves Brioche [projects](./projects.md), serving as a canonical place to resolve dependencies by name. The registry also serves [baked](./baking.md) artifacts, making it so clients can fetch pre-built artifacts instead of needing to build all of their dependencies from source.
+The **registry** is a central server that serves Brioche [projects](./projects), serving as a canonical place to resolve dependencies by name. The registry also serves [baked](./baking) artifacts, making it so clients can fetch pre-built artifacts instead of needing to build all of their dependencies from source.
 
 The official registry is hosted at the URL `https://registry.brioche.dev/`. The registry is automatically published and built from the [`brioche-packages`](https://github.com/brioche-dev/brioche-packages) repo. You can submit a Pull Request or Issue to this repo to request new projects be added or to report issue in existing projects.
 
 ## Self-hosted registries
 
-The source code for the registry is available in the [`brioche-registry`](https://github.com/brioche-dev/brioche-registry) repository. With it, you can self-host your own registry, and Brioche can be configured to pull from a your own registry URL instead (see [configuration](../configuration.md) for details).
+The source code for the registry is available in the [`brioche-registry`](https://github.com/brioche-dev/brioche-registry) repository. With it, you can self-host your own registry, and Brioche can be configured to pull from a your own registry URL instead (see [configuration](../configuration) for details).
 
 When run, the registry will allow anyone with access to pull projects or artifacts, but will require authentication to publish new projects or to sync pre-baked recipes. Set the `$BRIOCHE_REGISTRY_PASSWORD` environment variable to authenticate with the registry.
 

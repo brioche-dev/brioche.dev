@@ -105,7 +105,7 @@ std.process({
 
 ## `std.sync`
 
-Sync a recipe to the [registry](./registry.md) explicitly. This is a fairly low-level tool that is only used for optimizing the time to sync from the registry.
+Sync a recipe to the [registry](./registry) explicitly. This is a fairly low-level tool that is only used for optimizing the time to sync from the registry.
 
 Normally, only the intermediate recipes of a build are synced to the registry, as doing so allows for better cache reuse for partial rebuilds and reduces the storage use for the registry.
 

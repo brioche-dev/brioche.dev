@@ -13,7 +13,7 @@ Sandboxing works differently depending on the host platform, but there are some 
 - The working directory starts in an empty directory within `$HOME`. This directory can be populated with contents by setting the `workDir` option when constructing the process recipe.
 - `$BRIOCHE_OUTPUT` is set to a path that the process must write to before exiting (otherwise, baking the process will fail). Initially, this path does not exist, but this path can be populated by setting the `outputScaffold` option when constructing the process recipe (after which, the process can then modify the contents of this path).
 - `$BRIOCHE_RESOURCE_DIR` is set to a writable directory. This is a special directory used for [packed executables](./packed-executables).
-- `$BRIOCHE_INPUT_RESOURCE_DIRS` is set to a colon-separated (`:`) list of readable directories. These directories are used for [packed executables](packed-executables.md).
+- `$BRIOCHE_INPUT_RESOURCE_DIRS` is set to a colon-separated (`:`) list of readable directories. These directories are used for [packed executables](packed-executables).
 - The `command`, `args`, and `env` options can take process templates (`std.tpl`). When these templates include a recipe, it will expand to an absolute path of the baked recipe's contents. You should assume these paths are read-only.
 
 ## Unsafe processes
