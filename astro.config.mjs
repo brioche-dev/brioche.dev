@@ -75,6 +75,10 @@ export default defineConfig({
               link: "/docs/how-it-works/runnables",
             },
             {
+              label: "Process Dependencies",
+              link: "/docs/how-it-works/process-dependencies",
+            },
+            {
               label: "Tick Encoding",
               link: "/docs/how-it-works/tick-encoding",
             },

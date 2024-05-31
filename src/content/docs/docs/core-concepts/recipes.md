@@ -87,6 +87,7 @@ Takes an object with options for spawning the process:
 - `command` (required): The command to run
 - `args`: Command-line arguments to invoke the process with
 - `env`: An object containing extra environment variables to pass to the process. A minimal set of environment variables is included by default
+- `dependencies`: An array of recipes to include in the process's environment when run. Binaries and environment variables will be set based on all dependencies (see ["Process Dependencies"](../how-it-works/process-dependencies))
 - `workDir`: The process starts by default in an empty working directory. Set this to a directory recipe to pre-populate the process's working directory when it starts
 - `outputScaffold`: The path `$BRIOCHE_OUTPUT` initially doesn't exist when the process starts, and must be written to before the process exits in order to succeed. Set `outputScaffold` to any recipe to initialize this output path with some sort of contents. This is useful to run a command like `sed -i` that modifies its output contents in place, or to run a command like `gcc` to let it output directly into a `bin/` directory
 - `unsafe`: Opt-in to certain unsafe features (see ["Unsafe processes"](../how-it-works/sandboxing#unsafe-options))
@@ -99,8 +100,22 @@ See ["Sandboxing"](../how-it-works/sandboxing) for more details about how proces
 // Will run a bash script. The command template expands to a path to run `bin/bash` within the recipe returned by `std.tools()`
 std.process({
   command: std.tpl`${std.tools()}/bin/bash`,
-  args: ["-c", "echo hello > \"$BRIOCHE_OUTPUT\""],
+  args: ["-c", 'echo hello > "$BRIOCHE_OUTPUT"'],
 });
+```
+
+The return value of `std.process()` has additional utility methods to change the options for the process as it runs. Just like other recipe utilities, the original process is immutable and these methods return copies.
+
+```ts
+// Start with a bash script
+const process = std.process({
+  command: std.tpl`${std.tools()}/bin/bash`,
+  args: ["-c", 'echo "$PATH" > "$BRIOCHE_OUTPUT"'],
+});
+
+// Add more dependencies to the process. These changes
+// only affect `newProcess`, not `process`
+const newProcess = process.dependencies([nodejs(), rust()]);
 ```
 
 ## `std.sync`
