@@ -10,15 +10,16 @@ const codeExampleSnippet = indoc`
   import * as std from "std";
   import { cargoBuild } from "rust";
 
-  export default function () {
+  export default () => {
     // Build a Rust project
     const server = cargoBuild({
       crate: Brioche.glob("src", "Cargo.*"),
     });
 
-    // Turn it into a container image
-    return std.container({
-      entrypoint: std.tpl\`\${server}/bin/server\`,
+    // Put it in a container image
+    return std.ociContainerImage({
+      recipe: server,
+      entrypoint: ["/bin/server"],
     });
   }
 `;
