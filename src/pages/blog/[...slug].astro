@@ -22,13 +22,22 @@ const { Content } = await entry.render();
       <h1 class="text-4xl font-extrabold text-accent-600 dark:text-accent-200"
         >{entry.data.title}</h1
       >
-      <span
-        class="text-sm font-semibold text-accent-600 dark:text-accent-200 opacity-80"
+      <p
+        class="text-md font-semibold text-accent-600 dark:text-accent-200 opacity-80"
         title={entry.data.pubDate.toISOString()}
         >Published on
         <time datetime={entry.data.pubDate.toISOString()}
           >{entry.data.pubDate.toISOString().slice(0, 10)}</time
-        ></span
+        ></p
+      >
+      <p
+        class="text-md font-semibold text-accent-600 dark:text-accent-200 opacity-80"
+        >By
+        <a
+          href={entry.data.authorUrl}
+          class="underline hover:opacity-70 dark:border-accent-200"
+          >{entry.data.author}</a
+        ></p
       >
     </header>
     <Content />
