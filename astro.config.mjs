@@ -15,6 +15,7 @@ export default defineConfig({
         dark: "./src/assets/brioche-logo-dark.svg",
       },
       social: {
+        discord: "https://discord.gg/cw5QeWv4E5",
         github: "https://github.com/brioche-dev",
       },
       sidebar: [

@@ -34,6 +34,11 @@ const navLinks: NavLink[] = [
 
 const socialLinks: SocialLink[] = [
   {
+    label: "Discord",
+    icon: "discord",
+    href: "https://discord.gg/cw5QeWv4E5",
+  },
+  {
     label: "GitHub",
     icon: "github",
     href: "https://github.com/brioche-dev",
@@ -68,7 +73,7 @@ const socialLinks: SocialLink[] = [
     <div
       class="flex flex-row items-center gap-4 sm:divide-x divide-gray-300 dark:divide-gray-700"
     >
-      <div class="hidden sm:block">
+      <div class="hidden sm:flex sm:flex-row gap-4">
         {
           socialLinks.map((link) => (
             <a href={link.href} class="hover:opacity-65">
@@ -95,7 +100,7 @@ const socialLinks: SocialLink[] = [
         ))
       }</nav
     >
-    <nav>
+    <nav class="flex flex-row gap-4">
       {
         socialLinks.map((link) => (
           <a href={link.href} class="hover:opacity-65">
