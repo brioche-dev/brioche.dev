@@ -55,6 +55,10 @@ export default defineConfig({
               link: "/docs/core-concepts/baking",
             },
             {
+              label: "Runnables",
+              link: "/docs/core-concepts/runnables",
+            },
+            {
               label: "Registry",
               link: "/docs/core-concepts/registry",
             },
@@ -74,10 +78,6 @@ export default defineConfig({
             {
               label: "Sandboxing",
               link: "/docs/how-it-works/sandboxing",
-            },
-            {
-              label: "Runnables",
-              link: "/docs/how-it-works/runnables",
             },
             {
               label: "Process Dependencies",

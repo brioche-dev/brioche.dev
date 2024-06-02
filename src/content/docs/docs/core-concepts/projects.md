@@ -125,15 +125,19 @@ Exports also serve as the actual entrypoint to builds. Running `brioche build -p
 
 import * as std from "std";
 import { cargoBuild } from "rust";
-import node from "node";
+import nodejs from "nodejs";
 
 export function frontend (): std.Recipe {
+  let npmPackage = Brioche.includeDirectory("frontend");
+
+  // ... install NPM dependencies, etc ...
+
   return std.runBash`
     npm run build
     mv dist "$BRIOCHE_OUTPUT"
   `
-    .dependencies(node())
-    .workDir(Brioche.includeDirectory("frontend"));
+    .dependencies(nodejs())
+    .workDir(npmPackage);
 }
 
 export function backend (): std.Recipe {

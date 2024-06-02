@@ -2,7 +2,7 @@
 title: Artifacts
 ---
 
-An **artifact** is a value that represents the _output_ of a build: a file, a directory, or a symlink. You normally don't create artifacts directly, but instead by [baking](./baking) a [recipe](./recipes), which returns an artifact as an output. In the command `brioche build -p . -o output`, the resulting artifact of the build is written to the path `output`.
+An **artifact** is a value that represents the _output_ of a build: a file, a directory, or a symlink. You normally don't create artifacts directly, but instead by [baking](./baking) a [recipe](./recipes), which returns an artifact as an output. In the command `brioche build -o output`, the resulting artifact of the build is written to the path `output`.
 
 Artifacts don't store general Unix permissions, timestamps, or other metadata that isn't strictly necessary. This is because Brioche will need to rebuild if either input artifacts or recipes change, and having extra metadata that may not be used during the build greatly increases the chances that the build will lead to a cache miss. If you need to preserve timestamps or other permissions in your build, you can use tarfiles to get a lot more control over what kind of metadata is preserved.
 

@@ -30,7 +30,7 @@ export default function () {
 }
 ```
 
-If you were to run `brioche build -p . -o output`, you would end up with a directory structure like this:
+If you were to run `brioche build -o output`, you would end up with a directory structure like this:
 
 ```
 output

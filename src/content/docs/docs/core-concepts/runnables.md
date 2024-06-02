@@ -2,7 +2,7 @@
 title: Runnables
 ---
 
-A **runnable** is a [directory artifact](../core-concepts/artifacts) that can be used with `brioche run`. A runnable is just an ordinary directory artifact that contains a file or symlink called `brioche-run` at the root-- this is the executable that gets invoked when calling `brioche run`:
+A **runnable** is a [directory artifact](./artifacts) that can be used with `brioche run`. A runnable is just an ordinary directory artifact that contains a file or symlink called `brioche-run` at the root-- this is the executable that gets invoked when calling `brioche run`:
 
 ```ts
 import * as std from "std";
@@ -28,7 +28,7 @@ export default function () {
 }
 ```
 
-If you were to call the above project with `brioche run -p .`, then the project would build, then Brioche would execute the `brioche-run` symlink from the artifact, which in turn would call `bin/hello`.
+If you were to call the above project with `brioche run`, then the project would build, then Brioche would execute the `brioche-run` symlink from the artifact, which in turn would call `bin/hello`.
 
 You could also simplify the above code using the `std.withRunnableLink` utility, but the result is the same:
 
@@ -111,4 +111,4 @@ export function container() {
 }
 ```
 
-In this example, you can run `brioche run -p .` to run the project natively on your machine, or you can run `brioche build -p . -e container -o container.tar` to build an easily-deployable container image.
+In this example, you can run `brioche run` to run the project natively on your machine, or you can run `brioche build -e container -o container.tar` to build an easily-deployable container image.

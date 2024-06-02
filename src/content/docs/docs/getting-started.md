@@ -9,21 +9,21 @@ Brioche scripts are written with [TypeScript](https://www.typescriptlang.org/) a
 ```ts
 // project.bri
 import * as std from "std";
-import node, { npmInstall } from "node";
+import nodejs, { npmInstall } from "nodejs";
 
 export default function (): std.Recipe {
     // Import the npm package files from the current directory
-    let npmPackage = Brioche.glob("package.lock", "package.json", "src");
+    let npmPackage = Brioche.glob("src", "package.json", "package-lock.json");
 
     // Install all npm package dependencies
-    npmPackage = npmInstall(npmPackage);
+    npmPackage = npmInstall({ npmPackage });
 
     // Run the npm build script and save the output from the `dist/` dir
     return std.runBash`
         npm run build
         mv dist "$BRIOCHE_OUTPUT"
     `
-        .dependencies(node())
+        .dependencies(nodejs())
         .workDir(npmPackage);
 }
 ```
