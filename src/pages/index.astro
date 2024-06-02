@@ -25,9 +25,11 @@ const codeExampleSnippet = indoc`
 `;
 
 const installSnippet = indoc`
-  mkdir -p ~/.local/bin
-  curl -o ~/.local/bin/brioche -L https://development-content.brioche.dev/github.com/brioche-dev/brioche/branches/main/x86_64-linux/brioche
-  chmod +x ~/.local/bin/brioche
+  curl --proto '=https' --tlsv1.2 -sSfL 'https://brioche.dev/install.sh' | bash
+`;
+
+const helloWorldSnippet = indoc`
+  brioche run -r hello_world
 `;
 ---
 
@@ -71,18 +73,38 @@ const installSnippet = indoc`
         class="text-4xl font-extrabold text-accent-600 dark:text-accent-200 md:-ml-12 my-4"
         >Get Started</h2
       >
-      <p class="text-xl"
-        >Install on Linux in seconds, no root permissions required:</p
-      >
-      <Code
-        code={installSnippet}
-        lang="shell"
-        theme="vitesse-dark"
-        class="flex-1 p-4 rounded-2xl border border-gray-300 dark:border-gray-700 my-4"
-      />
-      <p class="text-xl"
-        >...or <Link href="/docs/installation">view the docs</Link> for more installation
-        options</p
+      <div class="space-y-6 divide-y divide-gray-200 dark:divide-gray-700">
+        <div>
+          <p class="text-xl"
+            >Install in seconds, no root permissions required:</p
+          >
+          <Code
+            code={installSnippet}
+            lang="shell"
+            theme="vitesse-dark"
+            class="flex-1 p-4 my-4 text-xs border border-gray-300 rounded-2xl dark:border-gray-700"
+          />
+          <p class="text-xl"
+            >...or <Link href="/docs/installation">view the docs</Link> for more
+            installation options</p
+          >
+          <p class="text-gray-400 mt-4 text-center"
+            >(Currently x86-64 Linux only, more platforms coming soon)</p
+          >
+        </div>
+        <div>
+          <p class="text-xl mt-6">Try it out by running Hello World:</p>
+          <Code
+            code={helloWorldSnippet}
+            lang="shell"
+            theme="vitesse-dark"
+            class="flex-1 p-4 my-4 border border-gray-300 rounded-2xl dark:border-gray-700"
+          />
+          <p class="text-gray-400 mt-4 text-center"
+            >(Will take several minutes on first run to download common files
+            and libraries)</p
+          ></div
+        ></div
       >
     </section>
     <section class="md:max-w-xl md:mx-auto">
