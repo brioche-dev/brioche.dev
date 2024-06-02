@@ -5,7 +5,6 @@ title: Projects
 Everything built with Brioche starts with a **project**, which is a folder containing the Brioche scripts and any other files needed to for your build. The main entrypoint for your project is the file `project.bri`, which contains the root TypeScript module for your project. Typically, a project will at least import the `std` package (the Brioche standard library) and export a default function used by the `brioche build` command:
 
 ```ts
-// TODO: Untested
 import * as std from "std";
 
 export default function (): std.Recipe {
@@ -78,8 +77,8 @@ import "std";
 export const project = {
   dependencies: {
     // ... std is not listed here ...
-  }
-}
+  },
+};
 ```
 
 Here, `std` will be resolved exactly the same as if you had included an explicit dependency declaration of `std: "*"`.
@@ -124,7 +123,6 @@ Exports also serve as the actual entrypoint to builds. Running `brioche build -p
 // - frontend/: Frontend NodeJS project
 // - backend/: Backend Rust project
 
-// TODO: Untested
 import * as std from "std";
 import { cargoBuild } from "rust";
 import node from "node";

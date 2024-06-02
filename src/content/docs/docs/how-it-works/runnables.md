@@ -8,7 +8,7 @@ A **runnable** is a [directory artifact](../core-concepts/artifacts) that can be
 import * as std from "std";
 import { cargoBuild } from "rust";
 
-export default () => {
+export default function () {
   // Build a cargo project
   //
   // app
@@ -36,12 +36,26 @@ You could also simplify the above code using the `std.withRunnableLink` utility,
 import * as std from "std";
 import { cargoBuild } from "rust";
 
-export default () => {
+export default function () {
   const app = cargoBuild({
     crate: Brioche.glob("src", "Cargo.*"),
   });
 
   return std.withRunnableLink(app, "bin/hello");
+}
+```
+
+`rust.cargoBuild()` also provides a `runnable` option to simplify it even more:
+
+```ts
+import * as std from "std";
+import { cargoBuild } from "rust";
+
+export default function () {
+  return cargoBuild({
+    crate: Brioche.glob("src", "Cargo.*"),
+    runnable: "bin/hello",
+  });
 }
 ```
 
@@ -59,7 +73,7 @@ The utility `std.bashRunnable` is meant for these sorts of use cases: it takes a
 import * as std from "std";
 import nodejs from "nodejs";
 
-export default () => {
+export default function () {
   const nodeProject = Brioche.glob("src/**.js");
 
   return std.bashRunnable`
@@ -80,7 +94,7 @@ You can use `std.ociContainerImage()` to build an OCI container image, e.g. for 
 import * as std from "std";
 import nodejs from "nodejs";
 
-export function build() {
+export default function build() {
   const nodeProject = Brioche.glob("src/**.js");
 
   return std.bashRunnable`
@@ -89,7 +103,6 @@ export function build() {
     .root(nodeProject)
     .dependencies(nodejs());
 }
-export default build;
 
 export function container() {
   return std.ociContainerImage({

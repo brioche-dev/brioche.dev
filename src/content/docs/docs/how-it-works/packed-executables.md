@@ -9,7 +9,6 @@ Brioche employs a scheme similar to executable packers like [UPX](https://upx.gi
 Let's say you use Brioche to compile a simple C program with gcc:
 
 ```ts
-// TODO: This is untested
 import * as std from "std";
 
 export default function () {

@@ -8,7 +8,6 @@ Brioche scripts are written with [TypeScript](https://www.typescriptlang.org/) a
 
 ```ts
 // project.bri
-// TODO: Untested example
 import * as std from "std";
 import node, { npmInstall } from "node";
 
@@ -24,8 +23,8 @@ export default function (): std.Recipe {
         npm run build
         mv dist "$BRIOCHE_OUTPUT"
     `
-        .dependencies([node()])
-        .workingDir(npmPackage);
+        .dependencies(node())
+        .workDir(npmPackage);
 }
 ```
 
@@ -52,7 +51,6 @@ Let's start with a very minimal "Hello world!" example to get a feel for Brioche
 
 ```ts
 // project.bri
-// TODO: Untested example
 
 // Import the `std` package (the Brioche standard library)
 // This will be included in most projects
@@ -68,7 +66,7 @@ export default function (): std.Recipe {
 }
 ```
 
-Save this file as `project.bri`, then run `brioche build -p . -o output`.
+Save this file as `project.bri`, then run `brioche build -o output`.
 
 When you run this, Brioche will run the `default` function from `project.bri` in the current directory, then write the output to the path `output`. The first run may take a while to download dependencies, but afterwards, you can open the file `output/hello.txt` to see "hello world"!
 
