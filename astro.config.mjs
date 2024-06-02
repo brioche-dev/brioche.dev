@@ -32,6 +32,10 @@ export default defineConfig({
           link: "/docs/configuration",
         },
         {
+          label: "Example Projects",
+          link: "/docs/example-projects",
+        },
+        {
           label: "Core Concepts",
           items: [
             {
