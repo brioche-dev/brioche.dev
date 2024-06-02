@@ -51,7 +51,7 @@ function install_brioche() {
 
     # Download to a temporary path first
     echo "Downloading to \`$brioche_temp/brioche\`..."
-    curl -Lf "$brioche_url" -o "$brioche_temp/brioche"
+    curl --proto '=https' --tlsv1.2 -fL "$brioche_url" -o "$brioche_temp/brioche"
     echo
 
     # Validate the checksum
