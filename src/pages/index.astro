@@ -10,7 +10,7 @@ const codeExampleSnippet = indoc`
   import * as std from "std";
   import { cargoBuild } from "rust";
 
-  export default () => {
+  export default function () {
     // Build a Rust project
     const server = cargoBuild({
       crate: Brioche.glob("src", "Cargo.*"),
