@@ -10,8 +10,10 @@ export const redirects: Record<string, string> = {
 };
 
 export async function GET() {
+  // Create a redirect for each entry in `redirects` (both with and without
+  // a trailing slash
   const redirectList = Object.entries(redirects)
-    .map(([from, to]) => `${from} ${to}`)
+    .flatMap(([from, to]) => [`${from} ${to}`, `${from}/ ${to}`])
     .join("\n");
   return new Response(`${redirectList}\n`);
 }
