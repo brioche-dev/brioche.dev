@@ -1,12 +1,10 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import tailwind from "@astrojs/tailwind";
+// import { redirects } from "./src/pages/_redirects";
 
 // https://astro.build/config
 export default defineConfig({
-  redirects: {
-    "/docs": "/docs/getting-started",
-  },
   integrations: [
     starlight({
       title: "Brioche",
@@ -154,5 +152,16 @@ export default defineConfig({
       ],
     }),
     tailwind({ applyBaseStyles: false }),
+    {
+      name: "_redirects",
+      hooks: {
+        "astro:config:setup": ({ injectRoute }) => {
+          injectRoute({
+            pattern: "/_redirects",
+            entrypoint: "./src/pages/_redirects.ts",
+          });
+        },
+      },
+    },
   ],
 });
