@@ -43,11 +43,11 @@ export function container() {
 
 The `Brioche.glob` line imports files from disk next to the `project.bri` file, so this particular script is meant to live alongside an existing Rust project. Besides that, hopefully it's pretty self-explanatory what's going on. A few things you can do with this:
 
-- You can run `brioche run`, which will call the default export function. This returns a [**recipe**](../docs/core-concepts/recipes/) that will use the Rust compiler to build the project. Then, Brioche will call the `bin/hello` binary
+- You can run `brioche run`, which will call the default export function. This returns a [**recipe**](/docs/core-concepts/recipes) that will use the Rust compiler to build the project. Then, Brioche will call the `bin/hello` binary
 - You can run `brioche build -e container -o container.tar` to call the `container` function. This will build an OCI container image, ready to be imported into either Docker or Podman
 - You can run `brioche build -o output/` to save a directory containing `bin/hello`. Not just that: this directory will contain all of the runtime dependencies for the project (including glibc)! That means you can send it to another computer, and it'll run using the exact same dependencies you just ran it with
 
-If you want to check out some more examples or if you want to give Brioche a spin yourself, take a look at the [documentation](../docs/). If you want to see the currently available packages (or just want to explore some real-world Brioche code), check out the [brioche-packages repo](https://github.com/brioche-dev/brioche-packages).
+If you want to check out some more examples or if you want to give Brioche a spin yourself, take a look at the [documentation](/docs). If you want to see the currently available packages (or just want to explore some real-world Brioche code), check out the [brioche-packages repo](https://github.com/brioche-dev/brioche-packages).
 
 ## Why write another package manager?
 

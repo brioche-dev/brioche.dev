@@ -1,10 +1,11 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import tailwind from "@astrojs/tailwind";
-// import { redirects } from "./src/pages/_redirects";
+import { redirects } from "./src/pages/_redirects";
 
 // https://astro.build/config
 export default defineConfig({
+  redirects,
   integrations: [
     starlight({
       title: "Brioche",
