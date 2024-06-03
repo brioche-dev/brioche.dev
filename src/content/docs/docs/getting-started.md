@@ -41,9 +41,13 @@ There are lots and lots of different package managers to choose from, and all of
 
 ## Installation
 
-<!-- TODO: Add "Quick install" instructions here as well -->
+Run the following command to install Brioche:
 
-See [Installation](./installation) for details.
+```sh
+curl --proto '=https' --tlsv1.2 -sSfL 'https://brioche.dev/install.sh' | bash
+```
+
+For the best experience, [configuring your editor with Brioche support](./installation#editor-support) is **strongly recommended!** Also see [Installation](./installation) for more installation options and details.
 
 ## "Hello world!"
 
