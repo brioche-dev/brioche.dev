@@ -2,7 +2,7 @@
 title: Tick Encoding
 ---
 
-Brioche heavily uses JSON representations for values, especially for [artifacts](./artifacts) and [recipes](./recipes). It turns out that there are quite a few places where we need to represent arbitrary binary data in JSON objects, although in a lot of cases the data is commonly "ASCII-like", meaning the document would mostly be readable if it were stored in a pure ASCII format, but we still need to preserve any non-ASCII values in their original form. There are a few different obvious choices for encoding this data:
+Brioche heavily uses JSON representations for values, especially for [artifacts](/docs/core-concepts/artifacts) and [recipes](/docs/core-concepts/recipes). It turns out that there are quite a few places where we need to represent arbitrary binary data in JSON objects, although in a lot of cases the data is commonly "ASCII-like", meaning the document would mostly be readable if it were stored in a pure ASCII format, but we still need to preserve any non-ASCII values in their original form. There are a few different obvious choices for encoding this data:
 
 - Directly as an array of numbers: `[0, 1, 2]`
   - Extremely space inefficient

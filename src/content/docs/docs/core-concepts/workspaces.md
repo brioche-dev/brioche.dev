@@ -2,7 +2,7 @@
 title: Workspaces
 ---
 
-A **workspace** is a collection of [projects](./projects), where each project can depend on other projects in the workspace as if they were external dependencies, but _don't_ get locked in the lockfile. Workspaces are mainly meant for monorepos containing multiple interdependent Brioche projects, and are designed to make it easier to move code into and out of the workspace without needing to translate between normal dependencies and path dependencies.
+A **workspace** is a collection of [projects](/docs/core-concepts/projects), where each project can depend on other projects in the workspace as if they were external dependencies, but _don't_ get locked in the lockfile. Workspaces are mainly meant for monorepos containing multiple interdependent Brioche projects, and are designed to make it easier to move code into and out of the workspace without needing to translate between normal dependencies and path dependencies.
 
 A workspace can be defined by creating the file `brioche_workspace.toml` in the workspace root. The file looks like this:
 

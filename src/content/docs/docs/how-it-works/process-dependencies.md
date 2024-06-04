@@ -2,7 +2,7 @@
 title: Process Dependencies
 ---
 
-When you create a [process recipe](../core-concepts/recipes#stdprocess), you can pass in an array of recipes in the `dependencies` option (or call the `.dependencies()` method to create a new recipe with more dependencies). When baked, the process will use these dependencies to append to `$PATH` or other environment variables (the explicit env vars on the process take precedent over the env vars set by dependencies).
+When you create a [process recipe](/docs/core-concepts/recipes#stdprocess), you can pass in an array of recipes in the `dependencies` option (or call the `.dependencies()` method to create a new recipe with more dependencies). When baked, the process will use these dependencies to append to `$PATH` or other environment variables (the explicit env vars on the process take precedent over the env vars set by dependencies).
 
 ## Dependency structure
 
@@ -42,10 +42,7 @@ You can use the `std.setEnv()` function to more easily build this directory stru
 
 ```ts
 return std.setEnv(recipe, {
-  LIBRARY_PATH: [
-    { path: "lib" },
-    { path: "usr/lib" }
-  ],
+  LIBRARY_PATH: [{ path: "lib" }, { path: "usr/lib" }],
   PKG_CONFIG_PATH: { path: "lib/pkgconfig" },
 });
 ```
