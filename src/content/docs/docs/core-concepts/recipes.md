@@ -178,9 +178,9 @@ Calling `.bake()` manually should be a pretty rare occurrence. Brioche implicitl
 const artifact = await std
   .file(
     std.indoc`
-    #!/usr/bin/env bash
-    echo hello world!
-  `,
+      #!/usr/bin/env bash
+      echo hello world!
+    `,
   )
   .bake();
 ```
@@ -193,9 +193,9 @@ Returns a new recipe that bakes to a file with the same contents, but with diffe
 std
   .file(
     std.indoc`
-  #!/usr/bin/env bash
-  echo hello world!
-`,
+      #!/usr/bin/env bash
+      echo hello world!
+    `,
   )
   .withPermissions({ executable: true });
 ```
