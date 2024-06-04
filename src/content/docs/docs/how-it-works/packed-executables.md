@@ -36,14 +36,14 @@ If you were to run `brioche build -o output`, you would end up with a directory 
 output
 ├── bin/
 │   └── hello
-└── brioche-pack.d/
+└── brioche-resources.d/
     ├── blobs/
     │   └── ...
     └── aliases/
         └── ...
 ```
 
-`output/bin/hello` is a **packed executable**. The original executable was shoved somewhere into the `brioche-pack.d` directory, and the executable `brioche-packed-userland-exec` was copied in to replace it, with some metadata added alongside it.
+`output/bin/hello` is a **packed executable**. The original executable was shoved somewhere into the `brioche-resources.d` directory, and the executable `brioche-packed-userland-exec` was copied in to replace it, with some metadata added alongside it.
 
 The metadata was attached to the `hello` executable (née `brioche-packed-userland-exec`) directly. You can parse this metadata by running the command `brioche-packer read outputs/bin/hello`, which will return output like this:
 
