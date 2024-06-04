@@ -16,11 +16,11 @@ When set, the "**resources**" directory for a file specifies a directory that th
 
 ## Directory
 
-A directory artifact contains an "entries" object, listing all the artifacts within the directory. Each key is the filename ([tick encoded](/docs/core-concepts/tick-encoding)), and the value is an [artifact hash](#artifact-hashes) of a file, directory, or symlink.
+A directory artifact contains an "entries" object, listing all the artifacts within the directory. Each key is the filename ([tick encoded](/docs/how-it-works/tick-encoding)), and the value is an [artifact hash](#artifact-hashes) of a file, directory, or symlink.
 
 ## Symlink
 
-A symlink contains a "target" field, listing the filename the symlink should point to ([tick encoded](/docs/core-concepts/tick-encoding)). Symlinks should generally be relative paths, but they don't need to be.
+A symlink contains a "target" field, listing the filename the symlink should point to ([tick encoded](/docs/how-it-works/tick-encoding)). Symlinks should generally be relative paths, but they don't need to be.
 
 ## Artifact hashes
 

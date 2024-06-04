@@ -2,7 +2,7 @@
 title: Runnables
 ---
 
-A **runnable** is a [directory artifact](/docs/core-concepts/artifacts) that can be used with `brioche run`. A runnable is just an ordinary directory artifact that contains a file or symlink called `brioche-run` at the root-- this is the executable that gets invoked when calling `brioche run`:
+A **runnable** is a [directory artifact](/docs/core-concepts/artifacts#directory) that can be used with `brioche run`. A runnable is just an ordinary directory artifact that contains a file or symlink called `brioche-run` at the root-- this is the executable that gets invoked when calling `brioche run`:
 
 ```ts
 import * as std from "std";
