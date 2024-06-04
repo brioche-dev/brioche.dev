@@ -3,7 +3,6 @@ import starlight from "@astrojs/starlight";
 import tailwind from "@astrojs/tailwind";
 import { redirects } from "./src/pages/_redirects";
 import sitemap from "@astrojs/sitemap";
-
 import robotsTxt from "astro-robots-txt";
 
 // https://astro.build/config
