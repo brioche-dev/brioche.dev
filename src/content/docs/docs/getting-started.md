@@ -12,19 +12,19 @@ import * as std from "std";
 import nodejs, { npmInstall } from "nodejs";
 
 export default function (): std.Recipe {
-    // Import the npm package files from the current directory
-    let npmPackage = Brioche.glob("src", "package.json", "package-lock.json");
+  // Import the npm package files from the current directory
+  let npmPackage = Brioche.glob("src", "package.json", "package-lock.json");
 
-    // Install all npm package dependencies
-    npmPackage = npmInstall({ npmPackage });
+  // Install all npm package dependencies
+  npmPackage = npmInstall({ npmPackage });
 
-    // Run the npm build script and save the output from the `dist/` dir
-    return std.runBash`
+  // Run the npm build script and save the output from the `dist/` dir
+  return std.runBash`
         npm run build
         mv dist "$BRIOCHE_OUTPUT"
     `
-        .dependencies(nodejs())
-        .workDir(npmPackage);
+    .dependencies(nodejs())
+    .workDir(npmPackage);
 }
 ```
 
@@ -47,7 +47,7 @@ Run the following command to install Brioche:
 curl --proto '=https' --tlsv1.2 -sSfL 'https://brioche.dev/install.sh' | bash
 ```
 
-For the best experience, [configuring your editor with Brioche support](./installation#editor-support) is **strongly recommended!** Also see [Installation](./installation) for more installation options and details.
+For the best experience, [configuring your editor with Brioche support](/docs/installation#editor-support) is **strongly recommended!** Also see [Installation](/docs/installation) for more installation options and details.
 
 ## "Hello world!"
 
@@ -74,6 +74,6 @@ Save this file as `project.bri`, then run `brioche build -o output`.
 
 When you run this, Brioche will run the `default` function from `project.bri` in the current directory, then write the output to the path `output`. The first run may take a while to download dependencies, but afterwards, you can open the file `output/hello.txt` to see "hello world"!
 
-...okay, creating a plain text file isn't much to write home about. But let's talk about what's going on: the `default` function doesn't end up really doing anything on its own. Instead, it returns a [recipe](./core-concepts/recipes), which describes how to build the output. In this case, it says "run a bash script to write the file `hello.txt`". The special path `$BRIOCHE_OUTPUT` is the "output" of the recipe: your scripts and commands _need_ to put something there (think of it like returning from a function in a programming language).
+...okay, creating a plain text file isn't much to write home about. But let's talk about what's going on: the `default` function doesn't end up really doing anything on its own. Instead, it returns a [recipe](/docs/core-concepts/recipes), which describes how to build the output. In this case, it says "run a bash script to write the file `hello.txt`". The special path `$BRIOCHE_OUTPUT` is the "output" of the recipe: your scripts and commands _need_ to put something there (think of it like returning from a function in a programming language).
 
 Also, you may have also noticed the the file `brioche.lock` appeared as well. This is the lockfile, which pins the version of the `std` dependency used for the build, including the exact version of Bash used for the build. Once you start bringing your own build tools into the mix-- Go, Rust, NodeJS, Python, etc.-- they'll all be locked as well.

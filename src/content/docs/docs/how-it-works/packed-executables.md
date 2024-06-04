@@ -19,7 +19,7 @@ export default function () {
         printf("Hello world!\\n");
         return 0;
       }
-    `)
+    `),
   });
   return std.runBash`
     mkdir -p "$BRIOCHE_OUTPUT/bin"

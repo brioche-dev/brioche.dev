@@ -39,13 +39,13 @@ Brioche supports a few different JavaScript import specifiers:
 
 Brioche is designed to live side-by-side with your source code, so you can pull your source code (or any files, really) into your project with special include functions:
 
-- `Brioche.includeFile("main.c")`: Returns a [file recipe](./recipes#stdfile) from a file in your project
-- `Brioche.includeDirectory("src")`: Returns a [directory recipe](./recipes#stddirectory) from a directory in your project
-- `Brioche.glob("scripts/*.js", "public/*.html", "styles/*.css")`: Returns a [directory recipe](./recipes#stddirectory) containing all the files matching the specified glob patterns (matched using the [`globset`](https://docs.rs/globset/0.4.14/globset/index.html) Rust crate). The directory structure of files are preserved relative to the current Brioche module.
+- `Brioche.includeFile("main.c")`: Returns a [file recipe](/docs/core-concepts/recipes#stdfile) from a file in your project
+- `Brioche.includeDirectory("src")`: Returns a [directory recipe](/docs/core-concepts/recipes#stddirectory) from a directory in your project
+- `Brioche.glob("scripts/*.js", "public/*.html", "styles/*.css")`: Returns a [directory recipe](/docs/core-concepts/recipes#stddirectory) containing all the files matching the specified glob patterns (matched using the [`globset`](https://docs.rs/globset/0.4.14/globset/index.html) Rust crate). The directory structure of files are preserved relative to the current Brioche module.
 
 Includes are resolved relative to the module that uses them. All includes **must** use string literal arguments, since includes are statically analyzed from the module source code. Additionally, **you cannot include files from outside the root of your Brioche project!**
 
-When a project uses includes, all included files will be published along with your project when publishing to the [registry](./registry).
+When a project uses includes, all included files will be published along with your project when publishing to the [registry](/docs/core-concepts/registry).
 
 ## Dependencies
 
@@ -89,7 +89,7 @@ Dependency declarations can be added to the project definition to specify exactl
 
 ### Wildcard dependency
 
-Pull in the latest version of a dependency from the registry (which will be pinned in the lockfile). If the same dependency name is found in the [workspace](./workspaces), then the workspace dependency will be used.
+Pull in the latest version of a dependency from the registry (which will be pinned in the lockfile). If the same dependency name is found in the [workspace](/docs/core-concepts/workspaces), then the workspace dependency will be used.
 
 ```ts
 export const project = {
@@ -127,7 +127,7 @@ import * as std from "std";
 import { cargoBuild } from "rust";
 import nodejs from "nodejs";
 
-export function frontend (): std.Recipe {
+export function frontend(): std.Recipe {
   let npmPackage = Brioche.includeDirectory("frontend");
 
   // ... install NPM dependencies, etc ...
@@ -140,7 +140,7 @@ export function frontend (): std.Recipe {
     .workDir(npmPackage);
 }
 
-export function backend (): std.Recipe {
+export function backend(): std.Recipe {
   return cargoBuild({
     crate: Brioche.includeDirectory("backend"),
   });
@@ -152,4 +152,3 @@ You can then run `brioche build -e frontend` or `brioche build -e backend` to ca
 The export used by `brioche build` should be a function that can be called with no arguments and should return the type `std.Recipe` or a compatible subtype (it's good pratice to use a more specific type if possible, such as `std.Recipe<std.Directory>` if the function returns a directory recipe).
 
 By convention, the default export should be the "main" build recipe, most commonly a directory recipe containing a `bin/` directory containing built programs.
-

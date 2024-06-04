@@ -2,13 +2,20 @@ import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import tailwind from "@astrojs/tailwind";
 import { redirects } from "./src/pages/_redirects";
+import sitemap from "@astrojs/sitemap";
+import robotsTxt from "astro-robots-txt";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://brioche.dev",
   redirects,
   integrations: [
+    sitemap(),
+    robotsTxt(),
     starlight({
       title: "Brioche",
+      description:
+        "A delicious package manager for building and running your most complex software projects",
       logo: {
         light: "./src/assets/brioche-logo-light.svg",
         dark: "./src/assets/brioche-logo-dark.svg",
@@ -152,7 +159,9 @@ export default defineConfig({
         },
       ],
     }),
-    tailwind({ applyBaseStyles: false }),
+    tailwind({
+      applyBaseStyles: false,
+    }),
     {
       name: "_redirects",
       hooks: {
