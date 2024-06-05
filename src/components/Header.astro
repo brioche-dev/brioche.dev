@@ -34,6 +34,11 @@ const navLinks: NavLink[] = [
 
 const socialLinks: SocialLink[] = [
   {
+    label: "Zulip",
+    icon: "comment",
+    href: "https://brioche.zulipchat.com/join/4m44hxxd67apx63gmbmx6yg4/",
+  },
+  {
     label: "Discord",
     icon: "discord",
     href: "https://discord.gg/cw5QeWv4E5",
@@ -76,7 +81,7 @@ const socialLinks: SocialLink[] = [
       <div class="hidden sm:flex sm:flex-row gap-4">
         {
           socialLinks.map((link) => (
-            <a href={link.href} class="hover:opacity-65">
+            <a href={link.href} class="hover:opacity-65" title={link.label}>
               <span class="sr-only">{link.label}</span>
               <Icon name={link.icon} />
             </a>
