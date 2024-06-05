@@ -1,8 +1,5 @@
 import type { Props } from "@astrojs/starlight/props";
 
-export const siteDescription =
-  "A delicious package manager for building and running your most complex software projects";
-
 /**
  * Dummy Starlight props to reuse Starlight components outside of Starlight
  */
