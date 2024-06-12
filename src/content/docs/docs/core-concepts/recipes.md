@@ -92,7 +92,7 @@ Takes an object with options for spawning the process:
 - `outputScaffold`: The path `$BRIOCHE_OUTPUT` initially doesn't exist when the process starts, and must be written to before the process exits in order to succeed. Set `outputScaffold` to any recipe to initialize this output path with some sort of contents. This is useful to run a command like `sed -i` that modifies its output contents in place, or to run a command like `gcc` to let it output directly into a `bin/` directory
 - `unsafe`: Opt-in to certain unsafe features (see ["Unsafe processes"](/docs/how-it-works/sandboxing#unsafe-options))
 
-The values for `commands`, `args`, and `env` can be passed as plain strings or using **process templates**, created with `std.tpl`. Recipes can be interpolated in the template, which will automatically bake the recipe before the process starts, then will resolve to a path containing the recipe's output artifact.
+The values for `command`, `args`, and `env` can be passed as plain strings or using **process templates**, created with `std.tpl`. Recipes can be interpolated in the template, which will automatically bake the recipe before the process starts, then will resolve to a path containing the recipe's output artifact.
 
 See ["Sandboxing"](/docs/how-it-works/sandboxing) for more details about how processes are run and what they have access to.
 
