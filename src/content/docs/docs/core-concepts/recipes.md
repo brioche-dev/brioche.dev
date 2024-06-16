@@ -21,7 +21,7 @@ In the Brioche standard library (the `std` package), the type `std.Recipe` repre
 - `std.Recipe<File | Directory>`: Bakes into either a file _or_ directory artifact
 - ...etc.
 
-Recipes have a few utility methods that work with any recipe, but there are also some specific utility methods that are only available for specific types of recipes. For example, [`.get()`](#directoryget) only makes sense for directory recipes, so this method won't be available for other types of recipes. If you want to cast a recipe to a more specific type, use the [`.cast()`](#artifactcast) method.
+Recipes have some utility methods specific to the type of artifact they bake into. For example, [`.get()`](#directoryget) only makes sense for directory recipes, so this method won't be available for other types of recipes. If you want to cast a recipe to a more specific type, use a casting function such as [`std.castToFile` / `std.castToDirectory` / `std.castToSymlink`](#stdcasttofile--stdcasttodirectory--stdcasttosymlink).
 
 ## `std.file`
 
@@ -133,14 +133,14 @@ const hello = std
     args: ["-c", 'echo hello > "$BRIOCHE_OUTPUT/hello.txt"'],
     outputScaffold: std.directory(),
   })
-  .cast("directory");
+  .toDirectory();
 const world = std
   .process({
     command: std.tpl`${std.tools()}/bin/bash`,
     args: ["-c", 'echo hello > "$BRIOCHE_OUTPUT/world.txt"'],
     outputScaffold: std.directory(),
   })
-  .cast("directory");
+  .toDirectory();
 
 // `merged` gets synced to the registry, meaning users can
 // fetch it directly without first fetching the recipes
@@ -148,24 +148,36 @@ const world = std
 const merged = std.sync(std.merge(hello, world));
 ```
 
-## `Recipe.cast`
+## `std.castToFile` / `std.castToDirectory` / `std.castToSymlink`
 
-Lazily cast a recipe from one type to another. Returns an error when baked if the recipe doesn't match the casted type. Effectively, this acts as a sort of assert that the recipe matches the expected type.
+Lazily cast a recipe from a more generic type to the more specific type. Returns an error when baked if the recipe doesn't match the casted type. Effectively, these functions acts as a sort of assert that the recipe matches the expected type.
 
-This is useful because recipes like `std.process()` could return any kind of artifact, and so some utility methods cannot be accessed without casting first.
+This is useful because some functions may return a generic type like `std.Recipe`, and so some utility methods cannot be accessed without casting first.
+
+For process recipes (created with [`std.process()`](#stdprocess)), consider using [`Process.toFile` / `Process.toDirectory` / `Process.toSymlink`](#processtofile--processtodirectory--processtosymlink) instead
 
 ```ts
-// A process can return any type, but we know this will output a file
-const recipe: std.Recipe = std.process({
-  command: std.tpl`${std.tools()}/bin/bash`,
-  args: ["-c", 'echo hello > "$BRIOCHE_OUTPUT"'],
+// Here we know we have a directory
+const directory: std.Recipe<std.Directory> = std.directory({
+  "hello.sh": std.file(
+    std.indoc`
+      #!/usr/bin/env bash
+      echo "Hello world!"
+    `,
+  ),
 });
 
-// Cast it to a file explicitly using `.cast("file")`
-const file: std.Recipe<std.File> = recipe.cast("file");
+// ...but when we get something from the directory, TypeScript
+// doesn't know whether it's a file, directory, or symlink
+const helloShArtifact: std.Recipe = directory.get("hello.sh");
+
+// Since we know it's a file, we cast it to a file explicitly
+const helloSh: std.Recipe<std.File> = std.castToFile(helloShArtifact);
 
 // Now we can use file-specific utility methods
-const executableFile = file.withPermissions({ executable: true });
+const executableHelloSh = helloSh.withPermissions({
+  executable: true,
+});
 ```
 
 ## `Recipe.bake`
@@ -205,6 +217,8 @@ std
 Unarchive a (possibly compressed) archive of a directory, such as a `.tar.gz` file.
 
 Calling `.unarchive()` is pretty limited. If you need more advanced unarchiving options, consider using a process or Bash script to call a program such as `tar` directly instead.
+
+If the archive contains a single top-level directory, you can call [`.peel()`](#directorypeel) to remove this extra top layer.
 
 ```ts
 std
@@ -313,7 +327,7 @@ return directory;
 
 If a directory only contains a single inner directory, return a recipe that just extracts this inner directory. Can also be called with an argument to specify the number of times to repeat this peeling process (the default value is `1`). Fails if a peeled directory does not contain exactly one directory artifact entry.
 
-This is mostly useful for tarballs, which can sometimes contain a top-level directory named after the tarball itself.
+This is mostly useful for tarballs, which often contain a top-level directory named after the tarball itself.
 
 ```ts
 // Bakes to the inner directory, containing just `world.txt`
@@ -324,4 +338,24 @@ std
     }),
   })
   .peel();
+```
+
+## `Process.toFile` / `Process.toDirectory` / `Process.toSymlink`
+
+Lazily cast a process recipe from a more generic type to a more specific type. Returns an error if the process writes a non-matching artifact to `$BRIOCHE_OUTPUT` (e.g. a process that returns a directory when `.toFile()` was called).
+
+These methods are convenience wrappers over the functions [`std.castToFile` / `std.castToDirectory` / `std.castToSymlink`](#stdcasttofile--stdcasttodirectory--stdcasttosymlink), since process recipes frequently need to be cast to a more specific type.
+
+```ts
+// A process can return any type, but we know this will output a file
+const recipe: std.Process = std.process({
+  command: std.tpl`${std.tools()}/bin/bash`,
+  args: ["-c", 'echo hello > "$BRIOCHE_OUTPUT"'],
+});
+
+// Cast it to a file explicitly
+const file: std.Recipe<std.File> = recipe.toFile();
+
+// Now we can use file-specific utility methods
+const executableFile = file.withPermissions({ executable: true });
 ```
