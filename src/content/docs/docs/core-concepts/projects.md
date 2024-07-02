@@ -149,6 +149,6 @@ export function backend(): std.Recipe {
 
 You can then run `brioche build -e frontend` or `brioche build -e backend` to call the frontend or backend functions, respectively (don't forget the `-o` flag if you want to put the output somewhere!)
 
-The export used by `brioche build` should be a function that can be called with no arguments and should return the type `std.Recipe` or a compatible subtype (it's good pratice to use a more specific type if possible, such as `std.Recipe<std.Directory>` if the function returns a directory recipe).
+The export used by `brioche build` should be a function that can be called with no arguments and should return the type `std.Recipe` or a compatible subtype (it's good practice to use a more specific type if possible, such as `std.Recipe<std.Directory>` if the function returns a directory recipe).
 
 By convention, the default export should be the "main" build recipe, most commonly a directory recipe containing a `bin/` directory containing built programs.
