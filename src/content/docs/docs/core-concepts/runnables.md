@@ -15,7 +15,7 @@ export default function () {
   // └── bin
   //    └── hello
   const app = cargoBuild({
-    crate: Brioche.glob("src", "Cargo.*"),
+    source: Brioche.glob("src", "Cargo.*"),
   });
 
   // Add a symlink for use with `brioche run`
@@ -38,7 +38,7 @@ import { cargoBuild } from "rust";
 
 export default function () {
   const app = cargoBuild({
-    crate: Brioche.glob("src", "Cargo.*"),
+    source: Brioche.glob("src", "Cargo.*"),
   });
 
   return std.withRunnableLink(app, "bin/hello");
@@ -53,7 +53,7 @@ import { cargoBuild } from "rust";
 
 export default function () {
   return cargoBuild({
-    crate: Brioche.glob("src", "Cargo.*"),
+    source: Brioche.glob("src", "Cargo.*"),
     runnable: "bin/hello",
   });
 }

@@ -13,7 +13,7 @@ const codeExampleSnippet = indoc`
   export default function () {
     // Build a Rust project
     const server = cargoBuild({
-      crate: Brioche.glob("src", "Cargo.*"),
+      source: Brioche.glob("src", "Cargo.*"),
     });
 
     // Put it in a container image

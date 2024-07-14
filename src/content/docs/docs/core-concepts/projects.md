@@ -142,7 +142,7 @@ export function frontend(): std.Recipe {
 
 export function backend(): std.Recipe {
   return cargoBuild({
-    crate: Brioche.includeDirectory("backend"),
+    source: Brioche.includeDirectory("backend"),
   });
 }
 ```

@@ -13,10 +13,10 @@ import nodejs, { npmInstall } from "nodejs";
 
 export default function (): std.Recipe {
   // Import the npm package files from the current directory
-  let npmPackage = Brioche.glob("src", "package.json", "package-lock.json");
+  const source = Brioche.glob("src", "package.json", "package-lock.json");
 
   // Install all npm package dependencies
-  npmPackage = npmInstall({ npmPackage });
+  const npmPackage = npmInstall({ source });
 
   // Run the npm build script and save the output from the `dist/` dir
   return std.runBash`
