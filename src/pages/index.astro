@@ -31,20 +31,38 @@ const installSnippet = indoc`
 const helloWorldSnippet = indoc`
   brioche run -r hello_world
 `;
+
+interface Announcement {
+  message: string;
+  href: string;
+}
+
+const announcement: Announcement | null = {
+  message: "Announcing Brioche!",
+  href: "/blog/announcing-brioche",
+};
 ---
 
 <BaseLayout>
   <Header />
   <main class="w-full max-w-4xl mx-auto p-4 space-y-4">
-    <div
-      class="max-w-xl mx-auto bg-accent-200 border border-accent-600 text-black rounded-lg p-2"
-      ><a
-        href="/blog/announcing-brioche"
-        class="flex justify-between items-baseline"
-        ><span class="underline text-lg font-bold">Announcing Brioche!</span
-        ><span class="text-sm">Read More →</span></a
-      ></div
-    >
+    {
+      announcement != null ? (
+        <div class="max-w-xl mx-auto bg-accent-200 border border-accent-600 text-black rounded-lg p-2">
+          <a
+            href={announcement.href}
+            class="flex justify-between items-baseline"
+          >
+            <>
+              <span class="underline text-lg font-bold">
+                {announcement.message}
+              </span>
+              <span class="text-sm">Read More →</span>
+            </>
+          </a>
+        </div>
+      ) : null
+    }
     <section class="flex flex-col md:flex-row">
       <div class="flex-0 md:max-w-96">
         <h1
