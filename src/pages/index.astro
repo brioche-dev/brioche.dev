@@ -37,10 +37,7 @@ interface Announcement {
   href: string;
 }
 
-const announcement: Announcement | null = {
-  message: "Announcing Brioche!",
-  href: "/blog/announcing-brioche",
-};
+const announcement = null satisfies Announcement | null as Announcement | null;
 ---
 
 <BaseLayout>
