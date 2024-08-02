@@ -4,12 +4,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 
 const blogEntries = await getCollection("blog");
+blogEntries.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 ---
 
 <BaseLayout>
   <Header />
   <main class="w-full max-w-2xl mx-auto">
-    <ul class="my-8">
+    <ul class="my-4 space-y-4">
       {
         blogEntries.map((entry) => (
           <li>
@@ -17,7 +18,7 @@ const blogEntries = await getCollection("blog");
               href={`/blog/${entry.slug}`}
               class="block bg-gray-200 p-4 rounded-xl dark:bg-gray-800 hover:opacity-80"
             >
-              <span class="text-4xl font-extrabold text-accent-600 dark:text-accent-200 block">
+              <span class="text-2xl font-extrabold text-accent-600 dark:text-accent-200 block">
                 {entry.data.title} →
               </span>
               <span
