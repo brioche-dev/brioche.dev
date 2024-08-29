@@ -20,6 +20,7 @@ export default defineConfig({
         light: "./src/assets/brioche-logo-light.svg",
         dark: "./src/assets/brioche-logo-dark.svg",
       },
+      favicon: "/favicon.ico",
       social: {
         discord: "https://discord.gg/cw5QeWv4E5",
         github: "https://github.com/brioche-dev",
