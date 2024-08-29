@@ -22,6 +22,7 @@ export default defineConfig({
       },
       favicon: "/favicon.ico",
       social: {
+        zulip: "https://brioche.zulipchat.com/",
         discord: "https://discord.gg/cw5QeWv4E5",
         github: "https://github.com/brioche-dev",
       },
