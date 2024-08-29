@@ -10,7 +10,7 @@ blogEntries.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 <BaseLayout>
   <Header />
   <main class="w-full max-w-2xl mx-auto">
-    <ul class="my-4 space-y-4">
+    <ul class="mx-4 my-4 space-y-4">
       {
         blogEntries.map((entry) => (
           <li>
