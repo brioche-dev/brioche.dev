@@ -1,5 +1,5 @@
 ---
-import { Code } from "astro:components";
+import { Code } from "@astrojs/starlight/components";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 import Link from "../components/Link.astro";
@@ -76,14 +76,9 @@ const announcement = null satisfies Announcement | null as Announcement | null;
           <Button href="/docs">Read the Docs</Button>
         </div>
       </div>
-      <Code
-        code={codeExampleSnippet}
-        lang="typescript"
-        theme="vitesse-dark"
-        class="flex-1 p-4 rounded-2xl border border-gray-300 dark:border-gray-700"
-      />
+      <Code code={codeExampleSnippet} lang="typescript" class="flex-1" />
     </section>
-    <section class="md:max-w-xl md:mx-auto">
+    <section class="md:max-w-2xl md:mx-auto">
       <h2
         class="text-4xl font-extrabold text-accent-600 dark:text-accent-200 md:-ml-12 my-4"
         >Get Started</h2
@@ -93,12 +88,7 @@ const announcement = null satisfies Announcement | null as Announcement | null;
           <p class="text-xl"
             >Install in seconds, no root permissions required:</p
           >
-          <Code
-            code={installSnippet}
-            lang="shell"
-            theme="vitesse-dark"
-            class="flex-1 p-4 my-4 text-xs border border-gray-300 rounded-2xl dark:border-gray-700"
-          />
+          <Code code={installSnippet} lang="shell" class="flex-1 my-4" />
           <p class="text-xl"
             >...or <Link href="/docs/installation">view the docs</Link> for more
             installation options</p
@@ -109,16 +99,11 @@ const announcement = null satisfies Announcement | null as Announcement | null;
         </div>
         <div>
           <p class="text-xl mt-6">Try it out by running Hello World:</p>
-          <Code
-            code={helloWorldSnippet}
-            lang="shell"
-            theme="vitesse-dark"
-            class="flex-1 p-4 my-4 border border-gray-300 rounded-2xl dark:border-gray-700"
-          />
+          <Code code={helloWorldSnippet} lang="shell" class="flex-1 my-4" />
         </div></div
       >
     </section>
-    <section class="md:max-w-xl md:mx-auto">
+    <section class="md:max-w-2xl md:mx-auto">
       <h2
         class="text-4xl font-extrabold text-accent-600 dark:text-accent-200 md:-ml-12 my-4"
         >Features</h2
