@@ -20,8 +20,8 @@ export default function (): std.Recipe {
 
   // Run the npm build script and save the output from the `dist/` dir
   return std.runBash`
-        npm run build
-        mv dist "$BRIOCHE_OUTPUT"
+      npm run build
+      mv dist "$BRIOCHE_OUTPUT"
     `
     .dependencies(nodejs())
     .workDir(npmPackage);
