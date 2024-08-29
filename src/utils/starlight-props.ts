@@ -52,6 +52,7 @@ export const starlightProps: Props = {
     "skipLink.label": "Skip to content",
     "search.label": "Search",
     "search.shortcutLabel": "(Press / to Search)",
+    "search.ctrlKey": "Ctrl",
     "search.cancelLabel": "Cancel",
     "search.devWarning":
       "Search is only available in production builds. \nTry building and previewing the site to test it out locally.",
@@ -78,5 +79,6 @@ export const starlightProps: Props = {
     "aside.caution": "Caution",
     "aside.danger": "Danger",
     "fileTree.directory": "Directory",
+    "builtWithStarlight.label": "Built with Starlight",
   },
 };
