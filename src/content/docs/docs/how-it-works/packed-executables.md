@@ -45,7 +45,7 @@ output
 
 `output/bin/hello` is a **packed executable**. The original executable was shoved somewhere into the `brioche-resources.d` directory, and the executable `brioche-packed-userland-exec` was copied in to replace it, with some metadata added alongside it.
 
-The metadata was attached to the `hello` executable (née `brioche-packed-userland-exec`) directly. You can parse this metadata by running the command `brioche-packer read outputs/bin/hello`, which will return output like this:
+This metadata was attached to the `hello` executable (née `brioche-packed-userland-exec`) directly. By using the tooling from [brioche-runtime-utils](https://github.com/brioche-dev/brioche-runtime-utils), you can parse this metadata by running the command `brioche-packer read output/bin/hello`, which will return output like this:
 
 ```json
 {
@@ -54,15 +54,15 @@ The metadata was attached to the `hello` executable (née `brioche-packed-userla
     "type": "ld_linux",
     "path": "aliases/4c2cf04a285dcfa97a07d884f5b2a0e1cdb33cf5f3cd62586b749804010d1018.x/ld-linux-x86-64.so.2",
     "libraryPaths": [
-      "aliases%2F92bc4b8147e9de0c1a1e5c573eefded52a6b6641ca15f0b81c5ab42b0f05bd24.x",
-      "aliases%2Fd7f334f1dd1cd368dab95b4ddfb2b35250a3e4078229ec3b294b165eacdd46bf.x",
-      "aliases%2F31a15d626ff98be3e6f0cfde99b4100260be441f622c2ff99f9892ce31372b3f.x",
-      "aliases%2Fc9bea786c1eb98b187827ce053f41df6e3497f78abeb532a63849ac9890dc944.x"
+      "aliases/92bc4b8147e9de0c1a1e5c573eefded52a6b6641ca15f0b81c5ab42b0f05bd24.x",
+      "aliases/d7f334f1dd1cd368dab95b4ddfb2b35250a3e4078229ec3b294b165eacdd46bf.x",
+      "aliases/31a15d626ff98be3e6f0cfde99b4100260be441f622c2ff99f9892ce31372b3f.x",
+      "aliases/c9bea786c1eb98b187827ce053f41df6e3497f78abeb532a63849ac9890dc944.x"
     ]
   }
 }
 ```
 
-`brioche-packed-userland-exec` reads this metadata, then loads and executes the ELF interpreter directly (`ld-linux-x86-64.so.2` in this case), passing it the path to the real `hello` binary along with any dynamically-linked library paths. `ld-linux-x86-64.so.2` then proceeds to load the dynamically-linked libraries, then finally executes `hello`.
+When `brioche-packed-userland-exec` gets executed as `bin/hello`, it reads this metadata, then loads and executes the ELF interpreter directly (`ld-linux-x86-64.so.2` in this case), passing it the path to the real `hello` binary along with any dynamically-linked library paths. `ld-linux-x86-64.so.2` then proceeds to load the dynamically-linked libraries, then finally executes `hello`.
 
 `ld-linux-x86-64.so.2` is not executed using a normal `execve` invocation. Doing so would work, but would end up leading to the process seeing a different value if it were to read the symlink `/proc/self/exe`. It turns out that lots of programs depend on this symlink to function correctly (any program that calls [`std::env::current_exe()`](https://doc.rust-lang.org/stable/std/env/fn.current_exe.html) in Rust for example, which includes the Rust compiler itself). To work around this problem, `brioche-packed-userland-exec` uses an implementation of [userland exec](https://grugq.github.io/docs/ul_exec.txt)-- basically, the program is manually loaded into memory and jumped to directly.
