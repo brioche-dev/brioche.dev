@@ -276,7 +276,7 @@ At first, we started with just calling `exec lil-demo`. The flow basically worke
   <g>
     <rect class="stroke-accent-600 fill-accent-900" x="400" y="120" width="80" height="80" />
     <foreignObject class="size-full overflow-visible">
-      <div class="flex items-center justify-center w-[78px] h-px pt-40 ml-[401px] text-xs text-accent-200 font-mono">ld-linux.so</div>
+      <div class="flex items-center justify-center text-center text-xs text-accent-200 font-mono w-[78px] h-px pt-40 ml-[401px]">ld-linux.so</div>
     </foreignObject>
   </g>
   <g>
