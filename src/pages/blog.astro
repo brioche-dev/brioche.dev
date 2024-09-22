@@ -7,7 +7,7 @@ const blogEntries = await getCollection("blog");
 blogEntries.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 ---
 
-<BaseLayout>
+<BaseLayout title="Blog Posts">
   <Header />
   <main class="w-full max-w-2xl mx-auto">
     <ul class="mx-4 my-4 space-y-4">

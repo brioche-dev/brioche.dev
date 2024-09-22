@@ -15,7 +15,7 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
 
-<BaseLayout>
+<BaseLayout title={entry.data.title}>
   <Header />
   <main class="w-full max-w-2xl mx-auto px-4">
     <header class="my-8 space-y-2">

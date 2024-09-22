@@ -9,11 +9,14 @@ import { starlightProps } from "../utils/starlight-props";
 
 interface Props {
   title?: string;
+  fullTitle?: string;
   description?: string;
 }
 
 const { description } = Astro.props;
-const title = Astro.props.title ?? "Brioche";
+const title =
+  Astro.props.fullTitle ??
+  (Astro.props.title != null ? `${Astro.props.title} | Brioche` : "Brioche");
 ---
 
 <html lang="en">
