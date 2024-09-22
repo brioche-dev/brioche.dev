@@ -84,7 +84,7 @@ Wait, actually, I should mention... I'm in an Ubuntu Linux environment, so by de
 
 So we want to package our `lil-demo` up just like we had curl at the start. Remember, that means **we need to put all of its dependencies into a self-contained directory**. So, what does it depend on? Well, we can answer that using `ldd`:
 
-```shsession
+```shellsession
 $ ldd target/debug/lil-demo
 linux-vdso.so.1 (0x00007ffd6c14a000)
 libgcc_s.so.1 => /home/linuxbrew/.linuxbrew/lib/libgcc_s.so.1 (0x00007fa6b1856000)
@@ -123,7 +123,7 @@ exec "$portable_dir"/lil-demo
 
 Then, mark the script as executable and run it:
 
-```shsession
+```shellsession
 $ chmod +x lil-demo-portable/run.sh
 $ ./lil-demo-portable/run.sh
 Hello from /your/path/to/lil-demo/lil-demo-portable/lil-demo
@@ -159,13 +159,13 @@ When we run `lil-demo` (either directly or via `run.sh`), the Linux kernel doesn
 
 In other words, this:
 
-```shsession
+```shellsession
 $ ./lil-demo-portable/lil-demo
 ```
 
 ...effectively becomes this:
 
-```shsession
+```shellsession
 $ /lib64/ld-linux-x86-64.so.2 ./lil-demo-portable/lil-demo
 ```
 
@@ -185,7 +185,7 @@ exec "$portable_dir"/ld-linux-x86-64.so.2 "$portable_dir"/lil-demo
 
 We just changed the last line to execute `ld-linux.so` with `lil-demo` as an argument. And, we can run it and see it works just like before, just using our copy of `ld-linux.so` from the portable directory instead!
 
-```shsession
+```shellsession
 $ ./lil-demo-portable/run.sh
 Hello from /your/path/to/lil-demo/lil-demo-portable/ld-linux-x86-64.so.2
 ```
@@ -211,7 +211,7 @@ How does `lil-demo` know where it is? ~~it knows where it is because it knows wh
 
 For a demo that's kinda trippy, try this:
 
-```shsession
+```shellsession
 $ readlink /proc/self/exe
 /usr/bin/readlink
 ```
@@ -445,14 +445,14 @@ A few notes on this version:
 
 While in the `run` directory, use these commands to build it and put it in our `lil-demo-portable` directory (which is where `run` expects to be):
 
-```shsession
+```shellsession
 $ cargo build
 $ cp target/debug/run ../lil-demo/lil-demo-portable/
 ```
 
 Alright, now if we run our new `run` program, we should see the same output as when we ran `run.sh`:
 
-```shsession
+```shellsession
 $ ../lil-demo/lil-demo-portable/run
 Hello from /your/path/to/lil-demo/lil-demo-portable/ld-linux-x86-64.so.2
 ```
@@ -493,7 +493,7 @@ So pretty similar structurally to the last one, except it uses `userland_execve:
 
 Rebuild the `run` executable again, copy it over, and watch the magic unfold:
 
-```shsession
+```shellsession
 $ cargo build
 $ cp target/debug/run ../lil-demo/lil-demo-portable/
 $ ../lil-demo/lil-demo-portable/run
@@ -512,7 +512,7 @@ Ahh, well it's time to come clean...
 
 Okay, here was the little curl example from a billion miles up the page[^billion-miles]:
 
-```shsession
+```shellsession
 $ ./output/bin/curl --version
 ```
 
