@@ -1,6 +1,6 @@
 ---
 title: Portable, dynamically linked packages on Linux
-pubDate: 2024-09-21T22:18:17+00:00
+pubDate: 2024-09-21T17:46:12-07:00
 author: Kyle Lacy
 authorUrl: https://kyle.space
 ---
