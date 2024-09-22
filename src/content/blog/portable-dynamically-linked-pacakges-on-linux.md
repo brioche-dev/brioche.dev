@@ -109,7 +109,7 @@ Let's start with a little boilerplate first:
 
 1. Make a new directory: `mkdir lil-demo-portable`
 2. Copy `lil-demo` into it: `cp target/debug/lil-demo lil-demo-portable/`
-3. Copy the 2 dynamic libraries and `ld-linux.so` into it too. These will be whatever paths you got from `ldd`. In my case, that would be: `cp /home/linuxbrew/.linuxbrew/lib/libgcc_s.so.1 /lib/x86_64-linux-gnu/libc.so.6 /lib64/ld-linux-x86-64.so.2 lil-demo-portable/`
+3. Copy the 2 dynamic libraries and `ld-linux.so` into it too. These will be whatever paths you got from `ldd`. In other words, something like `cp /path/to/libgcc_s.so.1 /path/to/libc.so.6 /lib64/ld-linux-x86-64.so.2 ./lil-demo-portable/`
 4. Create a new shell script at `lil-demo-portable/run.sh` with the following contents:
 
 ```sh
