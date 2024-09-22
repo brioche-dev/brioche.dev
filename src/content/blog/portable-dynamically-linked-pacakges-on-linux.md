@@ -379,7 +379,7 @@ The actual fix we're going for is to change the `run.sh` → `ld-linux.so` path.
   </g>
   <g>
     <path class="stroke-accent-600 fill-none dark:stroke-accent-200" d="M 280 40 L 393.63 40" stroke-miterlimit="10" stroke-dasharray="8 8" />
-    <path class="stroke-accent-600 fill-accent-600dark:stroke-accent-200 dark:fill-accent-200" d="M 398.88 40 L 391.88 43.5 L 393.63 40 L 391.88 36.5 Z" stroke-miterlimit="10" />
+    <path class="stroke-accent-600 fill-accent-600 dark:stroke-accent-200 dark:fill-accent-200" d="M 398.88 40 L 391.88 43.5 L 393.63 40 L 391.88 36.5 Z" stroke-miterlimit="10" />
     <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-600 dark:text-accent-200 whitespace-nowrap pt-5 ml-[340px] size-px overflow-visible">load and execute</div>
     </foreignObject>
