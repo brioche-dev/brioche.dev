@@ -237,34 +237,34 @@ At first, we started with just calling `exec lil-demo`. The flow basically worke
   <desc>Your shell calls run.sh using execve, which in turn calls lil-demo using execve. Indirectly, the call to lil-demo uses the PT_INTERP ELF header to find ld-linux.so, which then loads and executes lil-demo</desc>
   <g>
     <rect class="stroke-accent-600 fill-accent-900" x="0" y="0" width="80" height="80" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-200 w-[78px] h-px pt-10 ml-px">your shell</div>
     </foreignObject>
   </g>
   <g>
     <path class="stroke-accent-600 fill-none dark:stroke-accent-200" d="M 80 40 L 193.63 40" stroke-miterlimit="10" />
     <path class="stroke-accent-600 fill-accent-600 dark:stroke-accent-200 dark:fill-accent-200" d="M 198.88 40 L 191.88 43.5 L 193.63 40 L 191.88 36.5 Z" stroke-miterlimit="10" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs  text-accent-600 dark:text-accent-200 font-mono size-px pt-5 ml-[138px]">execve()</div>
     </foreignObject>
   </g>
   <g>
     <rect class="stroke-accent-600 fill-accent-900" x="200" y="0" width="80" height="80" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-200 font-mono w-[78px] h-px pt-10 ml-[201px]">run.sh</div>
     </foreignObject>
   </g>
   <g>
     <path class="stroke-accent-600 fill-none dark:stroke-accent-200" d="M 280 40 L 593.63 40" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="stroke"/>
     <path class="stroke-accent-600 fill-accent-600 dark:stroke-accent-200 dark:fill-accent-200" d="M 598.88 40 L 591.88 43.5 L 593.63 40 L 591.88 36.5 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-600 dark:text-accent-200 font-mono size-px pt-[21px] ml-[441px]">execve()</div>
     </foreignObject>
   </g>
   <g>
     <path class="stroke-accent-600 fill-none dark:stroke-accent-200" d="M 240 80 L 240 160 L 393.63 160" stroke-miterlimit="10" stroke-dasharray="8 8" />
     <path class="stroke-accent-600 fill-accent-600 dark:stroke-accent-200 dark:fill-accent-200" d="M 398.88 160 L 391.88 163.5 L 393.63 160 L 391.88 156.5 Z" stroke-miterlimit="10" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-600 dark:text-accent-200 size-px pt-[141px] ml-[321px]">
         <div>
           <div>ELF header</div>
@@ -275,14 +275,14 @@ At first, we started with just calling `exec lil-demo`. The flow basically worke
   </g>
   <g>
     <rect class="stroke-accent-600 fill-accent-900" x="400" y="120" width="80" height="80" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center w-[78px] h-px pt-40 ml-[401px] text-xs text-accent-200 font-mono">ld-linux.so</div>
     </foreignObject>
   </g>
   <g>
     <path class="stroke-accent-600 fill-none dark:stroke-accent-200" d="M 480 160 L 640 160 L 640 86.37" stroke-miterlimit="10" stroke-dasharray="8 8" />
     <path class="stroke-accent-600 fill-accent-600 dark:stroke-accent-200 dark:fill-accent-200" d="M 640 81.12 L 643.5 88.12 L 640 86.37 L 636.5 88.12 Z" stroke-miterlimit="10" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-600 dark:text-accent-200 whitespace-nowrap size-px pt-[144px] ml-[551px]">load and execute</div>
     </foreignObject>
   </g>
@@ -303,46 +303,46 @@ In our latest version, we changed it to _explicitly_ call `exec ld-linux.so`, so
   <desc>Your shell calls run.sh using execve, which calls ld-linux.so using execve, which then loads and executes lil-demo</desc>
   <g>
     <rect class="stroke-accent-600 fill-accent-900" x="0" y="0" width="80" height="80" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-200 w-[78px] h-px pt-10 ml-px">your shell</div>
     </foreignObject>
   </g>
   <g>
     <path class="stroke-accent-600 fill-none dark:stroke-accent-200" d="M 80 40 L 193.63 40" stroke-miterlimit="10" />
     <path class="stroke-accent-600 fill-accent-600 dark:stroke-accent-200 dark:fill-accent-200" d="M 198.88 40 L 191.88 43.5 L 193.63 40 L 191.88 36.5 Z" stroke-miterlimit="10" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-600 dark:text-accent-200 font-mono size-px pt-5 ml-[138px]">execve()</div>
     </foreignObject>
   </g>
   <g>
     <rect class="stroke-accent-600 fill-accent-900" x="200" y="0" width="80" height="80" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-200 font-mono w-[78px] h-px pt-10 ml-[201px]">run.sh</div>
     </foreignObject>
   </g>
   <g>
     <path class="stroke-accent-600 fill-none dark:stroke-accent-200" d="M 280 40 L 393.63 40" />
     <path class="fill-accent-600 stroke-accent-600 dark:fill-accent-200 dark:stroke-accent-200" d="M 398.88 40 L 391.88 43.5 L 393.63 40 L 391.88 36.5 Z" stroke-miterlimit="10" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-600 dark:text-accent-200 font-mono pt-5 ml-[345px] size-px overflow-visible">execve()</div>
     </foreignObject>
   </g>
   <g>
     <rect class="stroke-accent-600 fill-accent-900" x="400" y="0" width="80" height="80" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-200 font-mono w-[78px] h-px pt-10 ml-[401px]">ld-linux.so</div>
     </foreignObject>
   </g>
   <g>
     <path class="stroke-accent-600 fill-none dark:stroke-accent-200" d="M 480 40 L 593.63 40" stroke-miterlimit="10" stroke-dasharray="8 8" />
     <path d="M 598.88 40 L 591.88 43.5 L 593.63 40 L 591.88 36.5 Z" class="stroke-accent-600 fill-accent-600 dark:stroke-accent-200 dark:fill-accent-200" stroke-miterlimit="10" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-600 dark:text-accent-200 whitespace-nowrap size-px pt-5 ml-[540px]">load and execute</div>
     </foreignObject>
   </g>
   <g>
     <rect class="stroke-accent-600 fill-accent-900" x="600" y="0" width="80" height="80" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-200 font-mono w-[78px] h-px pt-10 ml-[601px]">lil-demo</div>
     </foreignObject>
   </g>
@@ -360,46 +360,46 @@ The actual fix we're going for is to change the `run.sh` → `ld-linux.so` path.
   <desc>Your shell calls run using execve, which then loads and executes ld-linux.so, which in turn loads and executes lil-demo</desc>
   <g>
     <rect class="stroke-accent-600 fill-accent-900" x="0" y="0" width="80" height="80" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-200 w-[78px] h-px pt-10 ml-px">your shell</div>
     </foreignObject>
   </g>
   <g>
     <path class="stroke-accent-600 fill-none dark:stroke-accent-200" d="M 80 40 L 193.63 40" stroke-miterlimit="10" />
     <path class="stroke-accent-600 fill-accent-600 dark:stroke-accent-200 dark:fill-accent-200" d="M 198.88 40 L 191.88 43.5 L 193.63 40 L 191.88 36.5 Z" stroke-miterlimit="10" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-600 dark:text-accent-200 font-mono size-px pt-5 ml-[138px]">execve()</div>
     </foreignObject>
   </g>
   <g>
     <rect class="stroke-accent-600 fill-accent-900" x="200" y="0" width="80" height="80" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-200 font-mono w-[78px] h-px pt-10 ml-[201px]">run</div>
     </foreignObject>
   </g>
   <g>
     <path class="stroke-accent-600 fill-none dark:stroke-accent-200" d="M 280 40 L 393.63 40" stroke-miterlimit="10" stroke-dasharray="8 8" />
     <path class="stroke-accent-600 fill-accent-600dark:stroke-accent-200 dark:fill-accent-200" d="M 398.88 40 L 391.88 43.5 L 393.63 40 L 391.88 36.5 Z" stroke-miterlimit="10" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-600 dark:text-accent-200 whitespace-nowrap pt-5 ml-[340px] size-px overflow-visible">load and execute</div>
     </foreignObject>
   </g>
   <g>
     <rect class="stroke-accent-600 fill-accent-900" x="400" y="0" width="80" height="80" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-200 font-mono w-[78px] h-px pt-10 ml-[401px]">ld-linux.so</div>
     </foreignObject>
   </g>
   <g>
     <path class="stroke-accent-600 fill-none dark:stroke-accent-200" d="M 480 40 L 593.63 40" stroke-miterlimit="10" stroke-dasharray="8 8" />
     <path d="M 598.88 40 L 591.88 43.5 L 593.63 40 L 591.88 36.5 Z" class="stroke-accent-600 fill-accent-600 dark:stroke-accent-200 dark:fill-accent-200" stroke-miterlimit="10" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-600 dark:text-accent-200 whitespace-nowrap size-px pt-5 ml-[540px]">load and execute</div>
     </foreignObject>
   </g>
   <g>
     <rect class="stroke-accent-600 fill-accent-900" x="600" y="0" width="80" height="80" />
-    <foreignObject class="size-full">
+    <foreignObject class="size-full overflow-visible">
       <div class="flex items-center justify-center text-center text-xs text-accent-200 font-mono w-[78px] h-px pt-10 ml-[601px]">lil-demo</div>
     </foreignObject>
   </g>
