@@ -234,7 +234,7 @@ At first, we started with just calling `exec lil-demo`. The flow basically worke
 
 <svg class="w-full" viewBox="-0.5 -0.5 681 201">
   <title>Flow through the original lil-demo wrapper</title>
-  <desc>Your shell calls run.sh using execve, which in turn calls lil-demo using execve. Indirectly, the call to lil-demo uses the PT_INTERP ELF header to find ld-linux.so, which then loads and executes lil-demo</desc>
+  <desc>Your shell calls run.sh using execve, which in turn calls lil-demo using execve. Indirectly, the call to lil-demo uses PT_INTERP from the ELF header to find ld-linux.so, which then loads and executes lil-demo</desc>
   <g>
     <rect class="stroke-accent-600 fill-accent-900" x="0" y="0" width="80" height="80" />
     <foreignObject class="size-full overflow-visible">
@@ -294,7 +294,7 @@ At first, we started with just calling `exec lil-demo`. The flow basically worke
   </g>
 </svg>
 
-The execution of `lil-demo` was implicitly calling `ld-linux.so` under the hood via the `PT_INTERP` ELF header.
+The execution of `lil-demo` was implicitly calling `ld-linux.so` under the hood via the `PT_INTERP` field from the ELF header.
 
 In our latest version, we changed it to _explicitly_ call `exec ld-linux.so`, so we could use the dynamic linker from our portable bundle:
 
