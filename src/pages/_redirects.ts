@@ -5,15 +5,32 @@
 // with an underscore, but there's a small custom integration in the Astro
 // config that includes it under `/_redirects` anyway.
 
-export const redirects: Record<string, string> = {
-  "/docs": "/docs/getting-started",
-};
+interface Redirect {
+  from: string;
+  to: string;
+  code?: number;
+}
+
+export const redirects: Redirect[] = [
+  {
+    from: "/docs",
+    to: "/docs/getting-started",
+  },
+  {
+    from: "/blog/portable-dynamically-linked-pacakges-on-linux",
+    to: "/blog/portable-dynamically-linked-packages-on-linux",
+    code: 302,
+  },
+];
 
 export async function GET() {
   // Create a redirect for each entry in `redirects` (both with and without
   // a trailing slash
-  const redirectList = Object.entries(redirects)
-    .flatMap(([from, to]) => [`${from} ${to}`, `${from}/ ${to}`])
+  const redirectList = redirects
+    .flatMap(({ from, to, code = 301 }) => [
+      `${from} ${to} ${code}`,
+      `${from}/ ${to} ${code}`,
+    ])
     .join("\n");
   return new Response(`${redirectList}\n`);
 }

@@ -8,7 +8,7 @@ import robotsTxt from "astro-robots-txt";
 // https://astro.build/config
 export default defineConfig({
   site: "https://brioche.dev",
-  redirects,
+  redirects: Object.fromEntries(redirects.map(({ from, to }) => [from, to])),
   integrations: [
     sitemap(),
     robotsTxt(),
