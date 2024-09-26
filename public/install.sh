@@ -23,8 +23,8 @@ function install_brioche() {
         linux*)
             case "$(uname -m)" in
                 x86_64)
-                    brioche_url="https://releases.brioche.dev/v0.1.1/x86_64-linux/brioche"
-                    checksum="524a7aa99ab4b46f2a32086c9eaee4b595f90c2e57a8302584184bbc795d020e"
+                    brioche_url="https://releases.brioche.dev/v0.1.2/x86_64-linux/brioche"
+                    checksum="5a9836a7b7fbf71f3a6d2e2a32291647a6cdc7933f9d8b095fe2214ecd1d00b2"
                     ;;
                 *)
                     echo "Sorry, Brioche isn't currently supported on your architecture"
