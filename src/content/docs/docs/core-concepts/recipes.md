@@ -65,9 +65,20 @@ std.merge(
 );
 ```
 
+## `std.glob`
+
+Takes a directory artifact and a list of glob patterns, and returns a new directory artifact only containing the files matching at least one glob pattern.
+
+```ts
+// Grab only the `.c` and `.h` files from the directory
+const sources = std.glob(directory, ["**/*.c", "**/*.h"]);
+```
+
 ## `std.download`
 
 Bakes to a file containing the contents of the specified URL. A hash must be specified explicitly, and will be validated when the URL is downloaded.
+
+To avoid manually specifying the download hash by hand, you can use the [`Brioche.download`](http://localhost:4321/docs/core-concepts/statics#briochedownload) static function instead.
 
 ```ts
 std.download({

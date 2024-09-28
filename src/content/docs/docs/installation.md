@@ -25,7 +25,6 @@ The extension requires that the `brioche` CLI tool is available on your `$PATH`,
 > **Warning**: Brioche's LSP integration is still very experimental! You will see some errors in day-to-day use. Especially the following:
 >
 > - Adding dependencies will show up with an error message until the file is saved. Sometimes, you may need to reload the extension by running "Brioche LSP: Restart LSP Server" from the Command Palette.
-> - Every time you open a Brioche file for the first time, you will see an error notification with the message "Request textDocument/diagnostic failed". This error can be safely dismissed, and the extension should continue to work.
 > - The LSP will sometimes crash without automatically restarting, leading to lots of error notifications. Re-opening VS Code or running "Brioche LSP: Restart LSP Server" will often fix this.
 
 ## Uninstallation

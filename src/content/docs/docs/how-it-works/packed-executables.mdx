@@ -2,6 +2,16 @@
 title: Packed Executables
 ---
 
+import { LinkCard } from "@astrojs/starlight/components";
+
+<LinkCard
+  title="Read the deep dive"
+  description={
+    'Check out the blog post "Portable, dynamically linked packages on Linux" for an in-depth look at how Brioche\'s packed executables work'
+  }
+  href="/blog/portable-dynamically-linked-packages-on-linux"
+/>
+
 Brioche aims to make it easy to create portable executables on Linux, meaning the executable should be able to be placed anywhere on the system and run regardless of what dependencies the host may or may not have installed, even when using dynamically-linked dependencies and without using containerization. Depending on how much you know about how ELF executables work on Linux, this may sound like an impossible problem!
 
 Brioche employs a scheme similar to executable packers like [UPX](https://upx.github.io/): rather than providing an executable as-is, we instead replace it with a sort of wrapper executable that knows how to run the original executable. Unlike UPX, this "packed executable" doesn't get shipped as a single file, but instead as an entrypoint executable with some metadata, along with a standardized directory structure.

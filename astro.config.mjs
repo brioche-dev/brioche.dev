@@ -63,6 +63,10 @@ export default defineConfig({
               link: "/docs/core-concepts/baking",
             },
             {
+              label: "Statics",
+              link: "/docs/core-concepts/statics",
+            },
+            {
               label: "Runnables",
               link: "/docs/core-concepts/runnables",
             },

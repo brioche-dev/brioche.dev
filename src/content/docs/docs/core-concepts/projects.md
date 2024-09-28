@@ -35,17 +35,15 @@ Brioche supports a few different JavaScript import specifiers:
 - **Project root import**: Import a `.bri` file relative to the project root. Must start with `/`. Follows the same rules as a relative import, but starts from the project root path. Example: `import "/module.bri";`
 - **External project import**: Import the root module of an external project. This will normally be resolved to a dependency from the registry, but this can changed in the project definition. Example: `import "std";`
 
-## Includes
+## Statics
 
-Brioche is designed to live side-by-side with your source code, so you can pull your source code (or any files, really) into your project with special include functions:
+Brioche is designed to live side-by-side with your source code, so it's important to be able to pull in files directly from your project. Brioche offers a few special functions-- called ["statics"](/docs/core-concepts/statics)-- which can be used to pull in external resources, such as local files from your filesystem. Some examples include:
 
 - `Brioche.includeFile("main.c")`: Returns a [file recipe](/docs/core-concepts/recipes#stdfile) from a file in your project
 - `Brioche.includeDirectory("src")`: Returns a [directory recipe](/docs/core-concepts/recipes#stddirectory) from a directory in your project
-- `Brioche.glob("scripts/*.js", "public/*.html", "styles/*.css")`: Returns a [directory recipe](/docs/core-concepts/recipes#stddirectory) containing all the files matching the specified glob patterns (matched using the [`globset`](https://docs.rs/globset/0.4.14/globset/index.html) Rust crate). The directory structure of files are preserved relative to the current Brioche module.
+- `Brioche.glob("scripts/*.js", "public/*.html", "styles/*.css")`: Returns a [directory recipe](/docs/core-concepts/recipes#stddirectory) containing all the files matching the specified glob patterns, relative to the current module.
 
-Includes are resolved relative to the module that uses them. All includes **must** use string literal arguments, since includes are statically analyzed from the module source code. Additionally, **you cannot include files from outside the root of your Brioche project!**
-
-When a project uses includes, all included files will be published along with your project when publishing to the [registry](/docs/core-concepts/registry).
+When a project uses statics to pull in files from your project, any included files will be published along with your project when publishing to the [registry](/docs/core-concepts/registry).
 
 ## Dependencies
 
