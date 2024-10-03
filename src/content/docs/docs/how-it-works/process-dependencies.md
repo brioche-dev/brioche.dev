@@ -13,8 +13,10 @@ Any directory recipe can be used as a dependency, but it will only do something 
 A dependency recipe can set environment variables in its parent by creating a `brioche-env.d` directory:
 
 - `brioche-env.d` should contain an inner `env` directory
-- Each directory in `env` should be named after an environment variable to set
-- Each env var directory should contain symlinks. The paths referenced by the symlinks will be expanded to absolute paths, and all the symlinks will be concatenated together with `:` (the name of the symlink is unused).
+- `env` can contain files, symlinks, or directories. Each one should be named after an environment variable to set.
+  - For a **file**, the environment variable will be set to the contents of the file. This value will be used as a fallback if the environment variable is not set.
+  - For a **symlink**, the environment variable will be set to an absolute path of the symlink's target. This value will be used as a fallback if the environment variable is not set.
+  - For a **directory**, it should only contain symlinks. The environment variable will contain absolute paths of the symlink targets concatenated together with `:`. Each individual symlink's name is unused. This value will be appended to the environment variable if it's already set.
 
 Here's an example structure to set some env vars:
 
@@ -25,8 +27,10 @@ artifact
 │     ├── LIBRARY_PATH
 │     │  ├── lib -> ../../../lib
 │     │  └── usr_lib -> ../../../usr/lib
-│     └── PKG_CONFIG_PATH
-│        └── lib_pkgconfig -> ../../../lib/pkgconfig
+│     ├── PKG_CONFIG_PATH
+│     │  └── lib_pkgconfig -> ../../../lib/pkgconfig
+│     ├── ARTIFACT_ROOT -> ../../..
+│     └── DEBUG
 ├── lib
 │  ├── pkgconfig
 │  │  └── ...
@@ -36,18 +40,32 @@ artifact
       └── ...
 ```
 
-If this artifact is used as a dependency for a process, then the process would start with `$LIBRARY_PATH` set to `/absolute/path/to/lib:/absolute/path/to/usr/lib` and `$PKG_CONFIG_PATH` would be set to `/absolute/path/to/lib/pkgconfig`.
+If this artifact is used as a dependency for a process, then the process would start with these environment variables set:
+
+- `$LIBRARY_PATH`: `/absolute/path/to/artifact/lib:/absolute/path/to/artifact/usr/lib`
+- `$PKG_CONFIG_PATH`: `/absolute/path/to/artifact/lib/pkgconfig`
+- `$ARTIFACT_ROOT`: `/absolute/path/to/artifact`
+- `$DEBUG`: (The literal contents of the `DEBUG` file)
 
 You can use the `std.setEnv()` function to more easily build this directory structure:
 
 ```ts
 return std.setEnv(recipe, {
-  LIBRARY_PATH: [{ path: "lib" }, { path: "usr/lib" }],
-  PKG_CONFIG_PATH: { path: "lib/pkgconfig" },
+  LIBRARY_PATH: {
+    append: [
+      { path: "lib" },
+      { path: "usr/lib" },
+    ],
+  },
+  PKG_CONFIG_PATH: {
+    append: [{path: "lib/pkgconfig" }],
+  },
+  ARTIFACT_ROOT: { fallback: { path: "." } },
+  DEBUG: { fallback: { value: "1" } },
 });
 ```
 
-If multiple dependencies set the same env vars are used (or two dependencies merged together with `std.merge()`), then the env vars will be set from all of the dependencies.
+If multiple dependencies set the same env vars (or two dependencies merged together with `std.merge()`), then the env vars will be set from all of the dependencies.
 
 ### Implicit `$PATH`
 
