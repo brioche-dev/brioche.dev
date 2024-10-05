@@ -1,6 +1,6 @@
 ---
 title: Brioche Project Update - October 2024
-pubDate: 2024-10-02
+pubDate: 2024-10-04T22:17:40-07:00
 author: Kyle Lacy
 authorUrl: https://kyle.space
 ---
