@@ -6,3 +6,10 @@
 Add additional Tailwind styles to this file, for example with @layer:
 https://tailwindcss.com/docs/adding-custom-styles#using-css-and-layer
 */
+
+@layer utilities {
+  .extrawide {
+    margin-left: calc(50% - 50vw + 20px);
+    margin-right: calc(50% - 50vw + 20px);
+  }
+}
