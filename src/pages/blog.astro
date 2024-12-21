@@ -15,7 +15,7 @@ blogEntries.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
         blogEntries.map((entry) => (
           <li>
             <a
-              href={`/blog/${entry.slug}`}
+              href={`/blog/${entry.id}`}
               class="block bg-gray-200 p-4 rounded-xl dark:bg-gray-800 hover:opacity-80"
             >
               <span class="text-2xl font-extrabold text-accent-600 dark:text-accent-200 block">
