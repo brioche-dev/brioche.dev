@@ -50,12 +50,10 @@ const announcement = null satisfies Announcement | null as Announcement | null;
             href={announcement.href}
             class="flex justify-between items-baseline"
           >
-            <>
-              <span class="underline text-lg font-bold">
-                {announcement.message}
-              </span>
-              <span class="text-sm">Read More →</span>
-            </>
+            <span class="underline text-lg font-bold">
+              {announcement.message}
+            </span>
+            <span class="text-sm">Read More →</span>
           </a>
         </div>
       ) : null
