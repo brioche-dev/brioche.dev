@@ -21,6 +21,14 @@ export const redirects: Redirect[] = [
     to: "/blog/portable-dynamically-linked-packages-on-linux",
     code: 302,
   },
+  {
+    from: "/help/proot-fallback",
+    to: "/docs/configuration#proot-fallback",
+  },
+  {
+    from: "/help/sandbox-backend",
+    to: "/docs/configuration#sandbox-configuration",
+  },
 ];
 
 export async function GET() {
