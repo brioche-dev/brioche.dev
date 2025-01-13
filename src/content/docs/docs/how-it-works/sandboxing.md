@@ -37,13 +37,13 @@ You can enable unsafe by setting `unsafe: true` or by calling `.unsafe({ /* ... 
 
 ## Platform details
 
-Sandboxing is a higher-level concept, and how it's implemented varies between platforms.
+Even with sandboxing, what the system looks like to a sandboxed process will look pretty different depending on which platform it runs on.
 
 ### Linux
 
-On Linux, processes are sandboxed using [Linux namespaces](https://man7.org/linux/man-pages/man7/namespaces.7.html) to isolate or control different parts of the environment when the process runs. This is the same feature used by Docker and Podman (and other projects) to implement containers on Linux.
+On Linux, processes are sandboxed using [Linux namespaces](https://man7.org/linux/man-pages/man7/namespaces.7.html) by default to isolate or control different parts of the environment when the process runs. For more details, see the section on configuring the [`linux_namespace` backend](/docs/configuration#linux_namespace).
 
-On Linux, the sandbox will include executables at `/bin/sh` and `/usr/bin/env`. **You shouldn't rely on these paths for your process recipes where possible!**
+On Linux, the sandbox will include executables at `/bin/sh` and `/usr/bin/env`. However, **it's best practice _not_ to rely on these paths where possible!** This is because there are no guarantees about what features are exactly offered by these binaries, or even which program is used for implementing them under the hood. For example, `/bin/sh` could eventually be changed to Bash, Dash, Zsh, Busybox's shell, or some other shell. For consistency, it's better to use a specific shell explicitly.
 
 ```ts
 // Wrong
@@ -58,3 +58,9 @@ std.process({
   args: ["-c", 'echo hi > "$BRIOCHE_OUTPUT"'],
 });
 ```
+
+## Sandbox backends
+
+Brioche supports multiple different configurations for sandboxing processes, and it'll always try to pick the best method for sandboxing processes on your machine by default.
+
+In some cases, you may still want to manually change or experiment with different sandboxing settings, or you may need to customize the sandbox if Brioche can't pick a good default for your machine. The ["Sandbox configuration"](/docs/configuration#sandbox-configuration) section describes the different backends, and the different options for each.
