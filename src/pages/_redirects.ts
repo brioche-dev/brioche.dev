@@ -29,6 +29,10 @@ export const redirects: Redirect[] = [
     from: "/help/sandbox-backend",
     to: "/docs/configuration#sandbox-configuration",
   },
+  {
+    from: "/help/manual-update",
+    to: "/docs/installation#manually-updating",
+  },
 ];
 
 export async function GET() {
