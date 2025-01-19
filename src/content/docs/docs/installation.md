@@ -26,11 +26,22 @@ The installer script supports passing extra environment variables to customize t
 
 Rather than running the installation script, you can also manually install Brioche by downloading the latest release under the ["Releases"](https://github.com/brioche-dev/brioche/releases) section of Brioche's GitHub repo.
 
-**Linux (x86-64)**
+**Linux**
 
-1. Download the latest release binary for your architecture from the ["Releases"](https://github.com/brioche-dev/brioche/releases) page.
+> These instructions work for systems that use glibc, which includes most distributions. For Linux distributions that don't use glibc, such as Alpine Linux or NixOS, see the "**Linux (portable)**" section below.
+
+1. Download the latest release binary for your architecture from the ["Releases"](https://github.com/brioche-dev/brioche/releases) page, e.g. `brioche-x86_64-linux`
 2. Place the binary in your desired installation directory, such as `~/.local/bin`. Brioche can be run from any directory, but it should be a directory in your `$PATH`.
 3. Make the binary executable using `chmod`: `chmod +x ~/.local/bin/brioche`
+
+**Linux (portable)**
+
+> **Note**: Portable builds are still considered experimental, and may not support all features of Brioche yet! Non-portable builds are currently recommended unless your system doesn't use glibc.
+
+1. Download the latest release tar file named `brioche-packed-*` for your architecture from the ["Releases"](https://github.com/brioche-dev/brioche/releases) page, e.g. `brioche-packed-x86_64-linux.tar.gz`
+2. Create a new directory to contain the unpacked tar file: `mkdir -p ~/.local/libexec/brioche`
+3. Extract the tar file using into the directory: `tar -xzf brioche-packed-x86_64-linux.tar.gz --strip-components=1 -C ~/.local/libexec/brioche`
+4. Add a symlink for `bin/brioche` from the unpacked directory into a folder in your `$PATH`: `ln -s ~/.local/libexec/brioche/bin/brioche ~/.local/bin/brioche`
 
 ## Editor support
 
