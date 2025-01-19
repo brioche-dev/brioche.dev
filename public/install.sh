@@ -41,7 +41,7 @@ install_brioche() {
     esac
 
     # Create a temporary directory
-    brioche_temp="$(mktemp -d -t brioche-XXXX)"
+    brioche_temp="$(mktemp -d -t brioche-XXXXXX)"
     trap 'rm -rf -- "$brioche_temp"' EXIT
 
     echo "Downloading Brioche..."
