@@ -16,7 +16,6 @@ install_brioche() {
     fi
 
     # The directory where Brioche gets installed
-    install_dir="$HOME/.local/bin"
 
     # Get the URL based on the kernel and architecture
     case "$(uname -s)" in
@@ -35,6 +34,7 @@ install_brioche() {
             ;;
         *)
             echo "Sorry, Brioche isn't currently supported on your operating system"
+    install_dir="${BRIOCHE_INSTALL_DIR:-$HOME/.local/bin}"
             echo "  Detected kernel: $(uname -s)"
             exit 1
             ;;
