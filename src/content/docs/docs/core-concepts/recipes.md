@@ -78,7 +78,7 @@ const sources = std.glob(directory, ["**/*.c", "**/*.h"]);
 
 Bakes to a file containing the contents of the specified URL. A hash must be specified explicitly, and will be validated when the URL is downloaded.
 
-To avoid manually specifying the download hash by hand, you can use the [`Brioche.download`](http://localhost:4321/docs/core-concepts/statics#briochedownload) static function instead.
+To avoid manually specifying the download hash by hand, you can use the [`Brioche.download`](/docs/core-concepts/statics#briochedownload) static function instead.
 
 ```ts
 std.download({
