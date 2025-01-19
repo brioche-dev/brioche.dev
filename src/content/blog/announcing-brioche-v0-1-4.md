@@ -1,6 +1,6 @@
 ---
 title: Announcing Brioche v0.1.4
-pubDate: 2025-01-18
+pubDate: 2025-01-18T23:26:00-08:00
 author: Kyle Lacy
 authorUrl: https://kyle.space
 ---
