@@ -14,6 +14,14 @@ curl --proto '=https' --tlsv1.2 -sSfL 'https://brioche.dev/install.sh' | sh
 
 This script will install Brioche under `~/.local/bin`, which is commonly included by default in the `$PATH` for your shell.
 
+### Installation options
+
+The installer script supports passing extra environment variables to customize the installation. You can either set each of these environment variables before running the installer (e.g. `export BRIOCHE_INSTALL_TYPE=bin`), or prepend it before the `sh` command (e.g. `curl ... | BRIOCHE_INSTALL_TYPE=bin sh`).
+
+- `BRIOCHE_INSTALL_DIR`: The directory to place the final Brioche binary. This directory should ideally be in your `$PATH` and will get created if it doesn't exist. Defaults to `$HOME/.local/bin`.
+- `BRIOCHE_INSTALL_TYPE`: The type of installation to use. Options are `auto` (default), `packed` for portable builds, or `bin` for standalone builds.
+- `BRIOCHE_INSTALL_UNPACK_DIR`: For packed installations, the directory where the packed build will be unpacked to. Defaults to `$HOME/.local/libexec/brioche`.
+
 ## Manual installation
 
 Rather than running the installation script, you can also manually install Brioche by downloading the latest release under the ["Releases"](https://github.com/brioche-dev/brioche/releases) section of Brioche's GitHub repo.
