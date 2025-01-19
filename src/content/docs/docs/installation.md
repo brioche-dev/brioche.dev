@@ -9,7 +9,7 @@ Brioche is distributed as a portable executable that can be dropped in and run e
 **Linux (x86-64)**
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSfL 'https://brioche.dev/install.sh' | bash
+curl --proto '=https' --tlsv1.2 -sSfL 'https://brioche.dev/install.sh' | sh
 ```
 
 This script will install Brioche under `~/.local/bin`, which is commonly included by default in the `$PATH` for your shell.
