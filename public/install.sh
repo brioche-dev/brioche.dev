@@ -1,9 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # Wrap the installation in a function so it only runs once the
 # entire script is downloaded
-function install_brioche() {
-    set -euo pipefail
+install_brioche() {
+    set -eu
 
     # Validate $HOME is set to a valid directory
     if [ -z "$HOME" ]; then
@@ -18,9 +18,9 @@ function install_brioche() {
     # The directory where Brioche gets installed
     install_dir="$HOME/.local/bin"
 
-    # Get the URL based on the OS and architecture
-    case "$OSTYPE" in
-        linux*)
+    # Get the URL based on the kernel and architecture
+    case "$(uname -s)" in
+        Linux)
             case "$(uname -m)" in
                 x86_64)
                     brioche_url="https://releases.brioche.dev/v0.1.4/x86_64-linux/brioche"
@@ -35,7 +35,7 @@ function install_brioche() {
             ;;
         *)
             echo "Sorry, Brioche isn't currently supported on your operating system"
-            echo "  Detected OS: $OSTYPE"
+            echo "  Detected kernel: $(uname -s)"
             exit 1
             ;;
     esac
