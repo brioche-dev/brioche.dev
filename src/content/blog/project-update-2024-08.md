@@ -94,8 +94,9 @@ const source = std
 
 ```ts
 // New way, hash gets saved to the lockfile
-const source = Brioche
-  .download("https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-1.7.1.tar.gz")
+const source = Brioche.download(
+  "https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-1.7.1.tar.gz",
+)
   .unarchive("tar", "gzip")
   .peel();
 ```

@@ -97,7 +97,6 @@ export default function () {
     .env({ projectDir })
     .dependencies(std.toolchain());
 }
-
 ```
 
 ## `Brioche.download`

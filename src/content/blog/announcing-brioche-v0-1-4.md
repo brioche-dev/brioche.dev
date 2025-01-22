@@ -93,5 +93,4 @@ Oh, and rolling out the new [packed builds](#packed-builds-of-brioche) will take
 
 Questions, help, and feedback are always welcome on Brioche's [GitHub](https://github.com/brioche-dev/brioche), [Discord](https://discord.gg/cw5QeWv4E5), and [Zulip](https://brioche.zulipchat.com/)!
 
-
 [^attach-resources-and-collect-references-naming]: Yes, one of the recipes is named "collect _references_" and the other is named "attach _resources_", and these recipes are effectively opposites of each other. I don't like the split in the "references" / "resources" terminology, and I don't think "collect" and "attach" really make it clear these recipes are complimentary. I'd like to try to come up with better names in a future release (open to bike-shedding!)

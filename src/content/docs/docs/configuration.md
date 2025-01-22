@@ -13,7 +13,7 @@ backend = "auto"
 
 ## Options
 
- The configuration supports the following options:
+The configuration supports the following options:
 
 - `registry_url` (string): The URL of the [registry](/docs/core-concepts/registry) to fetch projects and baked artifacts from. Defaults to `https://registry.brioche.dev/`
 - `sandbox.backend` (string): The backend used for [sandboxing](/docs/how-it-works/sandboxing) when baking [process recipes](/docs/core-concepts/recipes#stdprocess). Defaults to `auto`. See the ["Sandbox configuration"](#sandbox-configuration) section for details on all supported backends, and extra options for each.
@@ -24,10 +24,10 @@ Brioche will automatically try and detect an appropriate way to sandbox processe
 
 In `config.toml` under the `[sandbox]` section, you can choose one of the following values for the `backend` key:
 
-| `sandbox.backend` | Linux | macOS | Windows |
-|-------------------|-------|-------|---------|
-| `linux_namespace` | ✅ **Default** | ❌ | ❌ |
-| `unsandboxed`     | ❌ | ❌ | ❌ |
+| `sandbox.backend` | Linux          | macOS | Windows |
+| ----------------- | -------------- | ----- | ------- |
+| `linux_namespace` | ✅ **Default** | ❌    | ❌      |
+| `unsandboxed`     | ❌             | ❌    | ❌      |
 
 You can additionally set the `backend` key to `auto`, which will automatically select the best backend for your machine.
 
@@ -48,7 +48,6 @@ backend = "linux_namespace"
   - `true`: Always use PRoot for mounting paths in the sandbox. **Negatively impacts performance!**
   - `false`: Never use PRoot for mounting paths in the sandbox. Paths will always be mounted using a mount namespace.
   - `{ path: "/path/to/proot" }`: An object containing an absolute path to a PRoot binary on your system. Uses PRoot, but uses a custom binary instead of the one provided by Brioche. This may be required if no compatible PRoot binary is available for your machine.
-
 
 #### PRoot fallback
 

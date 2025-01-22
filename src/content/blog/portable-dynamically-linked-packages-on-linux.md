@@ -354,7 +354,6 @@ Maybe we could somehow change `ld-linux.so` itself? Like, if we could make it so
 
 The actual fix we're going for is to change the `run.sh` → `ld-linux.so` path. Specifically, we're going to explicitly call `ld-linux.so` _without_ using `execve()`:
 
-
 <svg class="w-full" viewBox="-0.5 -0.5 681 82">
   <title>Proposed lil-demo execution flow</title>
   <desc>Your shell calls run using execve, which then loads and executes ld-linux.so, which in turn loads and executes lil-demo</desc>
@@ -490,7 +489,6 @@ fn main() {
 
 So pretty similar structurally to the last one, except it uses `userland_execve::exec` to run now-- the first argument is the file to execute, the second are the args[^userland-args], and the third are the env vars[^userland-env-vars]
 
-
 Rebuild the `run` executable again, copy it over, and watch the magic unfold:
 
 ```shellsession
@@ -557,13 +555,23 @@ export default function () {
 ---
 
 [^the-container-up-my-sleeve-kinda]: Okay, technically, `brioche build -r curl` should basically always be a cache hit, but if it isn't for some reason and it has to build from source, the build itself _would_ run in a container. The _output_ doesn't use any containers though
+
 [^small-container]: From commit [`97cfcce`](https://github.com/brioche-dev/brioche-packages/tree/97cfcce19268326d6c76458218b60c723c84225f), this example container came out to a size of 27 MB, which is pretty small (and glibc is 12 MB of that)! The official curl container image is still smaller at the time of writing (21 MB uncompressed) and that also includes both CA certificates and Busybox, but the big difference is that it uses musl instead of glibc. So getting a glibc-based curl container down to 27 MB is something I'm still proud of overall! ...but in the real world, you'd at least want to add CA certs to this image
+
 [^sandboxing-future]: There is build-time sandboxing, but once a package gets built, the result doesn't itself run in a sandbox. But, it'd be possible to add a function in Brioche that "sandbox-ifies" another package, e.g. by using [Bubblewrap](https://github.com/containers/bubblewrap). This would make sandboxing a composable piece, rather than being a core part of Brioche's design
+
 [^exec]: Running `exec ./some-program` is almost the same as directly running `./some-program`. The former _replaces_ the current process with the new program to execute by directly using the [`execve()` syscall](https://man7.org/linux/man-pages/man2/execve.2.html), where the latter runs it as a subprocess. If you haven't used `exec` before, your homework assignment is to understand why it's the right tool for our `lil-demo` wrapper
+
 [^proc-absolute-path]: Bonus points if you noticed that `/proc/self/exec` is an absolute path, the exact thing we're trying to get rid of! Well, Linux is very Unix-y, meaning "everything is a file", where "everything" includes several core APIs. These are implemented via special virtual filesystems, which get mounted at `/proc`, `/sys`, and `/dev`. Because they're so critical, you really can't avoid them for some tasks... but that also means even extremely bare-bones environments have them mounted (e.g. Docker's `scratch` container)
+
 [^userland-exec-shell-script]: Super bonus points to the first person to write a userland exec implementation in pure POSIX shell
+
 [^userland-args]: You may have noticed that we originally only passed one arg, but passed two when using userland exec. This is because the `userland-execve` crate expects you to pass `argv0` explicitly, whereas `std::process::Comamnd` passes it implicitly by default.
+
 [^userland-env-vars]: Note that the example code will clear every env var except for `$LD_LIBRARY_PATH`. If you want to inherit the rest of the env vars like `std::process::Command` does, you'll need to manually iterate over [`std::env::vars_os()`](https://doc.rust-lang.org/stable/std/env/fn.vars_os.html) and pass each one explicitly.
+
 [^billion-miles]: 1,609,344,000,000 km
+
 [^reading-executables]: Yep... horrifyingly, I have seen at least one package that directly reads an executable and looks for a specific byte pattern. I actually can't remember which package it was... but luckily it was only part of a test suite if I remember right
+
 [^static-builds]: Don't get me wrong, I love a good static build! It's just that setting up the build tooling and getting the right libraries for it can be a pain

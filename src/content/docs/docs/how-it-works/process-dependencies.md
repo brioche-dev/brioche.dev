@@ -52,13 +52,10 @@ You can use the `std.setEnv()` function to more easily build this directory stru
 ```ts
 return std.setEnv(recipe, {
   LIBRARY_PATH: {
-    append: [
-      { path: "lib" },
-      { path: "usr/lib" },
-    ],
+    append: [{ path: "lib" }, { path: "usr/lib" }],
   },
   PKG_CONFIG_PATH: {
-    append: [{path: "lib/pkgconfig" }],
+    append: [{ path: "lib/pkgconfig" }],
   },
   ARTIFACT_ROOT: { fallback: { path: "." } },
   DEBUG: { fallback: { value: "1" } },
