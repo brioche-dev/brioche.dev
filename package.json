@@ -8,8 +8,8 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "prettier": "prettier --write .",
-    "prettier-check": "prettier --check ."
+    "prettier": "prettier --write public src",
+    "prettier-check": "prettier --check public src"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
