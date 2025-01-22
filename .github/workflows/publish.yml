@@ -18,6 +18,12 @@ jobs:
       - name: Install NPM dependencies
         run: npm install
 
+      - name: Check Astro
+        run: npm run check --minimumFailingSeverity warning
+
+      - name: Check Prettier
+        run: npm run prettier-check
+
       - name: Build Astro
         run: npm run build
 
