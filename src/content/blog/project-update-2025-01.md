@@ -25,8 +25,8 @@ import { cmakeBuild } from "cmake";
 
 export default function (): std.Recipe<std.Directory> {
   return cmakeBuild({
-    source: Brioche.glob("CMakeLists.txt", /* build files */),
-    dependencies: [std.toolchain(), /* other deps */],
+    source: Brioche.glob("CMakeLists.txt" /* build files */),
+    dependencies: [std.toolchain() /* other deps */],
   });
 }
 ```
