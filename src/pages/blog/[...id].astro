@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
+import { humanTimestamp, machineTimestamp } from "../../utils/timestamp.js";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("blog");
@@ -24,10 +25,10 @@ const { Content } = await render(entry);
       >
       <p
         class="text-md font-semibold text-accent-600 dark:text-accent-200 opacity-80"
-        title={entry.data.pubDate.toISOString()}
+        title={machineTimestamp(entry.data.pubDate)}
         >Published on
-        <time datetime={entry.data.pubDate.toISOString()}
-          >{entry.data.pubDate.toISOString().slice(0, 10)}</time
+        <time datetime={machineTimestamp(entry.data.pubDate)}
+          >{humanTimestamp(entry.data.pubDate)}</time
         ></p
       >
       <p
