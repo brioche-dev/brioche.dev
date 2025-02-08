@@ -18,7 +18,7 @@
     "@astrojs/starlight": "^0.31.1",
     "@astrojs/starlight-tailwind": "^3.0.0",
     "@astrojs/tailwind": "^5.1.5",
-    "astro": "^5.2.3",
+    "astro": "^5.2.5",
     "astro-robots-txt": "^1.0.0",
     "clsx": "^2.1.1",
     "markdown-it": "^14.1.0",
