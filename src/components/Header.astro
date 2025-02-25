@@ -3,7 +3,6 @@ import ThemeSelect from "@astrojs/starlight/components/ThemeSelect.astro";
 import type { icons } from "../assets/icons";
 import Logo from "../assets/Logo.astro";
 import Icon from "../assets/Icon.astro";
-import { starlightProps } from "../utils/starlight-props";
 import Link from "./Link.astro";
 
 interface NavLink {
@@ -89,7 +88,7 @@ const socialLinks: SocialLink[] = [
         }
       </div>
       <div class="pl-4 text-sm">
-        <ThemeSelect {...starlightProps} />
+        <ThemeSelect />
       </div>
     </div>
   </div>
