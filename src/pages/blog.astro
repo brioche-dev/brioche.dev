@@ -3,8 +3,9 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 import { humanTimestamp, machineTimestamp } from "../utils/timestamp.js";
+import { isPublished } from "../utils/blog.js";
 
-const blogEntries = await getCollection("blog");
+const blogEntries = await getCollection("blog", isPublished);
 blogEntries.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 ---
 

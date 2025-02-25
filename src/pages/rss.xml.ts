@@ -3,11 +3,12 @@ import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
 import sanitizeHtml from "sanitize-html";
 import MarkdownIt from "markdown-it";
+import { isPublished } from "../utils/blog.js";
 
 const parser = new MarkdownIt();
 
 export const GET: APIRoute = async (context) => {
-  const blogEntries = await getCollection("blog");
+  const blogEntries = await getCollection("blog", isPublished);
   blogEntries.sort(
     (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
   );

@@ -23,14 +23,23 @@ const { Content } = await render(entry);
       <h1 class="text-4xl font-extrabold text-accent-600 dark:text-accent-200"
         >{entry.data.title}</h1
       >
-      <p
-        class="text-md font-semibold text-accent-600 dark:text-accent-200 opacity-80"
-        title={machineTimestamp(entry.data.pubDate)}
-        >Published on
-        <time datetime={machineTimestamp(entry.data.pubDate)}
-          >{humanTimestamp(entry.data.pubDate)}</time
-        ></p
-      >
+      {
+        entry.data.pubDate != null ? (
+          <p
+            class="text-md font-semibold text-accent-600 dark:text-accent-200 opacity-80"
+            title={machineTimestamp(entry.data.pubDate)}
+          >
+            Published on
+            <time datetime={machineTimestamp(entry.data.pubDate)}>
+              {humanTimestamp(entry.data.pubDate)}
+            </time>
+          </p>
+        ) : (
+          <p class="text-md font-semibold text-accent-600 dark:text-accent-200 opacity-80 italic">
+            Draft
+          </p>
+        )
+      }
       <p
         class="text-md font-semibold text-accent-600 dark:text-accent-200 opacity-80"
         >By
