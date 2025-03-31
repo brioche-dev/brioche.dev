@@ -18,19 +18,23 @@ Getting this feature over the finish line took a lot more work than I was expect
   // Value of `export const project`
   "definition": {
     "name": "curl",
-    "version": "8.11.1",
+    "version": "8.11.1"
   },
 
   // Hashes of the TypeScript modules from the project
-  "modules": {/* ... */},
+  "modules": {
+    /* ... */
+  },
 
   // Any statics (downloads, etc) from the project
-  "statics": {/* ... */},
+  "statics": {
+    /* ... */
+  },
 
   // Other projects imported by this project
   "dependencies": {
     "std": "<hash>",
-    "openssl": "<hash>",
+    "openssl": "<hash>"
   }
 }
 ```
@@ -47,8 +51,8 @@ To handle cycles, I introduced some indirection: projects get grouped into a "wo
     // Value of `export const project`
     "definition": {
       "name": "curl",
-      "version": "8.11.1",
-    },
+      "version": "8.11.1"
+    }
 
     // ... same fields as before ...
   },
@@ -67,7 +71,7 @@ We hash _this_ JSON value to get a `WorkspaceHash`. We still have a `ProjectHash
 {
   "type": "workspace_member",
   "workspace": "<hash>",
-  "path": "packages/curl",
+  "path": "packages/curl"
 }
 ```
 
