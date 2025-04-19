@@ -3,6 +3,8 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
 import { humanTimestamp, machineTimestamp } from "../../utils/timestamp.js";
+import "@astrojs/starlight/style/markdown.css";
+import "../../styles/starlight-anchor-links.css";
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection("blog");
@@ -17,6 +19,33 @@ const { Content } = await render(entry);
 ---
 
 <BaseLayout title={entry.data.title}>
+  <style is:global>
+    .sl-markdown-content {
+      font-family: var(--__sl-font);
+      line-height: var(--sl-line-height);
+      color: var(--sl-color-text);
+    }
+
+    .sl-markdown-content ul, .sl-markdown-content ol {
+      padding-left: 2.5rem;
+    }
+
+    .sl-markdown-content ol {
+      list-style: decimal;
+    }
+
+    .sl-markdown-content ul {
+      list-style: disc;
+    }
+
+    .sl-markdown-content > .footnotes {
+      padding-top: 2rem;
+    }
+
+    .sl-markdown-content > .footnotes .sl-anchor-link {
+      display: none;
+    }
+  </style>
   <Header />
   <main class="w-full max-w-2xl mx-auto px-4">
     <header class="my-8 space-y-2">
@@ -50,9 +79,7 @@ const { Content } = await render(entry);
         ></p
       >
     </header>
-    <div
-      class="max-w-none prose prose-brioche prose-quoteless dark:prose-invert"
-    >
+    <div class="max-w-none sl-markdown-content">
       <Content />
     </div>
   </main>
