@@ -77,12 +77,12 @@ install_brioche() {
     # Get the URL based on the kernel, architecture, and installation type
     case "$(uname -sm) $install_type" in
         "Linux x86_64 bin")
-            brioche_url="https://releases.brioche.dev/v0.1.4/x86_64-linux/brioche"
-            checksum="90a1366eabf63e04c559b77436b315736da8b73ce5b8e3b30eb5ac69b7e3c494"
+            brioche_url="https://releases.brioche.dev/v0.1.5/x86_64-linux/brioche"
+            checksum="0056ce9a780ea8e08138dda289f9cbef80902aa9524a8e4235e4997121b73b17"
             ;;
         "Linux x86_64 packed")
-            brioche_url="https://releases.brioche.dev/v0.1.4/brioche-packed/x86_64-linux/brioche-packed-x86_64-linux.tar.gz"
-            checksum="bc9aea0416b74f163bd801e87beb8b11eb99a5336700829eb8319ba9b612e06f"
+            brioche_url="https://releases.brioche.dev/v0.1.5/brioche-packed/x86_64-linux/brioche-packed-x86_64-linux.tar.gz"
+            checksum="d80fb1a1537e90f1c189924994ca7a9325ed8e8a1d98b11d02076eb82f7c95db"
             ;;
         *)
             echo "Sorry, Brioche isn't currently supported on your platform"
