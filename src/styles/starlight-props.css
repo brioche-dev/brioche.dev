@@ -122,13 +122,15 @@
     --sl-font-system:
       ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
       Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+      "Noto Color Emoji";
     --sl-font-system-mono:
       ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
     --__sl-font: var(--sl-font, var(--sl-font-system)), var(--sl-font-system);
     --__sl-font-mono:
-      var(--sl-font-mono, var(--sl-font-system-mono)), var(--sl-font-system-mono);
+      var(--sl-font-mono, var(--sl-font-system-mono)),
+      var(--sl-font-system-mono);
 
     /** Key layout values */
     --sl-nav-height: 3.5rem;
