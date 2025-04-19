@@ -73,6 +73,10 @@ export default defineConfig({
               link: "/docs/core-concepts/runnables",
             },
             {
+              label: "Cache",
+              link: "/docs/core-concepts/cache",
+            },
+            {
               label: "Registry",
               link: "/docs/core-concepts/registry",
             },

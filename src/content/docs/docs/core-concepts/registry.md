@@ -2,25 +2,22 @@
 title: Registry
 ---
 
-The **registry** is a central server that serves Brioche [projects](/docs/core-concepts/projects), serving as a canonical place to resolve dependencies by name. The registry also serves [baked](/docs/core-concepts/baking) artifacts, making it so clients can fetch pre-built artifacts instead of needing to build all of their dependencies from source.
+The **registry** is a central server that serves Brioche [projects](/docs/core-concepts/projects), serving as a canonical place to resolve dependencies by name.
 
 The official registry is hosted at the URL `https://registry.brioche.dev/`. The registry is automatically published and built from the [`brioche-packages`](https://github.com/brioche-dev/brioche-packages) repo. You can submit a Pull Request or Issue to this repo to request new projects be added or to report issue in existing projects.
+
+Note that the registry itself is lightweight, and only resolves each project name to an [artifact](/docs/core-concepts/artifacts) containing the project's source files. Artifacts are then retrieved through a [cache](/docs/core-concepts/cache). See ["Cache vs. Registry"](/docs/core-concepts/cache#cache-vs-registry) for more details.
 
 ## Self-hosted registries
 
 The source code for the registry is available in the [`brioche-registry`](https://github.com/brioche-dev/brioche-registry) repository. With it, you can self-host your own registry, and Brioche can be configured to pull from a your own registry URL instead (see [configuration](/docs/configuration) for details).
 
-When run, the registry will allow anyone with access to pull projects or artifacts, but will require authentication to publish new projects or to sync pre-baked recipes. Set the `$BRIOCHE_REGISTRY_PASSWORD` environment variable to authenticate with the registry.
+When run, the registry will allow anyone with access to pull projects, but will require authentication to publish new projects. Set the `$BRIOCHE_REGISTRY_PASSWORD` environment variable to authenticate with the registry.
 
-Run `brioche publish -p project_path` to publish a project to the registry. This will collect all files included by the project, upload them to the registry, and create new tags based on the project's name and version metadata.
+### Publishing
 
-Run `brioche build -p project_path --sync` to sync recipes baked during the project build. This will build the project as normal, plus it will upload some of the baked recipes to the registry (recipes that are fast to bake will generally not be uploaded). When other machines using Brioche use the same registry, they will pull the pre-baked recipes from the registry, avoiding the need to bake the recipes themselves.
+> **Note**: To publish projects, you'll also need to configure a [custom cache](/docs/core-concepts/cache#custom-cache)
 
-Publishing and syncing are completely independent. You can sync a build without publishing the built project to the registry, meaning that the recipes will be cached when someone else builds the same project (or a different project that uses the same recipes). Or, you can publish without syncing, which will let anyone add the project as a dependency by name, but they will need to bake recipes from the project themselves during the build.
+Run `brioche publish -p project_path` to publish a project to a self-hosted registry. This will save an [artifact](/docs/core-concepts/artifacts) to the custom cache containing all of the project's files, then it will create or update tags for the project in the self-hosted registry, associated with the artifact's hash.
 
-You can also sync multiple different builds of a project to a registry. For example, you may want to sync multiple project exports from the same project to the registry, which could look like this:
-
-```bash
-brioche build -p project_path -e frontend --sync
-brioche build -p project_path -e backend --sync
-```
+Then, running `brioche build -r project_name` will then call the registry to determine the artifact hash associated to `project_name`, then Brioche will retrieve the project's artifact via the cache.
