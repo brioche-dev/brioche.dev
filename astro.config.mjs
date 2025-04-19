@@ -1,14 +1,16 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
-import tailwind from "@astrojs/tailwind";
 import { redirects } from "./src/pages/_redirects";
 import sitemap from "@astrojs/sitemap";
 import robotsTxt from "astro-robots-txt";
+
+import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://brioche.dev",
   redirects: Object.fromEntries(redirects.map(({ from, to }) => [from, to])),
+
   integrations: [
     sitemap(),
     robotsTxt(),
@@ -21,11 +23,11 @@ export default defineConfig({
         dark: "./src/assets/brioche-logo-dark.svg",
       },
       favicon: "/favicon.ico",
-      social: {
-        zulip: "https://brioche.zulipchat.com/",
-        discord: "https://discord.gg/cw5QeWv4E5",
-        github: "https://github.com/brioche-dev",
-      },
+      social: [
+        { icon: "zulip", label: "Zulip", href: "https://brioche.zulipchat.com/" },
+        { icon: "discord", label: "Discord", href: "https://discord.gg/cw5QeWv4E5" },
+        { icon: "github", label: "GitHub", href: "https://github.com/brioche-dev" },
+      ],
       sidebar: [
         {
           label: "Getting Started",
@@ -106,7 +108,7 @@ export default defineConfig({
           ],
         },
       ],
-      customCss: ["./src/tailwind.css"],
+      customCss: ["./src/styles/global-starlight.css"],
       head: [
         {
           tag: "link",
@@ -165,9 +167,6 @@ export default defineConfig({
         },
       ],
     }),
-    tailwind({
-      applyBaseStyles: false,
-    }),
     {
       name: "_redirects",
       hooks: {
@@ -180,4 +179,8 @@ export default defineConfig({
       },
     },
   ],
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });

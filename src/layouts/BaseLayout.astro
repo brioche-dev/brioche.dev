@@ -1,10 +1,9 @@
 ---
-// Starlight disables Tailwind's preflight, so include it here
-import "tailwindcss/src/css/preflight.css";
-import "../tailwind.css";
-import "../starlight-props.css";
+import "../styles/global.css";
+// import "../starlight-props.css";
+// import "../styles/global.css";
 
-import ThemeProvider from "@astrojs/starlight/components/ThemeProvider.astro";
+import StarlightThemeProvider from "../components/StarlightThemeProvider.astro";
 
 interface Props {
   title?: string;
@@ -46,7 +45,7 @@ const title =
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <ThemeProvider />
+    <StarlightThemeProvider />
   </head>
   <body class="pb-32 dark:bg-gray-900 dark:text-white">
     <slot />
