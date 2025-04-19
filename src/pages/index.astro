@@ -1,6 +1,6 @@
 ---
-import { Code } from "@astrojs/starlight/components";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { Code } from "@astrojs/starlight/components";
 import Header from "../components/Header.astro";
 import Link from "../components/Link.astro";
 import { indoc } from "../utils/indoc";
@@ -59,7 +59,7 @@ const announcement = null satisfies Announcement | null as Announcement | null;
       ) : null
     }
     <section class="flex flex-col md:flex-row">
-      <div class="flex-0 md:max-w-96">
+      <div class="md:max-w-96">
         <h1
           class="text-6xl font-extrabold text-center text-accent-600 dark:text-accent-200"
           >Brioche</h1
@@ -81,11 +81,9 @@ const announcement = null satisfies Announcement | null as Announcement | null;
         class="text-4xl font-extrabold text-accent-600 dark:text-accent-200 md:-ml-12 my-4"
         >Get Started</h2
       >
-      <div class="space-y-6 divide-y divide-gray-200 dark:divide-gray-700">
-        <div>
-          <p class="text-xl"
-            >Install in seconds, no root permissions required:</p
-          >
+      <div class="flex flex-col gap-y divide-y divide-gray-200 dark:divide-gray-700">
+        <div class="pb-6">
+          <p class="text-xl">Install in seconds, no root permissions required:</p>
           <Code code={installSnippet} lang="shell" class="flex-1 my-4" />
           <p class="text-xl"
             >...or <Link href="/docs/installation">view the docs</Link> for more

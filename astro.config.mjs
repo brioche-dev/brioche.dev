@@ -108,7 +108,7 @@ export default defineConfig({
           ],
         },
       ],
-      customCss: ["./src/tailwind.css"],
+      customCss: ["./src/styles/global-starlight.css"],
       head: [
         {
           tag: "link",
