@@ -7,7 +7,7 @@ import tailwindTypography from "@tailwindcss/typography";
 //
 // Settings:
 // - Accent: Hue = 70, Chroma = 0.227
-// - Gray: Hue = 54, Chroma = 0.002
+// - Gray: Hue = 54, Chroma = 0.02
 const accent = {
   200: "#e9c193",
   600: "#955e00",
