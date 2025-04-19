@@ -93,7 +93,15 @@ url = "s3://private-brioche-cache/"
 # allow_http = false
 ```
 
-The URL schema of the value for `cache.url` determines which cache backend to use. The following URL schemas are supported:
+You can also configure the cache using the following environment variables:
+
+- `$BRIOCHE_CACHE_URL`
+- `$BRIOCHE_CACHE_USE_DEFAULT_CACHE`
+- `$BRIOCHE_CACHE_READ_ONLY`
+- `$BRIOCHE_CACHE_MAX_CONCURRENT_OPERATIONS`
+- `$BRIOCHE_CACHE_ALLOW_HTTP`
+
+The URL schema of the value for `cache.url` (or `$BRIOCHE_CACHE_URL`)determines which cache backend to use. The following URL schemas are supported:
 
 - `s3://`: AWS S3 or an S3-compatible object storage provider
   - Full URL structure: `s3://<bucket>/<prefix>` (`prefix` is optional)
