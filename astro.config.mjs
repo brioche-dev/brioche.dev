@@ -23,11 +23,11 @@ export default defineConfig({
         dark: "./src/assets/brioche-logo-dark.svg",
       },
       favicon: "/favicon.ico",
-      social: {
-        zulip: "https://brioche.zulipchat.com/",
-        discord: "https://discord.gg/cw5QeWv4E5",
-        github: "https://github.com/brioche-dev",
-      },
+      social: [
+        { icon: "zulip", label: "Zulip", href: "https://brioche.zulipchat.com/" },
+        { icon: "discord", label: "Discord", href: "https://discord.gg/cw5QeWv4E5" },
+        { icon: "github", label: "GitHub", href: "https://github.com/brioche-dev" },
+      ],
       sidebar: [
         {
           label: "Getting Started",
