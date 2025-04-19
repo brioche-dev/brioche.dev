@@ -1,14 +1,16 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
-import tailwind from "@astrojs/tailwind";
 import { redirects } from "./src/pages/_redirects";
 import sitemap from "@astrojs/sitemap";
 import robotsTxt from "astro-robots-txt";
+
+import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://brioche.dev",
   redirects: Object.fromEntries(redirects.map(({ from, to }) => [from, to])),
+
   integrations: [
     sitemap(),
     robotsTxt(),
@@ -165,9 +167,6 @@ export default defineConfig({
         },
       ],
     }),
-    tailwind({
-      applyBaseStyles: false,
-    }),
     {
       name: "_redirects",
       hooks: {
@@ -180,4 +179,8 @@ export default defineConfig({
       },
     },
   ],
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });
