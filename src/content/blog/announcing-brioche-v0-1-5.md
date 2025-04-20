@@ -57,8 +57,9 @@ Brioche itself includes several new features that will be used by the `std` pack
 [**@paricbat**](https://github.com/paricbat) implemented support for unarchiving zip files, so they can now be treated as first-class citizens just like `.tar` files!
 
 ```typescript
-Brioche.download("https://github.com/brioche-dev/brioche/archive/refs/tags/v0.1.4.zip")
-  .unarchive("zip");
+Brioche.download(
+  "https://github.com/brioche-dev/brioche/archive/refs/tags/v0.1.4.zip",
+).unarchive("zip");
 ```
 
 ### `process.currentDir` to change a process's starting directory
