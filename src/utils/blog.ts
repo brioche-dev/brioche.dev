@@ -8,9 +8,11 @@ export const BlogEntry = z.object({
 });
 export type BlogEntry = z.infer<typeof BlogEntry>;
 
-export const PublishedBlogEntry = BlogEntry.and(z.object({
-  pubDate: z.date(),
-}))
+export const PublishedBlogEntry = BlogEntry.and(
+  z.object({
+    pubDate: z.date(),
+  }),
+);
 export type PublishedBlogEntry = z.infer<typeof PublishedBlogEntry>;
 
 export function isPublished(
