@@ -23,9 +23,42 @@ In the Brioche standard library (the `std` package), the type `std.Recipe` repre
 
 Recipes have some utility methods specific to the type of artifact they bake into. For example, [`.get()`](#directoryget) only makes sense for directory recipes, so this method won't be available for other types of recipes. If you want to cast a recipe to a more specific type, use a casting function such as [`std.castToFile` / `std.castToDirectory` / `std.castToSymlink`](#stdcasttofile--stdcasttodirectory--stdcasttosymlink).
 
+## `std.RecipeLike` and `std.recipe()`
+
+Most functions that take a recipe as an argument actually accept the type `std.RecipeLike`, which allows passing several different types:
+
+- `std.Recipe` - An actual recipe value
+- `() => std.Recipe` - A function that returns a recipe
+- `Promise<std.Recipe>` - A promise that resolves to a recipe
+- `() => Promise<std.Recipe>` - A function that returns a promise that resolves to a recipe
+
+The `std.Recipe` type itself has a lot of useful methods, so there's a utility to convert from a `std.RecipeLike` value to a `std.Recipe` value: `std.recipe()`.
+
+Just like `std.Recipe`, `std.RecipeLike` has a type parameter describing which artifact it bakes into.
+
+```typescript
+import * as std from "std";
+import nodejs from "nodejs";
+
+export function useRecipe(recipe: std.RecipeLike) {
+  // Convert the value to a recipe
+  const recipeValue: std.Recipe = std.recipe(recipe);
+
+  // recipeValue now has all the methods we'd normally expect from a recipe
+  // ...
+}
+
+export default async function () {
+  // All of these are equivalent:
+  useRecipe(await nodejs());
+  useRecipe(nodejs());
+  useRecipe(nodejs);
+}
+```
+
 ## `std.file`
 
-Takes a string or `Uint8Array` and bakes to a file artifact containing the specified contents.
+Takes a string or `Uint8Array`, and returns a file recipe that contains the contents.
 
 ```ts
 std.file("hello world!");
@@ -33,20 +66,21 @@ std.file("hello world!");
 
 ## `std.directory`
 
-Takes an object that associates filenames with recipes, and bakes to a directory artifact. Inner recipes are baked recursively and lazily.
+Takes an object that associates file paths with recipes, and returns a directory recipe containing the specified files. Also supports subdirectory paths (using `/` as the path separator).
 
 ```ts
 std.directory({
   "hello.txt": std.file("hello world!"),
+  "directory/hi.txt": std.file("hi!"),
 });
 ```
 
 ## `std.symlink`
 
-Returns a symlink artifact with the specified target file.
+Returns a symlink recipe with the specified target path.
 
 ```ts
-std.symlink("../hello.txt");
+std.symlink({ target: "../hello.txt" });
 ```
 
 ## `std.merge`
@@ -91,26 +125,27 @@ std.download({
 
 ## `std.process`
 
-A low-level utility that creates a recipe to run a process. Generally, you'll call another function that wraps `std.process` under the hood.
+A low-level utility that creates a recipe to run a process. Generally, you'll call another function that wraps `std.process` under the hood, such as [`std.runBash`](#stdrunbash).
 
 Takes an object with options for spawning the process:
 
 - `command` (required): The command to run
-- `args`: Command-line arguments to invoke the process with
+- `args`: Command-line arguments to call the command with
 - `env`: An object containing extra environment variables to pass to the process. A minimal set of environment variables is included by default
 - `dependencies`: An array of recipes to include in the process's environment when run. Binaries and environment variables will be set based on all dependencies (see ["Process Dependencies"](/docs/how-it-works/process-dependencies))
-- `workDir`: The process starts by default in an empty working directory. Set this to a directory recipe to pre-populate the process's working directory when it starts
+- `workDir`: By default, processes start in an empty, writable work directory. This option can be used to pre-populate the work directory when the process starts. Note that the work directory will still be created even if `currentDir` is set to a different path
+- `currentDir`: Change which directory the process starts in initially. Defaults to the work directory if not specified
 - `outputScaffold`: The path `$BRIOCHE_OUTPUT` initially doesn't exist when the process starts, and must be written to before the process exits in order to succeed. Set `outputScaffold` to any recipe to initialize this output path with some sort of contents. This is useful to run a command like `sed -i` that modifies its output contents in place, or to run a command like `gcc` to let it output directly into a `bin/` directory
 - `unsafe`: Opt-in to certain unsafe features (see ["Unsafe processes"](/docs/how-it-works/sandboxing#unsafe-options))
 
-The values for `command`, `args`, and `env` can be passed as plain strings or using **process templates**, created with `std.tpl`. Recipes can be interpolated in the template, which will automatically bake the recipe before the process starts, then will resolve to a path containing the recipe's output artifact.
+The values for `command`, `args`, `env`, and `workDir` can be passed as plain strings or using **process templates**, created with `std.tpl`. Recipes can be interpolated in the template, which will automatically bake the recipe before the process starts, then will resolve to a path containing the recipe's output artifact.
 
 See ["Sandboxing"](/docs/how-it-works/sandboxing) for more details about how processes are run and what they have access to.
 
 ```ts
-// Will run a bash script. The command template expands to a path to run `bin/bash` within the recipe returned by `std.tools()`
+// Will run a bash script. The command template expands to a path to run `bin/bash` within the recipe returned by `std.tools`
 std.process({
-  command: std.tpl`${std.tools()}/bin/bash`,
+  command: std.tpl`${std.tools}/bin/bash`,
   args: ["-c", 'echo hello > "$BRIOCHE_OUTPUT"'],
 });
 ```
@@ -120,13 +155,13 @@ The return value of `std.process()` has additional utility methods to change the
 ```ts
 // Start with a bash script
 const process = std.process({
-  command: std.tpl`${std.tools()}/bin/bash`,
+  command: std.tpl`${std.tools}/bin/bash`,
   args: ["-c", 'echo "$PATH" > "$BRIOCHE_OUTPUT"'],
 });
 
 // Add more dependencies to the process. These changes
 // only affect `newProcess`, not `process`
-const newProcess = process.dependencies([nodejs(), rust()]);
+const newProcess = process.dependencies(nodejs, rust);
 ```
 
 ## `std.sync`
@@ -140,14 +175,14 @@ You can wrap any recipe with `std.sync` to sync it to the registry too (the inte
 ```ts
 const hello = std
   .process({
-    command: std.tpl`${std.tools()}/bin/bash`,
+    command: std.tpl`${std.tools}/bin/bash`,
     args: ["-c", 'echo hello > "$BRIOCHE_OUTPUT/hello.txt"'],
     outputScaffold: std.directory(),
   })
   .toDirectory();
 const world = std
   .process({
-    command: std.tpl`${std.tools()}/bin/bash`,
+    command: std.tpl`${std.tools}/bin/bash`,
     args: ["-c", 'echo hello > "$BRIOCHE_OUTPUT/world.txt"'],
     outputScaffold: std.directory(),
   })
@@ -155,7 +190,7 @@ const world = std
 
 // `merged` gets synced to the registry, meaning users can
 // fetch it directly without first fetching the recipes
-// `hello`, `world`, or `std.tools()`
+// `hello`, `world`, or `std.tools`
 const merged = std.sync(std.merge(hello, world));
 ```
 
@@ -191,21 +226,51 @@ const executableHelloSh = helloSh.withPermissions({
 });
 ```
 
-## `Recipe.bake`
+## `std.pipe` / `Recipe.pipe`
 
-Eagerly [bake](/docs/core-concepts/baking) a recipe, returning a `Promise<Artifact>`.
+Apply a list of functions to a starting value, feeding the output of the previous function as the input to the next function. Returns the output of the last function.
 
-Calling `.bake()` manually should be a pretty rare occurrence. Brioche implicitly bakes the recipe returned when calling `brioche build`, so this is only needed when an artifact needs to be interacted with directly within the build script.
+Recipes are immutable, so there are a lot of utilities that take a recipe and return a new, modified recipe. While there are many built-in methods for [`std.Recipe](#stdrecipe) (which can already be chained together easily), there are also many standalone utility functions that _can't_ easily be chained together. The `std.pipe` function and the equivalent `Recipe.pipe` method help to chain together functions more easily.
 
-```ts
-const artifact = await std
-  .file(
-    std.indoc`
-      #!/usr/bin/env bash
-      echo hello world!
-    `,
+```typescript
+const script = std.runBash`
+  # Create a hello.sh script
+
+  mkdir -p "$BRIOCHE_OUTPUT"
+  echo '#!/usr/bin/env bash' >> "$BRIOCHE_OUTPUT/hello.sh"
+  echo 'echo hello' >> "$BRIOCHE_OUTPUT/hello.sh"
+`
+  .toDirectory();
+
+// Using Recipe.pipe() method:
+// ---------------------------
+const result = script
+  .get("hello.sh") // Get "hello.sh" from the script output
+  .pipe(std.castToFile) // Cast it to a file
+  .pipe((helloSh) =>
+    // Mark the script as executable
+    helloSh.withPermissions({ executable: true }),
   )
-  .bake();
+  .pipe((helloSh) =>
+    // Put the script back into a directory
+    std.directory({ "hello.sh": helloSh }),
+  );
+
+// Using std.pipe() function:
+// --------------------------
+// const result = std.pipe(
+//   script.get("hello.sh"),
+//   std.castToFile,
+//   (helloSh) => helloSh.withPermissions({ executable: true }),
+//   (helloSh) => std.directory({ "hello.sh": helloSh }),
+// );
+
+// Without using either pipe utility:
+// ----------------------------------
+// let helloSh = script.get("hello.sh");
+// helloSh = std.castToFile(helloSh);
+// helloSh = helloSh.withPermissions({ executable: true });
+// const result = std.directory({ "hello.sh": helloSh });
 ```
 
 ## `File.withPermissions`
@@ -244,11 +309,11 @@ std
 
 ## `File.readBytes`
 
-Read the contents of a file into a `Uint8Array`. Implicitly calls [`.bake()`](#artifactbake). See [`File.read`](#fileread) to read a string instead.
+Read the contents of a file into a `Uint8Array`. The recipe will immediately be baked. See [`File.read`](#fileread) to read a string instead.
 
 ## `File.read`
 
-Read the contents of a file as a UTF-8 string. Implicitly calls [`.bake()`](#artifactbake). Throws an exception if the file was not valid UTF-8.
+Read the contents of a file as a UTF-8 string. The recipe will immediately be baked. Throws an exception if the file was not valid UTF-8.
 
 ```ts
 const content = await std.file("hello!").read();
@@ -360,7 +425,7 @@ These methods are convenience wrappers over the functions [`std.castToFile` / `s
 ```ts
 // A process can return any type, but we know this will output a file
 const recipe: std.Process = std.process({
-  command: std.tpl`${std.tools()}/bin/bash`,
+  command: std.tpl`${std.tools}/bin/bash`,
   args: ["-c", 'echo hello > "$BRIOCHE_OUTPUT"'],
 });
 

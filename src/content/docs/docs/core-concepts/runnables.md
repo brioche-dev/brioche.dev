@@ -80,11 +80,11 @@ export default function () {
     node "$root"/src/script.js
   `
     .root(nodeProject)
-    .dependencies(nodejs());
+    .dependencies(nodejs);
 }
 ```
 
-`.root()` is used to include extra stuff in the root of the artifact, which can be referenced in the script using the `$root` environment variable. Dependencies and extra env vars can be bundled in the script using the `.dependencies()` and `.env()` methods, respectively.
+`.root()` is used to include extra stuff in the root of the artifact, which can be referenced in the script using the `$root` environment variable. Dependencies and extra env vars can be bundled in the script using the methods `.dependencies()` and `.env()`, respectively.
 
 ## Turning a runnable into a container image
 
@@ -101,12 +101,12 @@ export default function build() {
     node "$root"/src/script.js
   `
     .root(nodeProject)
-    .dependencies(nodejs());
+    .dependencies(nodejs);
 }
 
 export function container() {
   return std.ociContainerImage({
-    recipe: build(),
+    recipe: build,
   });
 }
 ```

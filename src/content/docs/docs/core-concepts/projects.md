@@ -16,8 +16,7 @@ export default function (): std.Recipe {
 
 You can optionally define project metadata in the project root by adding a special `export const project = { /* ... */ }` declaration:
 
-```ts
-// project.bri
+```ts title=project.bri
 export const project = {
   name: "my_project",
   version: "0.0.1",
@@ -134,7 +133,7 @@ export function frontend(): std.Recipe {
     npm run build
     mv dist "$BRIOCHE_OUTPUT"
   `
-    .dependencies(nodejs())
+    .dependencies(nodejs)
     .workDir(npmPackage);
 }
 

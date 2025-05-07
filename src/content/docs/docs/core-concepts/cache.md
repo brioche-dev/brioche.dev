@@ -35,4 +35,4 @@ When resolving a [project](/docs/core-concepts/projects) from a registry, the re
 
 > **Note**: Currently, the globally-configured cache options are also used when fetching the artifact hash returned by a registry. This will likely change in the future, but it also means you can't use the official registry today when the `use_default_cache` setting is set to `false`.
 
-In addition to using a custom cache, you can also self-host a [registry](/docs/registry). However, in most cases, setting up a custom cache should be sufficient for most use-cases.
+In addition to using a custom cache, you can also self-host a [registry](/docs/registry). However, setting up a custom cache should be enough for most teams.

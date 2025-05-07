@@ -6,8 +6,7 @@ title: Getting started
 
 Brioche scripts are written with [TypeScript](https://www.typescriptlang.org/) and run through a trimmed down JavaScript runtime by leveraging [Deno Core](https://github.com/denoland/deno_core). This gives you excellent type-checking, editor autocompletion, formatting, and linting for your scripts without needing to mess around with any extra tooling.
 
-```ts
-// project.bri
+```ts title=project.bri
 import * as std from "std";
 import nodejs, { npmInstall } from "nodejs";
 
@@ -23,7 +22,7 @@ export default function (): std.Recipe {
     npm run build
     mv dist "$BRIOCHE_OUTPUT"
   `
-    .dependencies(nodejs())
+    .dependencies(nodejs)
     .workDir(npmPackage);
 }
 ```
@@ -53,9 +52,7 @@ For the best experience, [configuring your editor with Brioche support](/docs/in
 
 Let's start with a very minimal "Hello world!" example to get a feel for Brioche:
 
-```ts
-// project.bri
-
+```ts title=project.bri
 // Import the `std` package (the Brioche standard library)
 // This will be included in most projects
 import * as std from "std";

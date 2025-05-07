@@ -14,7 +14,7 @@ import { LinkCard } from "@astrojs/starlight/components";
 
 Brioche aims to make it easy to create portable executables on Linux, meaning the executable should be able to be placed anywhere on the system and run regardless of what dependencies the host may or may not have installed, even when using dynamically-linked dependencies and without using containerization. Depending on how much you know about how ELF executables work on Linux, this may sound like an impossible problem!
 
-Brioche employs a scheme similar to executable packers like [UPX](https://upx.github.io/): rather than providing an executable as-is, we instead replace it with a sort of wrapper executable that knows how to run the original executable. Unlike UPX, this "packed executable" doesn't get shipped as a single file, but instead as an entrypoint executable with some metadata, along with a standardized directory structure.
+Brioche employs a scheme similar to executable packers like [UPX](https://upx.github.io/): rather than providing an executable as-is, we instead replace it with a sort of wrapper executable that knows how to run the original executable. Unlike UPX, this "packed executable" doesn't get shipped as a single file, but instead as an entrypoint executable with some metadata, along with a standard directory structure.
 
 Let's say you use Brioche to compile a simple C program with gcc:
 
@@ -43,7 +43,7 @@ export default function () {
 If you were to run `brioche build -o output`, you would end up with a directory structure like this:
 
 ```
-output
+output/
 ├── bin/
 │   └── hello
 └── brioche-resources.d/
@@ -53,9 +53,9 @@ output
         └── ...
 ```
 
-`output/bin/hello` is a **packed executable**. The original executable was shoved somewhere into the `brioche-resources.d` directory, and the executable `brioche-packed-userland-exec` was copied in to replace it, with some metadata added alongside it.
+`output/bin/hello` is a **packed executable**. The original executable was shoved somewhere into the `brioche-resources.d` directory, and the executable `brioche-packed-exec` was copied in to replace it, with some metadata added alongside it.
 
-This metadata was attached to the `hello` executable (née `brioche-packed-userland-exec`) directly. By using the tooling from [brioche-runtime-utils](https://github.com/brioche-dev/brioche-runtime-utils), you can parse this metadata by running the command `brioche-packer read output/bin/hello`, which will return output like this:
+This metadata was attached to the `hello` executable (née `brioche-packed-exec`) directly. By using the tooling from [brioche-runtime-utils](https://github.com/brioche-dev/brioche-runtime-utils), you can parse this metadata by running the command `brioche-packer read output/bin/hello`, which will return output like this:
 
 ```json
 {
@@ -73,6 +73,6 @@ This metadata was attached to the `hello` executable (née `brioche-packed-userl
 }
 ```
 
-When `brioche-packed-userland-exec` gets executed as `bin/hello`, it reads this metadata, then loads and executes the ELF interpreter directly (`ld-linux-x86-64.so.2` in this case), passing it the path to the real `hello` binary along with any dynamically-linked library paths. `ld-linux-x86-64.so.2` then proceeds to load the dynamically-linked libraries, then finally executes `hello`.
+When `brioche-packed-exec` gets executed as `bin/hello`, it reads this metadata, then loads and executes the ELF interpreter directly (`ld-linux-x86-64.so.2` in this case), passing it the path to the real `hello` binary along with any dynamically-linked library paths. `ld-linux-x86-64.so.2` then proceeds to load the dynamically-linked libraries, then finally executes `hello`.
 
 `ld-linux-x86-64.so.2` is not executed using a normal `execve` invocation. Doing so would work, but would end up leading to the process seeing a different value if it were to read the symlink `/proc/self/exe`. It turns out that lots of programs depend on this symlink to function correctly (any program that calls [`std::env::current_exe()`](https://doc.rust-lang.org/stable/std/env/fn.current_exe.html) in Rust for example, which includes the Rust compiler itself). To work around this problem, `brioche-packed-userland-exec` uses an implementation of [userland exec](https://grugq.github.io/docs/ul_exec.txt)-- basically, the program is manually loaded into memory and jumped to directly.

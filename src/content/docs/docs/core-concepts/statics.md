@@ -32,7 +32,7 @@ export default function () {
     gcc main.c -o "$BRIOCHE_OUTPUT"/bin/program
   `
     .env({ sourceCode })
-    .dependencies(std.toolchain());
+    .dependencies(std.toolchain);
 }
 ```
 
@@ -60,7 +60,7 @@ export default function () {
     gcc "$src/main.c" -o "$BRIOCHE_OUTPUT"/bin/program
   `
     .env({ src })
-    .dependencies(std.toolchain());
+    .dependencies(std.toolchain);
 }
 ```
 
@@ -95,7 +95,7 @@ export default function () {
       -o "$BRIOCHE_OUTPUT"/bin/program
   `
     .env({ projectDir })
-    .dependencies(std.toolchain());
+    .dependencies(std.toolchain);
 }
 ```
 
@@ -134,32 +134,33 @@ const source = Brioche.download(
   .peel();
 ```
 
-## `Brioche.gitRef`
+## `Brioche.gitCheckout`
 
-Takes a git repository URL and a [git ref](https://git-scm.com/book/en/v2/Git-Internals-Git-References) (such as a branch or tag name), and returns an object containing the repository URL and a git commit hash. Brioche will query the repository URL to get the current commit hash for the ref, then record the result in the lockfile. The same commit hash will be returned until the lockfile is updated again, even if the ref changes in the repository.
-
-This function is best paired with the `gitCheckout` function from the `git` package, which can checkout the repository from the returned commit.
+Takes a git repository URL and a [git ref](https://git-scm.com/book/en/v2/Git-Internals-Git-References) (such as a branch or tag name), and returns a [directory recipe](/docs/core-concepts/recipes#stddirectory) containing a checkout of the repository. Brioche will query the repository URL to get the current commit hash for the ref, then record the result in the lockfile. The same commit will be used until the lockfile is updated again, even if the ref changes in the repository.
 
 Only public git repositories can be used, since authentication is disabled when querying the repository. Additionally, querying the repository uses the [`gitoxide`](https://github.com/Byron/gitoxide) Rust crate, which means that some legacy git protocol versions aren't supported.
 
+### Options
+
+- `repository`: The repository URL to check out
+- `ref`: The git ref (branch or tag name) to check out
+- `options` (optional): Extra checkout options. Supports the same options as the `gitCheckout` function from the `git` package
+  - `submodules` (bool, optional): Set to `true` to recursively check out submodules from the repository too.
+
 ```typescript
 import * as std from "std";
-import { gitCheckout } from "git";
 
 // Check out the Brioche repository from the `main` branch
-const source = gitCheckout(
-  Brioche.gitRef({
-    repository: "https://github.com/brioche-dev/brioche.git",
-    ref: "main",
-  }),
-);
+const source = Brioche.gitCheckout({
+  repository: "https://github.com/brioche-dev/brioche.git",
+  ref: "main",
+});
 ```
 
 The [project metadata](/docs/core-concepts/projects#project-metadata) can also be used for either the repository URL or for the git ref, which can be used to check out the correct version of the source code.
 
 ```typescript
 import * as std from "std";
-import { gitCheckout } from "git";
 
 export const project = {
   name: "brioche",
@@ -167,10 +168,30 @@ export const project = {
 };
 
 // Check out the Brioche repository from a tagged version
-const source = gitCheckout(
-  Brioche.gitRef({
-    repository: "https://github.com/brioche-dev/brioche.git",
-    ref: `v${project.version}`,
-  }),
-);
+const source = Brioche.gitCheckout({
+  repository: "https://github.com/brioche-dev/brioche.git",
+  ref: `v${project.version}`,
+});
+```
+
+## `Brioche.gitRef`
+
+Takes a git repository URL and a [git ref](https://git-scm.com/book/en/v2/Git-Internals-Git-References) (such as a branch or tag name), and returns an object containing the repository URL and a git commit hash. Just like [`Brioche.gitCheckout`](#briochegitcheckout), Brioche will query the repository URL to get the current commit hash for the ref, then record the result in the lockfile. The same commit hash will be returned until the lockfile is updated again, even if the ref changes in the repository.
+
+This function is a good alternative to [`Brioche.gitCheckout`](#briochegitcheckout) when you need extra metadata from the repo or need more control over how the repo is checked out. The result from `Brioche.gitRef` can be passed to the function `gitCheckout` from the `git` package to check out the repo too.
+
+Only public git repositories can be used, since authentication is disabled when querying the repository. Additionally, querying the repository uses the [`gitoxide`](https://github.com/Byron/gitoxide) Rust crate, which means that some legacy git protocol versions aren't supported.
+
+```typescript
+import * as std from "std";
+import { gitCheckout } from "git";
+
+// Get the commit details from the `main` branch of the Brioche repository
+const sourceRef = Brioche.gitRef({
+  repository: "https://github.com/brioche-dev/brioche.git",
+  ref: "main",
+});
+
+// Check out the commit
+const source = gitCheckout(sourceRef);
 ```
