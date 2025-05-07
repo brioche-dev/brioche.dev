@@ -239,8 +239,7 @@ const script = std.runBash`
   mkdir -p "$BRIOCHE_OUTPUT"
   echo '#!/usr/bin/env bash' >> "$BRIOCHE_OUTPUT/hello.sh"
   echo 'echo hello' >> "$BRIOCHE_OUTPUT/hello.sh"
-`
-  .toDirectory();
+`.toDirectory();
 
 // Using Recipe.pipe() method:
 // ---------------------------
