@@ -1,10 +1,11 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
-import { redirects } from "./src/pages/_redirects";
 import sitemap from "@astrojs/sitemap";
-import robotsTxt from "astro-robots-txt";
-
+import { rehypeHeadingIds } from '@astrojs/markdown-remark';
 import tailwindcss from "@tailwindcss/vite";
+import robotsTxt from "astro-robots-txt";
+import rehypeAutolinkHeadings from "./src/plugins/rehype-autolink-headings";
+import { redirects } from "./src/pages/_redirects";
 
 // https://astro.build/config
 export default defineConfig({
@@ -183,6 +184,13 @@ export default defineConfig({
       },
     },
   ],
+
+  markdown: {
+    rehypePlugins: [
+      rehypeHeadingIds,
+      rehypeAutolinkHeadings,
+    ]
+  },
 
   vite: {
     plugins: [tailwindcss()],
