@@ -45,8 +45,8 @@ const AnchorLinkIcon = h(
     h("path", {
       fill: "currentcolor",
       d: "m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 0 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 1 0-1.42-1.42Zm8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 0 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 1 0 1.42 1.42l3.88-3.89a4.49 4.49 0 0 0 0-6.33ZM8.83 15.17a1 1 0 0 0 1.1.22 1 1 0 0 0 .32-.22l4.92-4.92a1 1 0 0 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42Z",
-    })
-  )
+    }),
+  ),
 );
 
 /**
@@ -59,7 +59,12 @@ export default function rehypeAutolinkHeadings(): Transformer<Root> {
     }
 
     visit(tree, "element", function (node, index, parent) {
-      if (!headingRank(node) || !node.properties.id || typeof index !== "number" || parent?.children == null) {
+      if (
+        !headingRank(node) ||
+        !node.properties.id ||
+        typeof index !== "number" ||
+        parent?.children == null
+      ) {
         return;
       }
 
@@ -73,9 +78,15 @@ export default function rehypeAutolinkHeadings(): Transformer<Root> {
         {
           type: "element",
           tagName: "a",
-          properties: { class: "sl-anchor-link", href: "#" + node.properties.id },
-          children: [AnchorLinkIcon, h("span", { class: "sr-only" }, toString(node))],
-        }
+          properties: {
+            class: "sl-anchor-link",
+            href: "#" + node.properties.id,
+          },
+          children: [
+            AnchorLinkIcon,
+            h("span", { class: "sr-only" }, toString(node)),
+          ],
+        },
       );
 
       return SKIP;
@@ -103,6 +114,11 @@ function normalizePath(path: string) {
  */
 function headingRank(node: Nodes): number | undefined {
   const name = node.type === "element" ? node.tagName.toLowerCase() : "";
-  const code = name.length === 2 && name.charCodeAt(0) === 104 /* `h` */ ? name.charCodeAt(1) : 0;
-  return code > 48 /* `0` */ && code < 55 /* `7` */ ? code - 48 /* `0` */ : undefined;
+  const code =
+    name.length === 2 && name.charCodeAt(0) === 104 /* `h` */
+      ? name.charCodeAt(1)
+      : 0;
+  return code > 48 /* `0` */ && code < 55 /* `7` */
+    ? code - 48 /* `0` */
+    : undefined;
 }
