@@ -89,6 +89,7 @@ install_brioche() {
             echo "  Detected kernel: $(uname -s)"
             echo "  Detected architecture: $(uname -m)"
             echo "  Installation type: $install_type"
+            exit 1
             ;;
     esac
 
