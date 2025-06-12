@@ -22,7 +22,7 @@ auto_detect_install_type() {
             if [ "$(uname -o)" != "GNU/Linux" ]; then
                 echo "Detected non-GNU platform, installing packed build" >&2
                 echo "packed"
-            elif ! echo "$interp_version" | grep -qi "GLIBC"; then
+            elif ! echo "$interp_version" | grep -qiE 'glibc|gnu libc'; then
                 echo "Detected non-GNU platform, installing packed build" >&2
                 echo "packed"
             else
