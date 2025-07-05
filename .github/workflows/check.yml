@@ -12,7 +12,7 @@ jobs:
     name: Run checks
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install NPM dependencies
         run: npm install
