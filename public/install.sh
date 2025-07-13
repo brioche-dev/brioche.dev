@@ -59,6 +59,8 @@ install_brioche() {
     # Whether to install a packed build or a standalone binary
     install_type="${BRIOCHE_INSTALL_TYPE:-auto}"
 
+    channel="${BRIOCHE_CHANNEL:-stable}"
+
     # Auto-detect installation type
     if [ "$install_type" = "auto" ]; then
         install_type="$(auto_detect_install_type)"
@@ -74,21 +76,40 @@ install_brioche() {
             ;;
     esac
 
-    # Get the URL based on the kernel, architecture, and installation type
-    case "$(uname -sm) $install_type" in
-        "Linux x86_64 bin")
+    # Validate channel
+    case "$channel" in
+        stable | nightly)
+            ;;
+        *)
+            echo "Unsupported channel: $channel" >&2
+            exit 1
+            ;;
+    esac
+
+    # Get the URL based on the kernel, architecture, installation type and channel
+    case "$(uname -sm) $install_type $channel" in
+        "Linux x86_64 bin stable")
             brioche_url="https://releases.brioche.dev/v0.1.5/x86_64-linux/brioche"
             checksum="0056ce9a780ea8e08138dda289f9cbef80902aa9524a8e4235e4997121b73b17"
             ;;
-        "Linux x86_64 packed")
+        "Linux x86_64 packed stable")
             brioche_url="https://releases.brioche.dev/v0.1.5/brioche-packed/x86_64-linux/brioche-packed-x86_64-linux.tar.gz"
             checksum="d80fb1a1537e90f1c189924994ca7a9325ed8e8a1d98b11d02076eb82f7c95db"
+            ;;
+        "Linux x86_64 bin nightly")
+            brioche_url="https://development-content.brioche.dev/github.com/brioche-dev/brioche/branches/main/x86_64-linux/brioche"
+            checksum=""
+            ;;
+        "Linux aarch64 bin nightly")
+            brioche_url="https://development-content.brioche.dev/github.com/brioche-dev/brioche/branches/main/aarch64-linux/brioche"
+            checksum=""
             ;;
         *)
             echo "Sorry, Brioche isn't currently supported on your platform"
             echo "  Detected kernel: $(uname -s)"
             echo "  Detected architecture: $(uname -m)"
             echo "  Installation type: $install_type"
+            echo "  Channel: $channel"
             exit 1
             ;;
     esac
@@ -108,10 +129,12 @@ install_brioche() {
     curl --proto '=https' --tlsv1.2 -fL "$brioche_url" -o "$temp_download"
     echo
 
-    # Validate the checksum
-    echo "Validating checksum..."
-    echo "$checksum  $temp_download" | sha256sum -c -
-    echo
+    if [ -n "$checksum" ]; then
+        # Validate the checksum
+        echo "Validating checksum..."
+        echo "$checksum  $temp_download" | sha256sum -c -
+        echo
+    fi
 
     case "$install_type" in
         bin)
