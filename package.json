@@ -19,7 +19,7 @@
     "@astrojs/starlight": "^0.35.2",
     "@astrojs/starlight-tailwind": "^4.0.1",
     "@tailwindcss/vite": "^4.1.13",
-    "astro": "^5.13.5",
+    "astro": "^5.13.7",
     "astro-robots-txt": "^1.0.0",
     "clsx": "^2.1.1",
     "hast": "^1.0.0",
