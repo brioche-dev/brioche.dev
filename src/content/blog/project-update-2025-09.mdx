@@ -1,0 +1,104 @@
+---
+title: Brioche Project Update - September 2025
+pubDate: 2025-09-28T18:30:29-07:00
+author: Kyle Lacy
+authorUrl: https://kyle.space
+---
+
+This month has seen some very nice improvements that span multiple packages, some OpenTelemetry improvements, and some yak shaving
+
+## Status report
+
+### CMake build improvements
+
+[**@jaudiger**](https://github.com/jaudiger) got a change in for CMake builds in [#1144](https://github.com/brioche-dev/brioche-packages/pull/1144), which uses `workDir` for the CMake build directory. With this change, the source directory is now writable during the build-- previously, the source directory was read-only, which caused problems for some packages.
+
+This resolved [#677](https://github.com/brioche-dev/brioche-packages/issues/677), which has been outstanding for a while
+
+### More build parallelism
+
+[**@jaudiger**](https://github.com/jaudiger) opened [#1149](https://github.com/brioche-dev/brioche-packages/pull/1149) and [#1194](https://github.com/brioche-dev/brioche-packages/pull/1194) to update all of our `make`-based builds to build in parallel where possible, using `make -j "$(nproc)"`. This can make a big difference both when testing changes locally and when getting changes deployed through CI!
+
+And on the same track, [**@jaudiger**](https://github.com/jaudiger) opened [#1149](https://github.com/brioche-dev/brioche-packages/pull/1149) opened [#1195](https://github.com/brioche-dev/brioche-packages/pull/1195) too, which _automatically_ does the same thing for all CMake-based builds-- well, those using the `cmakeBuild` function at least! This behavior can also be manually overridden still (see the PR for details).
+
+### libtool / pkg-config fixes
+
+We've had the function `std.pkgConfigMakePathsRelative()` around for a while-- you can think of it like a post-processing / cleanup step to fix-up pkg-config files in a package, so paths are resolved properly when used as a dependency for other packages. This is needed because most software projects out in the world use absolute paths in their pkg-config files, while Brioche _really_ needs relative paths. libtool files has the same problem: they often use absolute paths, while we'd really prefer they didn't.
+
+So, I pulled a report of all libtool files across all packages, and [**@jaudiger**](https://github.com/jaudiger) opened some PRs to get those fixed as well: [#1286](https://github.com/brioche-dev/brioche-packages/pull/1286), [#1288](https://github.com/brioche-dev/brioche-packages/pull/1288), and [#1290](https://github.com/brioche-dev/brioche-packages/pull/1290). Now, we use the new `std.libtoolSanitizeDependencies()` as needed, which automatically fixes any libtool files we find in a package!
+
+Oh, and [#1287](https://github.com/brioche-dev/brioche-packages/pull/1287) also added some calls to `std.pkgConfigMakePathsRelative()` for some packages that were missing it, too.
+
+### X11 libraries
+
+[**@jaudiger**](https://github.com/jaudiger) has been on a tear adding a bunch of X.org packages lately. There's been incremental progress lately towards supporting GUI-based packages in Brioche, and this continues the same theme. A major milestone we just hit was with the `libx11` package, which was just added recently in [#1291](https://github.com/brioche-dev/brioche-packages/pull/1291)!
+
+### OpenTelemetry improvements
+
+At the end of last month (just after the window of the last Project Update), I spent some time cleaning up Brioche's built-in OpenTelemetry / tracing output in [#305](https://github.com/brioche-dev/brioche/pull/305). [**@jaudiger**](https://github.com/jaudiger) also opened [#306](https://github.com/brioche-dev/brioche/pull/306) to export logs as OpenTelemetry logs (previously, we wrote logs only as events instead). Together, these changes should make it much easier to trace Brioche using tools like Grafana's [LGTM stack](https://github.com/grafana/docker-otel-lgtm).
+
+### Yak shaving: instrumentation tools
+
+I took a small detour this month a made a few small debugging / instrumentation tools. Are these related to Brioche? Not directly, but these tools were meant to help with Brioche-related tasks-- and I think there's a chance we'll have some of this tooling integrated in Brioche one day!
+
+Background context: Brioche doesn't have much built-in tooling for debugging a failed build. We have [process output logs](/blog/project-update-2024-11/#new-process-logging), a [debug shell](/blog/project-update-2025-03/#debug-shell-for-failed-jobs), and direct access to the files from the failed sandbox. Beyond that, I often use [strace](https://strace.io/)-- a tool that records all the syscalls of a process-- which is _extremely_ useful for figuring out which command deep in a build failed, what library or file couldn't be found, etc.
+
+But strace can be pretty hard to parse! So I wrote a little tool called [systrument](https://github.com/kylewlacy/systrument). It basically parses strace's output, and converts it to a structured, graphical format:
+
+![Screenshot of Grafana, showing a timeline of executed processes. The top-level is called "systrument", and "brioche" is below that. Below that are various build-related processes, including "sh", "bash", and "configure".](./project-update-2025-09/systrument-grafana-tempo.png)
+
+<div class="bg-gray-200 dark:bg-gray-700 px-4 py-4 rounded-lg">
+  I also recently came across this list of ["Process Tracing Projects"](https://github.com/oils-for-unix/oils/wiki/Process-Tracing-Projects), with other similar projects!
+</div>
+
+I haven't gotten much use out of this tool yet, but from the little I've played with it, I'm hoping it'll pay dividends for diagnosing build errors. If it does, I think it'd be neat for a similar tool to be integrated in Brioche directly, similar in spirit to [Ninja's log file](https://ninja-build.org/manual.html#ref_log).
+
+---
+
+Shifting gears, a totally unrelated problem: we have a very small pool of CI runners for building packages-- one aarch64 runner and one x86-64 runner. Since Brioche doesn't support cross-compilation yet, every package needs to be built on both runners before being published.
+
+I wanted to visualize how our runners are running. In the short term, this could potentially help spot low-hanging fruit; in the medium-to-long term, it'll help to figure out build machine utilization, which will help us provision more build machines.
+
+So I wrote [ci-instrument](https://github.com/kylewlacy/ci-instrument), which calls the GitHub API and produces a file that can be loaded into the [Perfetto UI](https://ui.perfetto.dev/) to show GitHub Actions jobs over time.
+
+![Perfetto UI showing a timeline of GitHub Actions jobs. A job named "Build / build / Build packages \[x86_64-linux\]" is selected, showing metadata about the build and a link to the GitHub workflow run.](./project-update-2025-09/ci-instrument-perfetto.png)
+
+It's really cool to be able to see visually where the bottlenecks are in our build pipelines, and to see which package builds are slowest!
+
+## Housekeeping
+
+### New packages
+
+Since the last update, there were **19** new packages:
+
+- `cargo_tarpaulin`
+- `eslint`
+- `go_task`
+- `igrep`
+- `libdnet`
+- `libnet`
+- `libx11`
+- `libxcb`
+- `libxdmcp`
+- `libxpm`
+- `libxt`
+- `tenv`
+- `terraform_docs`
+- `terraform_ls`
+- `traefik`
+- `tree_sitter`
+- `unixodbc`
+- `usage`
+- `xcb_proto`
+
+### Brioche core updates
+
+- [#303](https://github.com/brioche-dev/brioche/pull/303): Fix panic when enabling OpenTelemetry output
+- [#305](https://github.com/brioche-dev/brioche/pull/305): Improve OpenTelemetry output
+- [#306](https://github.com/brioche-dev/brioche/pull/306): feat(otel): refactor the code and add logging exporting
+- [#307](https://github.com/brioche-dev/brioche/pull/307): Continue to resolve Clippy pedantic lints
+- [#309](https://github.com/brioche-dev/brioche/pull/309): build: update Rust version to 1.90
+- [#310](https://github.com/brioche-dev/brioche/pull/310): chore(clippy): add unreadable_literal lint to Cargo.toml
+- [#311](https://github.com/brioche-dev/brioche/pull/311): Upgrade Brioche-in-Brioche dependencies
+- [#312](https://github.com/brioche-dev/brioche/pull/312): Allow setting hash algorithm for HashSet/HashMap
+- [#313](https://github.com/brioche-dev/brioche/pull/313): Resolve all the pedantic lints
