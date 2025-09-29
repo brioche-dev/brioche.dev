@@ -48,7 +48,9 @@ But strace can be pretty hard to parse! So I wrote a little tool called [systrum
 ![Screenshot of Grafana, showing a timeline of executed processes. The top-level is called "systrument", and "brioche" is below that. Below that are various build-related processes, including "sh", "bash", and "configure".](./project-update-2025-09/systrument-grafana-tempo.png)
 
 <div class="bg-gray-200 dark:bg-gray-700 px-4 py-4 rounded-lg">
-  I also recently came across this list of ["Process Tracing Projects"](https://github.com/oils-for-unix/oils/wiki/Process-Tracing-Projects), with other similar projects!
+  I also recently came across this list of ["Process Tracing
+  Projects"](https://github.com/oils-for-unix/oils/wiki/Process-Tracing-Projects),
+  with other similar projects!
 </div>
 
 I haven't gotten much use out of this tool yet, but from the little I've played with it, I'm hoping it'll pay dividends for diagnosing build errors. If it does, I think it'd be neat for a similar tool to be integrated in Brioche directly, similar in spirit to [Ninja's log file](https://ninja-build.org/manual.html#ref_log).
@@ -61,7 +63,7 @@ I wanted to visualize how our runners are running. In the short term, this could
 
 So I wrote [ci-instrument](https://github.com/kylewlacy/ci-instrument), which calls the GitHub API and produces a file that can be loaded into the [Perfetto UI](https://ui.perfetto.dev/) to show GitHub Actions jobs over time.
 
-![Perfetto UI showing a timeline of GitHub Actions jobs. A job named "Build / build / Build packages \[x86_64-linux\]" is selected, showing metadata about the build and a link to the GitHub workflow run.](./project-update-2025-09/ci-instrument-perfetto.png)
+![Perfetto UI showing a timeline of GitHub Actions jobs. A job named "Build / build / Build packages [x86_64-linux]" is selected, showing metadata about the build and a link to the GitHub workflow run.](./project-update-2025-09/ci-instrument-perfetto.png)
 
 It's really cool to be able to see visually where the bottlenecks are in our build pipelines, and to see which package builds are slowest!
 
