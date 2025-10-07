@@ -61,9 +61,13 @@ install_brioche() {
 
     channel="${BRIOCHE_CHANNEL:-stable}"
 
-    # Auto-detect installation type
+    # Auto-detect installation type (auto-detect for stable, packed for nightly)
     if [ "$install_type" = "auto" ]; then
-        install_type="$(auto_detect_install_type)"
+        if [ "$channel" = "nightly" ]; then
+            install_type="packed"
+        else
+            install_type="$(auto_detect_install_type)"
+        fi
     fi
 
     # Validate installation type
@@ -96,12 +100,20 @@ install_brioche() {
             brioche_url="https://releases.brioche.dev/v0.1.5/brioche-packed/x86_64-linux/brioche-packed-x86_64-linux.tar.gz"
             checksum="d80fb1a1537e90f1c189924994ca7a9325ed8e8a1d98b11d02076eb82f7c95db"
             ;;
+        "Linux x86_64 packed nightly")
+            brioche_url="https://development-content.brioche.dev/github.com/brioche-dev/brioche/branches/main/brioche-x86_64-linux.tar.xz"
+            checksum=""
+            ;;
         "Linux x86_64 bin nightly")
-            brioche_url="https://development-content.brioche.dev/github.com/brioche-dev/brioche/branches/main/x86_64-linux/brioche"
+            brioche_url="https://development-content.brioche.dev/github.com/brioche-dev/brioche/branches/main/brioche-x86_64-linux-gnu.tar.xz"
+            checksum=""
+            ;;
+        "Linux aarch64 packed nightly")
+            brioche_url="https://development-content.brioche.dev/github.com/brioche-dev/brioche/branches/main/brioche-aarch64-linux.tar.xz"
             checksum=""
             ;;
         "Linux aarch64 bin nightly")
-            brioche_url="https://development-content.brioche.dev/github.com/brioche-dev/brioche/branches/main/aarch64-linux/brioche"
+            brioche_url="https://development-content.brioche.dev/github.com/brioche-dev/brioche/branches/main/brioche-aarch64-linux-gnu.tar.xz"
             checksum=""
             ;;
         *)
@@ -136,39 +148,60 @@ install_brioche() {
         echo
     fi
 
-    case "$install_type" in
-        bin)
-            # Install to the target directory
-            echo "Installing to \`$install_dir/brioche\`..."
-            mkdir -p "$install_dir"
-            chmod +x "$temp_download"
-            mv "$temp_download" "$install_dir/brioche"
-            ;;
-        packed)
-            echo "******************************************************************************" >&2
-            echo "** Heads up! Packed builds are experimental and don't support all features! **" >&2
-            echo "******************************************************************************" >&2
+    if [ "$channel" = "nightly" ]; then
+        # New unified installation method
 
-            echo
+        # Unpack tarfile
+        echo "Unpacking to \`$unpack_dir/nightly\`..."
+        rm -rf "$unpack_dir/nightly"
+        mkdir -p "$unpack_dir/nightly"
+        tar -xJf "$brioche_temp/brioche-dl.tmp" --strip-components=1 -C "$unpack_dir/nightly"
 
-            # Unpack tarfile into the unpack directory
-            echo "Unpacking to \`$unpack_dir\`..."
-            rm -rf "$unpack_dir"
-            mkdir -p "$unpack_dir"
-            tar -xzf "$brioche_temp/brioche-dl.tmp" --strip-components=1 -C "$unpack_dir"
+        # Add a symlink to the current version
+        echo "Adding symlink \`$unpack_dir/current\` -> \`nightly\`..."
+        ln -sf nightly "$unpack_dir/current"
 
-            # Add a symlink in the install directory to the binary
-            # within the unpacked dir
-            symlink_target="$unpack_dir/bin/brioche"
-            echo "Adding symlink \`$install_dir/brioche\` -> \`$symlink_target\`..."
-            mkdir -p "$install_dir"
-            ln -sf "$symlink_target" "$install_dir/brioche"
-            ;;
-        *)
-            echo "Unexpected installation type: $install_type" >&2
-            exit 1
-            ;;
-    esac
+        # Add a relative symlink in the install directory to the binary
+        # within the current version
+        symlink_target="$unpack_dir/current/bin/brioche"
+        echo "Adding symlink \`$install_dir/brioche\` -> \`$symlink_target\`..."
+        mkdir -p "$install_dir"
+        ln -sfr "$symlink_target" "$install_dir/brioche"
+    else
+        case "$install_type" in
+            bin)
+                # Install to the target directory
+                echo "Installing to \`$install_dir/brioche\`..."
+                mkdir -p "$install_dir"
+                chmod +x "$temp_download"
+                mv "$temp_download" "$install_dir/brioche"
+                ;;
+            packed)
+                echo "******************************************************************************" >&2
+                echo "** Heads up! Packed builds are experimental and don't support all features! **" >&2
+                echo "******************************************************************************" >&2
+
+                echo
+
+                # Unpack tarfile into the unpack directory
+                echo "Unpacking to \`$unpack_dir\`..."
+                rm -rf "$unpack_dir"
+                mkdir -p "$unpack_dir"
+                tar -xzf "$brioche_temp/brioche-dl.tmp" --strip-components=1 -C "$unpack_dir"
+
+                # Add a symlink in the install directory to the binary
+                # within the unpacked dir
+                symlink_target="$unpack_dir/bin/brioche"
+                echo "Adding symlink \`$install_dir/brioche\` -> \`$symlink_target\`..."
+                mkdir -p "$install_dir"
+                ln -sf "$symlink_target" "$install_dir/brioche"
+                ;;
+            *)
+                echo "Unexpected installation type: $install_type" >&2
+                exit 1
+                ;;
+        esac
+    fi
 
     echo "Installation complete!"
 
