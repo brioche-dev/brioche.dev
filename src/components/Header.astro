@@ -52,7 +52,7 @@ const socialLinks: SocialLink[] = [
 
 <header>
   <div
-    class="w-full bg-gray-100 text-accent-600 px-6 py-3 border-gray-200 border-b flex flex-row items-center dark:bg-gray-800 dark:text-accent-200 dark:border-gray-900"
+    class="w-full bg-gray-100 text-accent-600 px-6 py-3 border-gray-200 border-b flex flex-row items-baseline-last dark:bg-gray-800 dark:text-accent-200 dark:border-gray-900"
   >
     <div class="flex-grow flex flex-row flex-wrap items-center gap-x-8">
       <a
@@ -64,7 +64,7 @@ const socialLinks: SocialLink[] = [
         </span>
         Brioche
       </a>
-      <nav class="inline-flex gap-4 mt-[0.40rem]">
+      <nav class="inline-flex items-center gap-4 mt-[0.40rem]">
         {
           navLinks.map((link) => (
             <Link nav href={link.href} class="!no-underline">
@@ -75,9 +75,9 @@ const socialLinks: SocialLink[] = [
       </nav>
     </div>
     <div
-      class="flex flex-row items-center gap-4 sm:divide-x divide-gray-300 dark:divide-gray-700"
+      class="flex flex-row items-center gap-4 md:divide-x divide-gray-300 dark:divide-gray-700"
     >
-      <div class="hidden sm:flex sm:flex-row gap-4">
+      <div class="hidden md:flex md:flex-row gap-4">
         {
           socialLinks.map((link) => (
             <a href={link.href} class="hover:opacity-65" title={link.label}>
@@ -87,13 +87,13 @@ const socialLinks: SocialLink[] = [
           ))
         }
       </div>
-      <div class="hidden pl-4 text-sm sm:block">
+      <div class="hidden pl-4 text-sm md:block">
         <ThemeSelect />
       </div>
     </div>
   </div>
   <div
-    class="h-12 w-full bg-gray-100 text-accent-600 px-6 py-3 border-gray-200 border-b flex flex-row justify-between items-center dark:bg-gray-800 dark:text-accent-200 dark:border-gray-900 sm:hidden"
+    class="h-12 w-full bg-gray-100 text-accent-600 px-6 py-3 border-gray-200 border-b flex flex-row justify-between items-center dark:bg-gray-800 dark:text-accent-200 dark:border-gray-900 md:hidden"
   >
     <nav class="flex flex-row gap-4">
       {
