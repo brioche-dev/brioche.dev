@@ -4,12 +4,17 @@ import { clsx } from "clsx";
 interface Props {
   class?: string;
   href: string;
+  nav?: boolean;
 }
+
+const isCurrent = Astro.props.nav === true && Astro.url.pathname === Astro.props.href;
 ---
 
 <a
   class={clsx(
-    "text-accent-600 dark:text-accent-200 hover:text-gray-900 dark:hover:text-white underline",
+    isCurrent
+     ? "text-gray-900 dark:text-white underline"
+     : "text-accent-600 dark:text-accent-200 hover:text-gray-900 dark:hover:text-white underline",
     Astro.props.class,
   )}
   href={Astro.props.href}><slot /></a
