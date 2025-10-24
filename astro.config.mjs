@@ -47,6 +47,16 @@ export default defineConfig({
           link: "/docs/example-projects",
         },
         {
+          label: "Contributing",
+          collapsed: true,
+          items: [
+            {
+              label: "Overview",
+              link: "/docs/contributing/overview"
+            },
+          ],
+        },
+        {
           label: "Core Concepts",
           items: [
             {
