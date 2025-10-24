@@ -29,6 +29,10 @@ const navLinks: NavLink[] = [
     label: "Blog",
     href: "/blog",
   },
+  {
+    label: "Get Involved!",
+    href: "/get-involved",
+  },
 ];
 
 const socialLinks: SocialLink[] = [
@@ -52,9 +56,9 @@ const socialLinks: SocialLink[] = [
 
 <header>
   <div
-    class="h-16 w-full bg-gray-100 text-accent-600 px-6 py-3 border-gray-200 border-b flex flex-row items-center dark:bg-gray-800 dark:text-accent-200 dark:border-gray-900"
+    class="w-full bg-gray-100 text-accent-600 px-6 py-3 border-gray-200 border-b flex flex-row items-baseline-last dark:bg-gray-800 dark:text-accent-200 dark:border-gray-900"
   >
-    <div class="flex-grow flex items-center gap-8">
+    <div class="flex-grow flex flex-row flex-wrap items-center gap-x-8">
       <a
         href="/"
         class="text-2xl font-semibold inline-flex items-center gap-4 lg:gap-6"
@@ -64,10 +68,10 @@ const socialLinks: SocialLink[] = [
         </span>
         Brioche
       </a>
-      <nav class="hidden gap-4 mt-[0.40rem] sm:inline-flex">
+      <nav class="inline-flex items-center gap-4 mt-[0.40rem]">
         {
           navLinks.map((link) => (
-            <Link href={link.href} class="!no-underline">
+            <Link nav href={link.href} class="!no-underline">
               {link.label}
             </Link>
           ))
@@ -75,9 +79,9 @@ const socialLinks: SocialLink[] = [
       </nav>
     </div>
     <div
-      class="flex flex-row items-center gap-4 sm:divide-x divide-gray-300 dark:divide-gray-700"
+      class="flex flex-row items-center gap-4 md:divide-x divide-gray-300 dark:divide-gray-700"
     >
-      <div class="hidden sm:flex sm:flex-row gap-4">
+      <div class="hidden md:flex md:flex-row gap-4">
         {
           socialLinks.map((link) => (
             <a href={link.href} class="hover:opacity-65" title={link.label}>
@@ -87,23 +91,14 @@ const socialLinks: SocialLink[] = [
           ))
         }
       </div>
-      <div class="pl-4 text-sm">
+      <div class="hidden pl-4 text-sm md:block">
         <ThemeSelect />
       </div>
     </div>
   </div>
   <div
-    class="h-12 w-full bg-gray-100 text-accent-600 px-6 py-3 border-gray-200 border-b flex flex-row justify-between dark:bg-gray-800 dark:text-accent-200 dark:border-gray-900 sm:hidden"
+    class="h-12 w-full bg-gray-100 text-accent-600 px-6 py-3 border-gray-200 border-b flex flex-row justify-between items-center dark:bg-gray-800 dark:text-accent-200 dark:border-gray-900 md:hidden"
   >
-    <nav class="flex flex-row gap-4 items-center">
-      {
-        navLinks.map((link) => (
-          <Link href={link.href} class="!no-underline">
-            {link.label}
-          </Link>
-        ))
-      }</nav
-    >
     <nav class="flex flex-row gap-4">
       {
         socialLinks.map((link) => (
@@ -114,5 +109,8 @@ const socialLinks: SocialLink[] = [
         ))
       }
     </nav>
+    <div class="pl-4 text-sm">
+      <ThemeSelect />
+    </div>
   </div>
 </header>
