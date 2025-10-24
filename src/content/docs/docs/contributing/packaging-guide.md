@@ -10,10 +10,10 @@ The basic workflow to add a new package is:
 2. Create a new directory for the package with a `project.bri` file, e.g. `packages/my_package/project.bri`
 3. Write the code to build the package!
 4. Test it locally:
-    - Build it: `brioche build -p packages/my_package`
-    - Run it: `brioche run -p packages/my_package -- --help`
-    - Run tests: `brioche build -p packages/my_package -e test`
-    - Test that live updates work: `brioche live-update -p packages/my_package`
+   - Build it: `brioche build -p packages/my_package`
+   - Run it: `brioche run -p packages/my_package -- --help`
+   - Run tests: `brioche build -p packages/my_package -e test`
+   - Test that live updates work: `brioche live-update -p packages/my_package`
 5. Fork the repo and push the new package as a branch
 6. Open a Pull Request to add the package
 
@@ -46,7 +46,7 @@ export const project = {
 const source = Brioche.gitCheckout({
   repository: project.version,
   ref: `v${project.version}`, // e.g. checkout tag based on version
-})
+});
 
 // The main function to build the package.
 //
@@ -237,7 +237,7 @@ export default function myPackage(): std.Recipe<std.Directory> {
     set: {
       // Any CMake variables to set
     },
-    runnable: "bin/pstack",  // Default executable to run
+    runnable: "bin/pstack", // Default executable to run
   });
 }
 ```
@@ -254,7 +254,6 @@ export default function myPackage(): std.Recipe<std.Directory> {
   - `CPATH`
   - `PKG_CONFIG_PATH`
   - `CMAKE_PREFIX_PATH`
-
 
 ## Debugging tips
 
