@@ -54,6 +54,10 @@ export default defineConfig({
               label: "Overview",
               link: "/docs/contributing/overview"
             },
+            {
+              label: "Packaging Guide",
+              link: "/docs/contributing/packaging-guide",
+            },
           ],
         },
         {
