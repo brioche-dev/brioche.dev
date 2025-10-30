@@ -1,0 +1,203 @@
+---
+title: Brioche Project Update - October 2025
+pubDate: 2025-10-30T14:58:04-07:00
+author: Kyle Lacy
+authorUrl: https://kyle.space
+showBlurb: true
+tableOfContents: true
+---
+
+This month has been a really exciting one... both for Brioche, and for me personally!
+
+Oh, and this month we also crossed 300 total packages! 🎉
+
+## Status report
+
+### Officially working part-time on Brioche!!
+
+Even before [it's initial announcement](/blog/announcing-brioche), I've worked on Brioche as a side project, working on it on nights and weekends. Making time to work on Brioche outside my dayjob as a full-stack developer while keeping enough downtime to not burn myself out has been a challenge, to say the least!
+
+Well, as of this month, I've since **switched from working from full-time to part-time at my dayjob** (now as an independent contractor). So now, I work 3 days a week as my source of income, and I currently spend **2 days a week dedicated to Brioche**! That frees up my weekends for resting or socializing or other side projects or other hobbies (or, to be honest, more work on Brioche-- but I'm trying to get better at letting myself _not_ work on Brioche whenever I have free time)!
+
+I'm really really excited about this and there's a ton more I could say!! But a few major ones:
+
+- I'm still funding Brioche out of my own pocket. Most of our recurring costs are from hosting the cache and registry (our build machines are self-hosted in our homelab).
+- Even with my reduced income _and_ paying for Brioche resources, our household finances are still sustainable for the forseeable future.
+- ...but this arrangement probably won't be sustainable for me _forever_. Realistically, I'll probably go back to working full-time again someday.
+
+### Now taking donations / sponsorships!
+
+Since I'm now working on Brioche as my part-time job (effectively), I felt it was finally the right time to start accepting patronage. If you're interested in pitching in, I can take your money thorough either:
+
+- [Liberapay](https://liberapay.com/brioche-dev/) (a Liberapay "team" for Brioche, which right now just has me)
+- [GitHub Sponsors](https://github.com/sponsors/kylewlacy) (my personal profile)
+
+(there's already a few links on the website pointing to both platforms-- including on the new [Get Involved](/get-involved) page!-- but it's not consistent everywhere yet, so more links for both will probably show up in a few places)
+
+I'm hoping that, as Brioche grows, a few folks would be willing to chip in enough to partially or fully cover Brioche's recurring costs, or even to pay for more self-hosted hardware-- like more build machines. Or if Brioche becomes a big success one day, it'd be a dream if those sponsorships could even sustain me for _full-time_ work on Brioche indefinitely, or eventually be enough to pay to bring on other contributors part-time or full-time!
+
+Small aside: this is something I've considered for a long time, but soliciting donations is something that I've felt a tinge of guilt around-- I'm not sure why to be honest! But switching to part-time was enough of a push for me to finally go and get it set up. I'm staunchly against taking VC funding or other investments for Brioche, so asking for donations is the first step on the path to making Brioche sustainable long-term.
+
+### New docs for contributors
+
+I added a few docs geared towards potential contributors:
+
+- ["Contributor's Overview"](/docs/contributing/overview): A breakdown of the different repos and structure of Brioche. Should help interested folks get their bearings and help them decide what to contribute to.
+- ["Packaging Guide"](/docs/contributing/packaging-guide): Some general details on how to contribute new packages, with some specifics for a few common languages / ecosystems.
+
+Both pages are sort of a "first pass", and I think both could use improvement / iteration (if you have ideas to improve them, contributions are welcome in the [`brioche.dev` repo](https://github.com/brioche-dev/brioche.dev)!)
+
+I also added a new ["Get Involved!"](/get-involved) page. This was meant to be a catch-all for folks that would be interested in discussing Brioche (links to Zulip/Discord/GitHub Discussions), contributing to Brioche (links to docs pages on contributing), or supporting Brioche (links to Liberapay + GitHub Sponsors). I always wanted to link to more things in the header, but it's kinda space-constrained especially on mobile, so this was what I came up as an "umbrella" to cover multiple semi-related links at once.
+
+### Build Python with optimizations
+
+[**@jaudiger**](https://github.com/jaudiger) opened a PR to enable compiler optimizations and LTO for our `python` package: [`brioche-dev/brioche-packages#1522`](https://github.com/brioche-dev/brioche-packages/pull/1522). A small change (and one that's makes our CI runners sweat!), but a nice improvement for folks that use Python through Brioche!
+
+### More consistency fixes in `brioche-packages`
+
+[**@jaudiger**](https://github.com/jaudiger) got a _lot_ of PRs in to help fix miscellaneous issues in `brioche-packages`-- especially issues related to absolute paths and to live-update scripts:
+
+- Ensure `std.pkgConfigMakePathsRelative` and `std.libtoolSanitizeDependencies` follow symlinks ([#1536](https://github.com/brioche-dev/brioche-packages/pull/1536))
+- Add functions for live-updates from Gitea, GitLab, Go modules, and Python PyPI packages ([#1532](https://github.com/brioche-dev/brioche-packages/pull/1532), [#1468](https://github.com/brioche-dev/brioche-packages/pull/1468), [#1396](https://github.com/brioche-dev/brioche-packages/pull/1396))
+- Fix `freetype` so `freetype-config` uses relative paths ([#1530](https://github.com/brioche-dev/brioche-packages/pull/1530))
+- Set `ACLOCAL_PATH` when relevant ([#1411](https://github.com/brioche-dev/brioche-packages/pull/1411))
+- Add package test for `linux` ([#1402](https://github.com/brioche-dev/brioche-packages/pull/1402))
+- Remove unused env vars from `re2c` ([#1355](https://github.com/brioche-dev/brioche-packages/pull/1355))
+- Remove unused CMake from `bubblewrap` build ([#1392](https://github.com/brioche-dev/brioche-packages/pull/1392))
+
+Oh, and we had some discussions around the `.pipe()` method, and landed on our preferered style:
+
+```typescript
+// Preferred:
+recipe
+  .pipe(function1)
+  .pipe(function2);
+
+// ...instead of:
+// recipe.pipe(
+//   function1,
+//   function2,
+// );
+```
+
+See the discssion in [#1594](https://github.com/brioche-dev/brioche-packages/pull/1594) for more context
+
+### Some packages CI / repo improvements
+
+[**@jaudiger**](https://github.com/jaudiger) added some PR templates for adding / updating packages in the `brioche-packages` repo: https://github.com/brioche-dev/brioche-packages/tree/main/.github/PULL_REQUEST_TEMPLATE ([permalink](https://github.com/brioche-dev/brioche-packages/tree/ff3526010e7e086147574dd2fbf09e07c6adc07c/.github/PULL_REQUEST_TEMPLATE)).
+
+GitHub doesn't support templates for PRs (today), but this will be useful to help new contributors make sure everything that's needed is in place for a new package!
+
+Also, [**@jaudiger**](https://github.com/jaudiger) got some fixes in to the CI pipeline itself to check for formatting ([#1417](https://github.com/brioche-dev/brioche-packages/pull/1417)), and to skip checks during the "publishing" step ([#1413](https://github.com/brioche-dev/brioche-packages/pull/1413))-- which will help get new packages and package updates released faster!
+
+### Installer & release work
+
+It's been a while since [the last Brioche release back in April](https://brioche.dev/blog/announcing-brioche-v0-1-5/). There haven't been any _huge_ new features, but there have been a few minor fixes-- and `linux-aarch64` support!-- so it'd be nice to get a new release out.
+
+...that's how I've felt for a while, but the current release process is pretty painful, with a lot of manual steps. So, I worked on cleaning up the mess that was our release process, and almost all the pieces are in place now:
+
+- Restructure build artifacts to unify packed / unpacked builds ([#281](https://github.com/brioche-dev/brioche/pull/281))
+- Sign binaries we build in CI ([#281](https://github.com/brioche-dev/brioche/pull/281))
+- Restructure release/update metadata in `https://releases.brioche.dev`
+- Update self-updater to use new metadata format and to check signatures during updates ([#281](https://github.com/brioche-dev/brioche/pull/281))
+- Create separate repo for installer script: https://github.com/brioche-dev/brioche-installer
+- (*In progress*) Add automated CI pipeline for releases
+- (*Post-release*) Update website to serve new installer script
+- (*Post-release*) Update `setup-brioche` action to directly use new installer script
+
+As part of that work, I did publish a new prerelease build of Brioche: [v0.1.6-rc.2](https://github.com/brioche-dev/brioche/releases/tag/v0.1.6-rc.2) (don't ask what happened to rc.1). This isn't intended to be used directly, but was meant to kick the tires on the new work-in-progress automated release pipeline. There'll also probably be one or more prereleases like this as a final pass.
+
+Anyway, the hard parts should all be in place now. I'm really happy with how smooth the new release pipeline is turning out! Brioche v0.1.6 should be coming really soon!
+
+### Issues galore!
+
+I spent some time just opening issues for miscellaneous Brioche ideas and improvements. For me, this is helpful to keep track on what I want to work on next, to have things to link to when discussing Brioche features, and to help give others an idea on the direction Brioche is heading. Plus, it's useful for collaboration in case others want to help out (I try to write pretty detailed issues!), and for gathering discussion.
+
+If you have any feedback, please don't hesitate to comment on any open issues! A few that I'd like to call out that could use some discussion/feedback/ideas:
+
+- Dependencies / imports via git repos ([#333](https://github.com/brioche-dev/brioche/issues/333))
+- Unified CLI syntax for projects/packages/exports ([#320](https://github.com/brioche-dev/brioche/discussions/320))
+- Spawn recipes within recipes (sccache-like builds) ([#343](https://github.com/brioche-dev/brioche/issues/343))
+- Overhaul `brioche jobs` command ([#339](https://github.com/brioche-dev/brioche/issues/339))
+- Support locking things in the lockfile using user-defined functions ([#353](https://github.com/brioche-dev/brioche/issues/353))
+- WebAssembly-based sandboxing ([#322](https://github.com/brioche-dev/brioche/discussions/322), not opened by me but still wanted to highlight it!)
+
+## Housekeeping
+
+### New packages
+
+Since the last update, there were **50** new packages
+
+During October, we just crossed a huge milestone: **we now have over 300 packages total!!!** 🎉
+
+New packages:
+
+- `aks_mcp_server`
+- `bacon`
+- `cargo_binutils`
+- `cargo_bisect_rustc`
+- `cargo_c`
+- `cargo_deny`
+- `cargo_edit`
+- `cargo_expand`
+- `cargo_flamegraph`
+- `cargo_fuzz`
+- `cargo_generate`
+- `cargo_llvm_lines`
+- `cargo_machete`
+- `cargo_make`
+- `cargo_outdated`
+- `cargo_release`
+- `cargo_smart_release`
+- `ck_search`
+- `duktape`
+- `gitea_mcp_server`
+- `github_copilot_cli`
+- `github_mcp_server`
+- `json_c`
+- `lcms2`
+- `libint`
+- `libsrtp`
+- `libtiff`
+- `libvpx`
+- `libxaw`
+- `libxext`
+- `libxfixes`
+- `libxi`
+- `libxmu`
+- `libxrandr`
+- `libxrender`
+- `libxtst`
+- `lint_staged`
+- `mpdecimal`
+- `opus`
+- `promptfoo`
+- `rust_analyzer`
+- `sendme`
+- `skim`
+- `slang`
+- `terraform_mcp_server`
+- `typst`
+- `velero`
+- `wakatime_cli`
+- `xxhash`
+- `yasm`
+
+### Brioche core updates
+
+- [#314](https://github.com/brioche-dev/brioche/pull/314): Update GitHub CI
+- [#315](https://github.com/brioche-dev/brioche/pull/315): ci: update workflow to use runs-on instead of runs_on
+- [#316](https://github.com/brioche-dev/brioche/pull/316): ci: update workflow to use matrix include syntax
+- [#317](https://github.com/brioche-dev/brioche/pull/317): refactor(ci): use latest version of `brioche-dev/setup-brioche` to simplify Brioche installation
+- [#323](https://github.com/brioche-dev/brioche/pull/323): build: update object_store to version 0.12.4
+- [#281](https://github.com/brioche-dev/brioche/pull/281): Sign and restructure built binaries
+- [#324](https://github.com/brioche-dev/brioche/pull/324): Switch to `xz` for Brioche release artifacts
+- [#326](https://github.com/brioche-dev/brioche/pull/326): Add publish args to skip some checks when used in CI
+- [#335](https://github.com/brioche-dev/brioche/pull/335): build: update opentelemetry dependencies to latest versions
+- [#336](https://github.com/brioche-dev/brioche/pull/336): build: remove assert_matches from dependencies, add to dev-dependencies
+- [#337](https://github.com/brioche-dev/brioche/pull/337): Small tweaking here and there
+- [#342](https://github.com/brioche-dev/brioche/pull/342): Add internal post-install step for Brioche installation and updates
+- [#338](https://github.com/brioche-dev/brioche/pull/338): Update efficiency of format command when working with multiple projects
+- [#345](https://github.com/brioche-dev/brioche/pull/345): build: remove target setup from rust toolchain toml file
+- [#346](https://github.com/brioche-dev/brioche/pull/346): Update Dependabot config
+- [#352](https://github.com/brioche-dev/brioche/pull/352): Update CI to attest artifacts
