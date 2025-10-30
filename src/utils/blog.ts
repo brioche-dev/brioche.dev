@@ -5,6 +5,7 @@ export const BlogEntry = z.object({
   author: z.string(),
   authorUrl: z.string(),
   pubDate: z.date().or(z.null()),
+  showBlurb: z.boolean().optional(),
 });
 export type BlogEntry = z.infer<typeof BlogEntry>;
 

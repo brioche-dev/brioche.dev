@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/Header.astro";
+import BlogBlurb from "../../components/BlogBlurb.astro";
 import { humanTimestamp, machineTimestamp } from "../../utils/timestamp.js";
 import "@astrojs/starlight/style/markdown.css";
 import "../../styles/starlight-anchor-links.css";
@@ -80,6 +81,7 @@ const { Content } = await render(entry);
         ></p
       >
     </header>
+    {entry.data.showBlurb === true ? <BlogBlurb /> : null}
     <div class="max-w-none sl-markdown-content">
       <Content />
     </div>
