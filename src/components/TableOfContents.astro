@@ -3,12 +3,15 @@ import HeadingList from "./table-of-contents/HeadingList.astro";
 import { type Heading, nestHeadings } from "../utils/nested-headings.ts";
 
 interface Props {
-  headings: Heading[]
+  headings: Heading[];
 }
 
 const headings = nestHeadings(Astro.props.headings);
 ---
-<nav class="not-content mb-4 p-4 border border-gray-300 bg-gray-200 dark:border-gray-700 dark:bg-gray-800 space-y-4">
+
+<nav
+  class="not-content mb-4 p-4 border border-gray-300 bg-gray-200 dark:border-gray-700 dark:bg-gray-800 space-y-4"
+>
   <h2 class="text-xl font-semibold">Table of Contents</h2>
-  <HeadingList headings={headings} class="text-base/relaxed"/>
+  <HeadingList headings={headings} class="text-base/relaxed" />
 </nav>

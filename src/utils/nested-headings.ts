@@ -8,7 +8,7 @@ export interface NestedHeading {
   depth: number;
   slug: string;
   text: string;
-  children: NestedHeading[]
+  children: NestedHeading[];
 }
 
 /**

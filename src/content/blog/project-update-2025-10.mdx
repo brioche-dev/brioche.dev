@@ -69,9 +69,7 @@ Oh, and we had some discussions around the `.pipe()` method, and landed on our p
 
 ```typescript
 // Preferred:
-recipe
-  .pipe(function1)
-  .pipe(function2);
+recipe.pipe(function1).pipe(function2);
 
 // ...instead of:
 // recipe.pipe(
@@ -101,9 +99,9 @@ It's been a while since [the last Brioche release back in April](https://brioche
 - Restructure release/update metadata in `https://releases.brioche.dev`
 - Update self-updater to use new metadata format and to check signatures during updates ([#281](https://github.com/brioche-dev/brioche/pull/281))
 - Create separate repo for installer script: https://github.com/brioche-dev/brioche-installer
-- (*In progress*) Add automated CI pipeline for releases
-- (*Post-release*) Update website to serve new installer script
-- (*Post-release*) Update `setup-brioche` action to directly use new installer script
+- (_In progress_) Add automated CI pipeline for releases
+- (_Post-release_) Update website to serve new installer script
+- (_Post-release_) Update `setup-brioche` action to directly use new installer script
 
 As part of that work, I did publish a new prerelease build of Brioche: [v0.1.6-rc.2](https://github.com/brioche-dev/brioche/releases/tag/v0.1.6-rc.2) (don't ask what happened to rc.1). This isn't intended to be used directly, but was meant to kick the tires on the new work-in-progress automated release pipeline. There'll also probably be one or more prereleases like this as a final pass.
 

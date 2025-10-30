@@ -1,5 +1,4 @@
 ---
-
 import type { NestedHeading } from "../../utils/nested-headings.ts";
 
 interface Props {
@@ -7,15 +6,21 @@ interface Props {
   class?: string;
 }
 ---
+
 <ol class={Astro.props.class}>
-  {Astro.props.headings.map(({ text, slug, children }) => (
-    <li>
-      <a href={`#${slug}`} class="text-gray-500 dark:text-gray-400 hover:text-accent-600 hover:dark:text-accent-200">{text}</a>
-      {
-        Astro.props.headings.length > 0
-          ? <Astro.self headings={children} class="pl-6" />
-          : null
-      }
-    </li>
-  ))}
+  {
+    Astro.props.headings.map(({ text, slug, children }) => (
+      <li>
+        <a
+          href={`#${slug}`}
+          class="text-gray-500 dark:text-gray-400 hover:text-accent-600 hover:dark:text-accent-200"
+        >
+          {text}
+        </a>
+        {Astro.props.headings.length > 0 ? (
+          <Astro.self headings={children} class="pl-6" />
+        ) : null}
+      </li>
+    ))
+  }
 </ol>
