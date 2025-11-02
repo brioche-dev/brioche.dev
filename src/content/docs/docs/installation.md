@@ -14,13 +14,16 @@ curl --proto '=https' --tlsv1.2 -sSfL 'https://brioche.dev/install.sh' | sh
 
 This script will install Brioche under `~/.local/bin`, which is commonly included by default in the `$PATH` for your shell.
 
+To view the source of the installer script or for more details, check the [`brioche-installer`](https://github.com/brioche-dev/brioche-installer) repository.
+
 ### Installation options
 
-The installer script supports passing extra environment variables to customize the installation. You can either set each of these environment variables before running the installer (e.g. `export BRIOCHE_INSTALL_TYPE=bin`), or prepend it before the `sh` command (e.g. `curl ... | BRIOCHE_INSTALL_TYPE=bin sh`).
+The installer script supports passing extra environment variables to customize the installation. You can either set each of these environment variables before running the installer (e.g. `export BRIOCHE_INSTALL_VERSION=nightly`), or prepend it before the `sh` command (e.g. `curl ... | BRIOCHE_INSTALL_VERSION=nightly sh`).
 
-- `BRIOCHE_INSTALL_DIR`: The directory to place the final Brioche binary. This directory should ideally be in your `$PATH` and will get created if it doesn't exist. Defaults to `$HOME/.local/bin`.
-- `BRIOCHE_INSTALL_TYPE`: The type of installation to use. Options are `auto` (default), `packed` for portable builds, or `bin` for standalone builds.
-- `BRIOCHE_INSTALL_UNPACK_DIR`: For packed installations, the directory where the packed build will be unpacked to. Defaults to `$HOME/.local/libexec/brioche`.
+- `BRIOCHE_INSTALL_VERSION`: Specify a version or channel of Brioche to install: `stable`, `nightly`, `v0.1.6`, etc. (Default: `stable`)
+- `BRIOCHE_INSTALL_ROOT`: The root directory for the installer itself. Brioche versions will be extracted into this directory. (Default: `$HOME/.local/share/brioche-install`)
+- `BRIOCHE_INSTALL_BIN_DIR`: The directory to place a symlink to the installed Brioche version. This directory should ideally be in your `$PATH` and will get created if it doesn't exist. (Default: `$HOME/.local/bin`)
+- `BRIOCHE_INSTALL_VERIFY_SIGNATURE`: By default, the installer will validate the signature of the release tarball. Set to `auto` to skip verification if the command(s) required for validation (`ssh-keygen`) aren't installed, or `false` to always skip. (Default: `true`)
 
 ## Manual installation
 
