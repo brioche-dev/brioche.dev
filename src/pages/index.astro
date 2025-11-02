@@ -37,7 +37,10 @@ interface Announcement {
   href: string;
 }
 
-const announcement = null satisfies Announcement | null as Announcement | null;
+const announcement = {
+  message: "Brioche v0.1.6: Now for ARM64!",
+  href: "/blog/brioche-v0-1-6",
+} satisfies Announcement | null as Announcement | null;
 ---
 
 <BaseLayout>
