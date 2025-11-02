@@ -173,7 +173,7 @@ This is mostly an internal change, and one that should make it easier to get new
 
 - Releases are now signed! Both the installer and self-updater will validate the signature against our "release" public key before installing.
 - Releases are now [attested](https://github.com/brioche-dev/brioche/pull/352), too. We don't do any validation around the attestation (today), but this gives strong guarantees about how the release artifacts were built. Check out GitHub's docs on [artifact attestation](https://docs.github.com/en/actions/concepts/security/artifact-attestations) for more context.
-- We've now moved entirely over to ["packed builds"](<(/blog/announcing-brioche-v0-1-4#packed-builds-of-brioche)>), finally! (Unpacked builds are still included with nightly releases though)
+- We've now moved entirely over to ["packed builds"](/blog/announcing-brioche-v0-1-4#packed-builds-of-brioche), finally! (Unpacked builds are still included with nightly releases though)
 - The release artifacts are distributed as `.tar.xz` files, meaning they're smaller (and therefore quicker to download)!
 - The install script now lives in its own repo: [`brioche-installer`](https://github.com/brioche-dev/brioche-installer) (still missing a README + docs at the time of writing, but hopefully that will change soon)
 
