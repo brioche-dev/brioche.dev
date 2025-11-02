@@ -33,6 +33,10 @@ export const redirects: Redirect[] = [
     from: "/help/manual-update",
     to: "/docs/installation#manually-updating",
   },
+  {
+    from: "/new-installer.sh",
+    to: "https://installer.brioche.dev/channels/stable/install.sh",
+  },
 ];
 
 export async function GET() {
