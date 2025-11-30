@@ -12,14 +12,14 @@
     "prettier-check": "prettier --check public src"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.5",
+    "@astrojs/check": "^0.9.6",
     "@astrojs/markdown-remark": "^6.3.9",
     "@astrojs/rss": "^4.0.14",
     "@astrojs/sitemap": "^3.6.0",
-    "@astrojs/starlight": "^0.36.2",
+    "@astrojs/starlight": "^0.37.0",
     "@astrojs/starlight-tailwind": "^4.0.2",
     "@tailwindcss/vite": "^4.1.17",
-    "astro": "^5.16.0",
+    "astro": "^5.16.3",
     "astro-robots-txt": "^1.0.0",
     "clsx": "^2.1.1",
     "hast": "^1.0.0",
@@ -35,7 +35,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "@types/markdown-it": "^14.1.1",
     "@types/sanitize-html": "^2.16.0",
-    "prettier": "^3.6.2",
+    "prettier": "^3.7.3",
     "prettier-plugin-astro": "^0.14.1",
     "unified": "^11.0.5",
     "vfile": "^6.0.3"
