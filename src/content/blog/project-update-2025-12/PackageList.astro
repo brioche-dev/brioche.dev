@@ -1,0 +1,21 @@
+---
+interface Props {
+  packages: string[];
+}
+---
+
+<div class="not-content">
+  <ul
+    class="text-sm/snug flex flex-wrap items-baseline pl-0 list-disc list-inside"
+  >
+    {
+      Astro.props.packages.map((pkg) => (
+        <li class="min-w-fit flex-1/2 pr-4 my-1">
+          <code class="bg-(--sl-color-bg-inline-code) font-mono px-0.5 py-1 text-xs">
+            {pkg}
+          </code>
+        </li>
+      ))
+    }
+  </ul>
+</div>
