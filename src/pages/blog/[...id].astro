@@ -28,16 +28,16 @@ const { Content, headings } = await render(entry);
       color: var(--sl-color-text);
     }
 
-    .sl-markdown-content ul,
-    .sl-markdown-content ol {
+    .sl-markdown-content ul:not(:where(.not-content *)),
+    .sl-markdown-content ol:not(:where(.not-content *)) {
       padding-left: 2.5rem;
     }
 
-    .sl-markdown-content ol {
+    .sl-markdown-content ol:not(:where(.not-content *)) {
       list-style: decimal;
     }
 
-    .sl-markdown-content ul {
+    .sl-markdown-content ul:not(:where(.not-content *)) {
       list-style: disc;
     }
 
