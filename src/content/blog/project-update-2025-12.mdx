@@ -1,0 +1,272 @@
+---
+title: Brioche Project Update - December 2025
+pubDate: 2025-12-31T02:45:08-08:00
+author: Kyle Lacy
+authorUrl: https://kyle.space
+showBlurb: true
+tableOfContents: true
+---
+
+import PackageList from "./project-update-2025-12/PackageList.astro";
+
+It's the final project update of the year! With the holidays and... life stuff, this month was a little slower for me for Brioche work. But there's still a lot of exciting stuff to share, and we just crossed another major package milestone!!! 🎉
+
+## Highlights from the year
+
+With the year coming to a close, I wanted to start with a quick look back at some of the major milestones we reached this year:
+
+- _Packages_: from **50 packages** at the start of January to [**over 500 packages 🎉**](#new-packages)
+- _Brioche_: **3 new releases** this year:
+  - [Brioche v0.1.4](/blog/announcing-brioche-v0-1-4) (January): prettier output, packed Brioche builds
+  - [Brioche v0.1.5](/blog/announcing-brioche-v0-1-5) (April): new cache, debug shell for failed builds
+  - [Brioche v0.1.6](/blog/brioche-v0-1-6) (November): aarch64 support, new release process
+- Made possible with the help of **10 contributors** in the past year!
+  - Members of the `brioche-dev` org: [**@jaudiger**](https://github.com/jaudiger), [**@asheliahut**](https://github.com/asheliahut), and [**@kylewlacy**](https://github.com/kylewlacy) (me!)
+  - [**@chad-russell**](https://github.com/chad-russell), [**@jokeyrhyme**](https://github.com/jokeyrhyme), [**@paricbat**](https://github.com/paricbat), [**@kaathewisegit**](https://github.com/kaathewisegit), [**@running-grass**](https://github.com/running-grass), [**@nz366**](https://github.com/nz366), and [**@easrng**](https://github.com/easrng)
+  - ...plus everyone who participated with issues, discussions, and ideas (and any other contributors I missed!)
+
+## Status report
+
+### TypeScript 5.9.3 upgrade
+
+[**@jaudiger**](https://github.com/jaudiger) opened [#388](https://github.com/brioche-dev/brioche/pull/388) to upgrade the TypeScript version embedded in Brioche from v5.3.3 to v5.9.3! We didn't spot any breakages across the `brioche-packages` repo during this upgrade, so this should be a pretty safe update that should give us a few new type-level tools and checks for free.
+
+This feels like the right time to upgrade, since this is the last TypeScript version before v6.0, which is then the final release before the native TypeScript port in v7.0! There was a blog post earlier this month about [TypeScript's progress towards the native port in v7.0](https://devblogs.microsoft.com/typescript/progress-on-typescript-7-december-2025/). I'm hoping that we'll be able to integrate TypeScript 7 into Brioche not long after it's ready to go, so we can take advantage of the major speed boost in type-checking!
+
+### `brioche fmt` improvements
+
+The `brioche fmt` got some nice quality-of-life improvements from [**@jaudiger**](https://github.com/jaudiger) in [#386](https://github.com/brioche-dev/brioche/pull/386).
+
+The `-p` flag is no longer necessary (since you'd only ever want to format a local project, never one remotely!), and additionally you can now format individual `.bri` files instead of a full project directory!
+
+These commands are now all (roughly) equivalent:
+
+```sh
+brioche fmt packages/std
+brioche fmt -p packages/std
+brioche fmt packages/std/**/*.bri
+```
+
+### More major groundwork packages
+
+[**@jaudiger**](https://github.com/jaudiger) has continued a streak of gettings lots of new exciting packages done, and that includes a ton more work towards Linux GUI applications! I'll share his summary of the changes from just the past week:
+
+> I did a lot of things during the last week, I was mainly focused on:
+>
+> - packaging the core libraries to later build bigger ones such as Mesa, FFMPEG, Wayland, etc. We do need a lot of core things right now, but I'm moving in the right direction
+> - adding more common CLI tools to reach a broader audience
+
+There's a _lot_ of X11/Wayland packages in the modern Linux desktop stack, but we're starting to get a lot of packages from that ecosystem wired up, so it's really exciting progress!
+
+(and personally, ffmpeg is one I'm really excited about-- although that one is kind of its own little black hole of package management challenges!)
+
+### Sad personal news
+
+Midway through the month, we put our 15-year-old cat to sleep. She was amazing and lived a long, loving, happy life, but it was still sudden and it's been real hard.
+
+![Adorable calico cat laying on the floor, basking in the sunlight from the window. She's laying on her side with her paws out and looking at you relaxedly, waiting for belly rubs.](./project-update-2025-12/abby.jpg)
+
+So overall, this month has been pretty slow-going for me.
+
+If you've got a cat or other fuzzy creature, give them cuddles and a big pet for me.
+
+### Continued infrastructure work
+
+Well, with the time I did spend on Brioche this month, I mostly continued on with the [infrastructure work I discussed last month](/blog/project-update-2025-11/#infrastructure-rework). I made some good steps forward, and the foundation is pretty sturdy now! ...although a lot of it is "in the weeds" Kubernetes stuff (Longhorn for storage, Grafana for monitoring, etc.), so nothing really exciting to share yet.
+
+### Minor caching tweaks
+
+I opened and merged [#379](https://github.com/brioche-dev/brioche/pull/379), which added some very minor tweaks to the cache:
+
+- Retry `PUT` requests
+- Allow customizing cache timeouts through config / env vars
+
+This change is pretty unassuming, but came up after a hair-pulling debugging session of failures in the `brioche-packages` repo, where builds were failing to upload to the cache sporadically. I think the root cause was related to some weird DNS quirks from some of my recent infrastructure work. But after getting this change in, then bumping up one of the timeouts in the `brioche-packages` workflow in [`brioche-dev/brioche-packages#2073`](https://github.com/brioche-dev/brioche-packages/pull/2073), things have been running smoothly.
+
+## Housekeeping
+
+### New packages
+
+Since the last update, there were **159** new packages. During this month, we blew past another major milestone:
+
+<div class="font-bold text-xl">🎉 Brioche now has over 500 packages! 🎉</div>
+
+(At the time of writing, we're sitting at 514, with about 2 dozen more in the build queue!)
+
+As is tradition, here are all the new packages this month:
+
+<PackageList
+  packages={[
+    "3cpio",
+    "6tunnel",
+    "aardvark_dns",
+    "acl",
+    "acme_redirect",
+    "act",
+    "aerleon",
+    "aften",
+    "age",
+    "age_plugin_yubikey",
+    "argocd",
+    "audit",
+    "autoprefixer",
+    "bacon_ls",
+    "berkeley_db",
+    "bkmr",
+    "bosh_cli",
+    "c_ares",
+    "cairo",
+    "cargo_shear",
+    "ccusage",
+    "cdebug",
+    "cf_terraforming",
+    "cglm",
+    "cilium_cli",
+    "cliproxyapi",
+    "clive",
+    "clorinde",
+    "cloud_nuke",
+    "comrak",
+    "copilot_language_server",
+    "coredns",
+    "cpio",
+    "cppcheck",
+    "cubejs_cli",
+    "docker_compose",
+    "dolt",
+    "dysk",
+    "esbuild",
+    "fabio",
+    "fabric_ai",
+    "flac",
+    "fmt",
+    "forgejo_runner",
+    "freeimage",
+    "fresh_editor",
+    "gflags",
+    "gfold",
+    "giflib",
+    "gitlab_runner",
+    "gleam",
+    "glib",
+    "glm",
+    "go_security_tracker",
+    "gost",
+    "graphite2",
+    "graphql_client_cli",
+    "hwloc",
+    "ipsw",
+    "jarl",
+    "jbig2dec",
+    "jd",
+    "lazygit",
+    "lefthook",
+    "lf",
+    "libaec",
+    "libbsd",
+    "libgcrypt",
+    "libgpg_error",
+    "libiconv",
+    "libidn",
+    "libidn2",
+    "libmd",
+    "libogg",
+    "libpipeline",
+    "libsamplerate",
+    "libselinux",
+    "libsemanage",
+    "libsepol",
+    "libtasn1",
+    "libudev_zero",
+    "liburing",
+    "libvorbis",
+    "libwebp",
+    "lz4",
+    "mailpit",
+    "mcp_server_kubernetes",
+    "meilisearch",
+    "melange",
+    "mesheryctl",
+    "microsoft_gsl",
+    "monocle",
+    "mq",
+    "munge",
+    "nghttp2",
+    "nghttp3",
+    "npq",
+    "numactl",
+    "oh_my_posh",
+    "open_policy_agent",
+    "openjpeg",
+    "orc",
+    "oterm",
+    "p11_kit",
+    "pack",
+    "parlay",
+    "parquet_tools",
+    "pcsc_lite",
+    "pinact",
+    "poetry",
+    "popt",
+    "prek",
+    "prettier",
+    "ragel",
+    "range_v3",
+    "rbspy",
+    "resterm",
+    "restish",
+    "rnr",
+    "robotframework",
+    "rosa",
+    "rqlite",
+    "rust_bindgen",
+    "rustic",
+    "rv",
+    "sass",
+    "shadowsocks_rust",
+    "simdjson",
+    "soxr",
+    "spirv_headers",
+    "swc",
+    "systemfd",
+    "tinyxml2",
+    "tllist",
+    "tombi",
+    "topgrade",
+    "treemd",
+    "tuios",
+    "tzdata",
+    "utf8proc",
+    "valkey",
+    "vespa_cli",
+    "vgt",
+    "vite",
+    "viu",
+    "watchexec",
+    "wayland",
+    "wayland_protocols",
+    "weaviate",
+    "xcb_util_cursor",
+    "xcb_util_keysyms",
+    "xcb_util_renderutil",
+    "xcb_util_wm",
+    "xk6",
+    "xvidcore",
+    "z3",
+    "zerofs",
+    "zimg",
+    "zuban",
+  ]}
+/>
+
+### Brioche core updates
+
+- build: update dependencies in runtime NPM project ([#375](https://github.com/brioche-dev/brioche/pull/375))
+- Tweak cache timeouts and retries ([#379](https://github.com/brioche-dev/brioche/pull/379))
+- Update package-lock.json ([#377](https://github.com/brioche-dev/brioche/pull/377))
+- build: update transient dependencies to latest versions ([#378](https://github.com/brioche-dev/brioche/pull/378))
+- chore: resolve new warnings from Clippy 1.92 ([#387](https://github.com/brioche-dev/brioche/pull/387))
+- feat: update typescript to its latest version (5.3.3) ([#388](https://github.com/brioche-dev/brioche/pull/388))
+- Update Dependabot config to ignore major versions of Bincode ([#391](https://github.com/brioche-dev/brioche/pull/391))
+- chore: revamp the command format, and add the ability to format files ([#386](https://github.com/brioche-dev/brioche/pull/386))
+- Fix typo in dependabot.yml ([#393](https://github.com/brioche-dev/brioche/pull/393))
