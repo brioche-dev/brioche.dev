@@ -1,5 +1,5 @@
-// This file is used for redirects in Cloudflare Pages:
-// https://developers.cloudflare.com/pages/configuration/redirects/
+// This file generates Netlify-style redirects for git-pages:
+// https://codeberg.org/git-pages/git-pages
 //
 // NOTE: This file doesn't normally get included by Astro because it starts
 // with an underscore, but there's a small custom integration in the Astro
@@ -44,8 +44,8 @@ export async function GET() {
   // a trailing slash
   const redirectList = redirects
     .flatMap(({ from, to, code = 301 }) => [
-      `${from} ${to} ${code}`,
-      `${from}/ ${to} ${code}`,
+      `${from} ${to} ${code}!`,
+      `${from}/ ${to} ${code}!`,
     ])
     .join("\n");
   return new Response(`${redirectList}\n`);
