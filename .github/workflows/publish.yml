@@ -4,15 +4,11 @@ on:
   push:
     branches:
       - main
-      - preview
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      deployments: write
-    name: Publish to Cloudflare Pages
+    name: Publish to git-pages
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -29,21 +25,12 @@ jobs:
       - name: Build Astro
         run: npm run build
 
-      - name: Publish to git-pages (staging)
+      - name: Publish to git-pages
         run: |
           tar -C dist --zstd -cf - . |
-            curl --proto '=https' --tlsv1.2 -sSfL -X PUT 'https://staging.brioche.dev' \
-              -H "Authorization: Pages $GIT_PAGES_PASSWORD_STAGING_BRIOCHE_DEV" \
+            curl --proto '=https' --tlsv1.2 -sSfL -X PUT 'https://brioche.dev' \
+              -H "Authorization: Pages $GIT_PAGES_PASSWORD" \
               -H 'Content-Type: application/x-tar+zstd' \
               --data-binary @-
         env:
-          GIT_PAGES_PASSWORD_STAGING_BRIOCHE_DEV: ${{ secrets.GIT_PAGES_PASSWORD_STAGING_BRIOCHE_DEV }}
-
-      - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: ${{ vars.CLOUDFLARE_PAGES_PROJECT_NAME }}
-          directory: dist
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          GIT_PAGES_PASSWORD: ${{ secrets.GIT_PAGES_PASSWORD }}
