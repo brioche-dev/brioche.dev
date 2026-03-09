@@ -31,7 +31,11 @@ jobs:
 
       - name: Publish to git-pages (staging)
         run: |
-          tar -C dist --zstd -cf - . | curl -X PUT 'https://staging.brioche.dev' -H "Authorization: Pages $GIT_PAGES_PASSWORD_STAGING_BRIOCHE_DEV" -H 'Content-Type: application/x-tar+zstd' --data-binary @-
+          tar -C dist --zstd -cf - . |
+            curl --proto '=https' --tlsv1.2 -sSfL -X PUT 'https://staging.brioche.dev' \
+              -H "Authorization: Pages $GIT_PAGES_PASSWORD_STAGING_BRIOCHE_DEV" \
+              -H 'Content-Type: application/x-tar+zstd' \
+              --data-binary @-
         env:
           GIT_PAGES_PASSWORD_STAGING_BRIOCHE_DEV: ${{ secrets.GIT_PAGES_PASSWORD_STAGING_BRIOCHE_DEV }}
 
