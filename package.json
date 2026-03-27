@@ -40,6 +40,9 @@
     "unified": "^11.0.5",
     "vfile": "^6.0.3"
   },
+  "overrides": {
+    "vite": "^7"
+  },
   "volta": {
     "node": "24.11.1"
   }
