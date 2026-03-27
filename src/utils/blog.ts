@@ -1,4 +1,5 @@
-import { z, type CollectionEntry } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import { z } from "astro/zod";
 
 export const BlogEntry = z.object({
   title: z.string(),
