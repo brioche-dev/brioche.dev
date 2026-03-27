@@ -12,33 +12,36 @@
     "prettier-check": "prettier --check public src"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.6",
-    "@astrojs/markdown-remark": "^6.3.10",
-    "@astrojs/rss": "^4.0.15",
-    "@astrojs/sitemap": "^3.7.0",
-    "@astrojs/starlight": "^0.37.7",
-    "@astrojs/starlight-tailwind": "^4.0.2",
-    "@tailwindcss/vite": "^4.2.1",
-    "astro": "^5.18.0",
+    "@astrojs/check": "^0.9.8",
+    "@astrojs/markdown-remark": "^7.1.0",
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.2",
+    "@astrojs/starlight": "^0.38.2",
+    "@astrojs/starlight-tailwind": "^5.0.0",
+    "@tailwindcss/vite": "^4.2.2",
+    "astro": "^6.1.1",
     "astro-robots-txt": "^1.0.0",
     "clsx": "^2.1.1",
     "hast": "^1.0.0",
     "markdown-it": "^14.1.1",
-    "sanitize-html": "^2.17.1",
+    "sanitize-html": "^2.17.2",
     "sharp": "^0.34.5",
-    "tailwindcss": "^4.1.4",
-    "temporal-polyfill": "^0.3.0",
+    "tailwindcss": "^4.2.2",
+    "temporal-polyfill": "^0.3.2",
     "typescript": "^5.9.3",
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.19",
-    "@types/markdown-it": "^14.1.1",
+    "@types/markdown-it": "^14.1.2",
     "@types/sanitize-html": "^2.16.1",
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
     "unified": "^11.0.5",
     "vfile": "^6.0.3"
+  },
+  "overrides": {
+    "vite": "^7"
   },
   "volta": {
     "node": "24.11.1"
