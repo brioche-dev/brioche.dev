@@ -1,0 +1,100 @@
+---
+title: "Brioche v0.1.7: Simplified CLI"
+pubDate: 2026-03-29T15:25:48-07:00
+author: Kyle Lacy
+authorUrl: https://kyle.space
+showBlurb: true
+tableOfContents: true
+---
+
+It's finally spring, and it's finally time for the first Brioche release of 2026!
+
+When you're ready to jump in, run `brioche self-update` to upgrade, or check the [installation docs](/docs/installation) if you're getting set up to the first time. If you want the nitty-gritty details, also feel free to check the [release notes](https://github.com/brioche-dev/brioche/releases/tag/v0.1.7).
+
+## Simplified CLI syntax
+
+In Brioche v0.1.6 and prior, the CLI used the flags `-p`, `-r`, and `-e` for specifying local projects, registry projects, and exports, respectively. With Brioche v0.1.7, we have a new, sleeker syntax:
+
+```sh
+brioche check ./project # Previously: brioche check -p project
+brioche build ./packages/llvm # Previously: brioche build -p package/llvm
+brioche run curl -- https://example.com # Previously: brioche run -r curl -- https://example.com
+```
+
+Building a local project is now specified by a relative path or absolute path, while remote registry projects are just specified with their name directly.
+
+Note that there's a trade-off here: relative paths always need to start with `./` or `../`. That is, `brioche build ./nodejs` builds the _local_ `nodejs` directory, where `brioche build nodejs` builds the `nodejs` project from the _registry_!
+
+As for exports, these are specified with `^`:
+
+```sh
+brioche build ./packages/llvm^test # Previously: brioche build -p packages/llvm -e test
+brioche build ^frontend # Previously: brioche build -e frontend
+```
+
+The thing before the `^` is the project (either a local path or registry project), and the thing after is the export name. Defaults to the current dir if no project is specified. You can even specify multiple exports separated by commas, e.g. `brioche build ^frontend,backend`
+
+This change applies across the board to the CLI subcommands that take projects and/or exports:
+
+- `brioche build`
+- `brioche run`
+- `brioche install`
+- `brioche check`
+- `brioche publish`
+- `brioche live-update`
+- `brioche fmt`
+  - **bonus**: `brioche fmt` can also now take `.bri` files by path, instead of reformatting a whole project!
+
+The new version a lot clearer in my opinion. It also means a shell command like `brioche build ./projects/*` will work fine now, which is really convenient for complex CI pipelines!
+
+Big props to [**@jaudiger**](https://github.com/jaudiger) for implementing this across a series of PRs, and thanks all around for all the discussion about this change in [brioche-dev/brioche#320](https://github.com/brioche-dev/brioche/discussions/320)!
+
+Oh, and **the existing `-p`, `-r`, and `-e` are considered deprecated**, but will continue to work for the forseeable future. They might go away in Brioche v0.2.0 or something, idk ¯\\\_(ツ)\_/¯
+
+## Configurable split read/write cache
+
+Do you ever find yourself in the situation where you use an S3-compatible object store for your content-addressed storage system, but you want to minimize reads to reduce your monthly bill, so you deploy [your homegrown caching server for it](https://github.com/kylewlacy/server3), but you still want writes to go directly to S3?
+
+...no? Well, that's what happened to me! The CI pipeline for [`brioche-packages`](https://github.com/brioche-dev/brioche-packages/) uses GitHub Actions with ephemeral runners, which means each change needs to pull a fair amount of stuff from the Brioche cache. Nearly every S3 provider bills for egress bandwidth or per API call or both, which means each CI run costs some money (though not much!) from the cache usage.
+
+That led me down a little detour to write a little caching server called [server3](https://github.com/kylewlacy/server3)-- which is now what powers `https://cache.brioche.dev`. For a number of reasons, the cache is read-only: it can pull objects that already exist in S3 but can't write new objects. So ideally, we want the CI pipeline to _read from_ server3 but to _write to_ S3 directly.
+
+**Enter: the new `cache.write_url` config option**! This can be used to specify a cache URL _just_ for writing. In the case of our CI pipeline, `cache.url` is set to our `server3` cache, while `cache.write_url` is set to our upstream S3 provider.
+
+We've seen pretty high cache-hit rates (~90% - 95%) for `brioche-packages` builds, even with a pretty modest cache size (10 GB) and even across lots of package updates:
+
+![Grafana dashboard with a pie chart labeled "Cache Hit Rate": 92% cache hits (2.7 million total), 6% cache misses (180 thousand total), 1% not found (41 thousand total), 0% error (1 total), and 0% never (0 total). Next to it is a graph labeled "Cache hit Rate over Time" spanning the period from 3/22 to 3/29. It shows a high steady rate of cache hits (hovering around "10 c/s"), and infrequent, spikier cache misses (one peak around "-10 c/s" and another around "-5 c/s")](./brioche-v0-1-7/ci-cache-hits.png)
+
+Anyway, check out the ["Cache configuration" docs](https://brioche.dev/docs/configuration/#cache-configuration) for details, or see [#422](https://github.com/brioche-dev/brioche/pull/422) where this option was added.
+
+## Sandbox: Resolve `localhost`
+
+When building recipes in the [Linux sandbox](https://brioche.dev/docs/how-it-works/sandboxing/), `localhost` now resolves to the loopback IP addresses `127.0.0.1` (IPv4) and `::1` (IPv6), as it should. Yay!
+
+This was added by [**@jaudiger**](https://github.com/jaudiger) in [#445](https://github.com/brioche-dev/brioche/pull/445), which came up in response to [an update for the `filebrowser` package](https://github.com/brioche-dev/brioche-packages/pull/3473). For the update, File Browser switched from Vite 7 to Vite 8, which seems to do a DNS lookup for `localhost` during the build. This seems totally reasonable to do during a build, even when networking is disabled, so it works now.
+
+...honestly, I hadn't though about `localhost` _not_ resolving in the sandbox, and I'm more surprised we've gone this long without noticing issues before!
+
+## Experimental: Skipping cached artifacts
+
+[**@jaudiger**](https://github.com/jaudiger) added a nifty debugging tool in [#401](https://github.com/brioche-dev/brioche/pull/401): `$BRIOCHE_SKIP_CACHE_ARTIFACTS`. This env var is set to a comma-separated list of artifact hashes, and each is skipped from the upstream cache-- allowing you to build an artifact locally instead. This allows for investigating potential build issues where the cache is "poisoned" with bad artifacts (e.g. due to a bug in Brioche, memory corruption/bit flips, or any other reason). Or maybe you just want to benchmark how long it takes to build LLVM yourself.
+
+This addresses a long-standing need in [#69](https://github.com/brioche-dev/brioche/issues/69) (nice), although with a pretty rough interface. Longer term, I still want to see something that's more user-accessible that ideally doesn't require working out which specific hash(es) to ignore. But, the need for this came up, and perfect is the enemy of good, as they say. I'm _all for_ adding weird/fun debugging tools as necessary, and so I thought it made sense to get this in as-is to buy us time for a "proper" solution for [#69](https://github.com/brioche-dev/brioche/issues/69) (nice).
+
+## TypeScript v5.9.3 + ESLint upgrade
+
+This release jumps us up from TypeScript v5.3.3-- introduced in the initial Brioche release-- all the way to v5.9.3! We actually haven't had any type-checking regressions or breakages from this (that we've seen anyway). So overall, this upgrade was pretty pedestrian (by [**@jaudiger**](https://github.com/jaudiger) in [#388](https://github.com/brioche-dev/brioche/pull/388)), which is good!
+
+More importantly, this gets us closer to [TypeScript v6.0](https://devblogs.microsoft.com/typescript/announcing-typescript-6-0/), which in turn will be a stepping stone for us to use TypeScript's Go rewrite in v7! I've been keeping a watchful eye on TypeScript v7's progress, although at the time of writing, it seems like the compiler API is still not far enough along for us to integrate with: we're still waiting with bated breath for news on that front.
+
+As for TypeScript v6, it was just released last week, and I didn't feel like it was worth holding up the Brioche release to get the next upgrade in. But anticipate TypeScript v6 in Brioche in the near future!
+
+...oh, and we had a bunch of other package upgrades too, including ESLint. We're still using a pretty small list of lint rules, but keeping up on ESLint updates keeps the door open for newer/better/improved Brioche lints over time.
+
+---
+
+Anyway, that's the release! This is our second release with [our new release process](https://brioche.dev/blog/brioche-v0-1-6/#release-process-changes)... which if you think about it, really makes this the _first_ release with the new release process. (Okay, but really: this is the first release where updates utilize the new release process!)
+
+I've also been [pretty quiet on the blog lately](https://brioche.dev/blog/). Partially that's because 2026 has been... weird for me so far, and I've had other Life Things come up that have taken away my time from Brioche in general. Partially it's because, for 2025, I made it a goal of mine to get out a Project Update post every month before the end of the month-- which I did and I'm glad about! But on reflection, I think I'd enjoy doing less frequent, more focused blog posts in general. I'm still _really_ proud of the ["Portable, dynamically linked packages on Linux"](https://brioche.dev/blog/portable-dynamically-linked-packages-on-linux/) article, and I've got a small queue of other articles to work on writing soon(-ish).
+
+I think there will be more Project Updates, but probably less often and "when it makes sense", instead of on a specific schedule.
