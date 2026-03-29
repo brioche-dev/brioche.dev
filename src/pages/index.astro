@@ -18,7 +18,7 @@ const codeExampleSnippet = indoc`
 
     // Put it in a container image
     return std.ociContainerImage({
-      recipe: server,
+      layers: [server],
       entrypoint: ["/bin/server"],
     });
   }
