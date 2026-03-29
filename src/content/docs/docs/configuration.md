@@ -22,6 +22,7 @@ The configuration supports the following options:
 - `cache.use_default_cache` (bool): Load baked recipes from the official Brioche cache if not found otherwise. Defaults to `true`. When a custom cache is also enabled, the custom cache acts as an overlay and will be checked before the default cache.
 - `cache.read_only` (bool): Don't try to write to the custom cache-- only fetch values that have already been cached from the cache specified by `url`. Defaults to `false`.
 - `cache.allow_http` (bool): Allow insecure HTTP access for the cache. Defaults to `false`, which means requests to the cache must go over HTTPS.
+- `cache.write_url`(string): An alternative cache URL to use just for writes, while reads still use `cache.url`. This may be useful if `cache.url` is a read-only cache in front of an object storage provider. **Note:** This option should be used with caution!
 
 ## Sandbox configuration
 
@@ -100,8 +101,9 @@ You can also configure the cache using the following environment variables:
 - `$BRIOCHE_CACHE_READ_ONLY`
 - `$BRIOCHE_CACHE_MAX_CONCURRENT_OPERATIONS`
 - `$BRIOCHE_CACHE_ALLOW_HTTP`
+- `$BRIOCHE_CACHE_WRITE_URL`
 
-The URL scheme of the value for `cache.url` (or `$BRIOCHE_CACHE_URL`) determines which cache backend to use. The following URL schemes are supported:
+The cache URL scheme for `cache.url`, `$BRIOCHE_CACHE_URL`, etc. determines which cache backend to use. The following URL schemes are supported:
 
 - `s3://`: AWS S3 or an S3-compatible object storage provider
   - Full URL structure: `s3://<bucket>/<prefix>` (`prefix` is optional)
@@ -110,3 +112,9 @@ The URL scheme of the value for `cache.url` (or `$BRIOCHE_CACHE_URL`) determines
 - `https://`: Read from a plain HTTPS server (or `http://` for plain HTTP)
   - **Note**: It's recommended to set the `read_only = true` option when with HTTP(S). HTTP support is handled through [`object_store`](https://docs.rs/object_store/0.12.0/object_store/http/index.html) which will attempt to use WebDAV when writing to the cache, but this may change in the future. Please reach out if you have a need for writing to a cache via WebDAV!
 - `file://`: Directory on the local filesystem
+
+If `cache.write_url` is set, the URL is used just for cache writes, while reads always use `cache.url`. This can be useful if `cache.url` points to a suitable caching HTTP proxy server (say, [server3](https://github.com/kylewlacy/server3) or [Vinyl Cache](https://vinyl-cache.org/)), while `cache.write_url` points to the underlying storage system (such as an S3 bucket).
+
+:::caution
+Special care should be taken when using `cache.write_url`, and things may not work as expected if the contents don't match with `cache.url`-- potentially leading to a "split brain" scenario with the cache!
+:::
