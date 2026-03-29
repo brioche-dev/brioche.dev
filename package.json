@@ -28,7 +28,7 @@
     "sharp": "^0.34.5",
     "tailwindcss": "^4.2.2",
     "temporal-polyfill": "^0.3.2",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.2",
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
