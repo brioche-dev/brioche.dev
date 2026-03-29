@@ -112,7 +112,7 @@ export const project = {
 
 `.bri` files are normal TypeScript files, so `project.bri` can export values using the JavaScript `export` keyword. These exports can be used by submodules or dependent projects.
 
-Exports also serve as the actual entrypoint to builds. Running `brioche build -p project_path` will call the default export from the root module (`project.bri`). This can be changed to a different export explicitly with the `-e` flag, which names a different exported function to call. Here's a minimal example:
+Exports also serve as the actual entrypoint to builds. Running `brioche build ./project_path` will call the default export from the root module (`project.bri`). You can also pick a different exported function to call using the `^` syntax (e.g. `brioche build ./project_path^exportName`). Here's a minimal example:
 
 ```ts
 // Project structure:
@@ -144,7 +144,7 @@ export function backend(): std.Recipe {
 }
 ```
 
-You can then run `brioche build -e frontend` or `brioche build -e backend` to call the frontend or backend functions, respectively (don't forget the `-o` flag if you want to put the output somewhere!)
+You can then run `brioche build ^frontend` or `brioche build ^backend` to call the frontend or backend functions, respectively (don't forget the `-o` flag if you want to put the output somewhere!)
 
 The export used by `brioche build` should be a function that can be called with no arguments and should return the type `std.Recipe` or a compatible subtype (it's good practice to use a more specific type if possible, such as `std.Recipe<std.Directory>` if the function returns a directory recipe).
 

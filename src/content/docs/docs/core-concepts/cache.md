@@ -20,13 +20,13 @@ By default, enabling a custom cache will act as an "overlay" on top of the defau
 
 ### Syncing
 
-With a custom cache configured, run `brioche build -p project_path --sync` to sync recipes baked during the project build. This will build the project as normal, plus it will upload some of the baked recipes to the cache (recipes that are fast to bake will generally not be uploaded). When other machines using Brioche use the same cache, they will pull the pre-baked recipes from the cache, avoiding the need to bake the recipes themselves.
+With a custom cache configured, run `brioche build ./project_path --sync` to sync recipes baked during the project build. This will build the project as normal, plus it will upload some of the baked recipes to the cache (recipes that are fast to bake will generally not be uploaded). When other machines using Brioche use the same cache, they will pull the pre-baked recipes from the cache, avoiding the need to bake the recipes themselves.
 
 You can also sync multiple different builds of a project to a cache. For example, you may want to sync multiple project exports from the same project to the cache, which could look like this:
 
 ```bash
-brioche build -p project_path -e frontend --sync
-brioche build -p project_path -e backend --sync
+brioche build ./project_path -e frontend --sync
+brioche build ./project_path -e backend --sync
 ```
 
 ## Cache vs. registry

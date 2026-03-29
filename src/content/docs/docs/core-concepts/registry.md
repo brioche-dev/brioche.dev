@@ -18,6 +18,6 @@ When run, the registry will allow anyone with access to pull projects, but will 
 
 > **Note**: To publish projects, you'll also need to configure a [custom cache](/docs/core-concepts/cache#custom-cache)
 
-Run `brioche publish -p project_path` to publish a project to a self-hosted registry. This will save an [artifact](/docs/core-concepts/artifacts) to the custom cache containing all of the project's files, then it will create or update tags for the project in the self-hosted registry, associated with the artifact's hash.
+Run `brioche publish ./project_path` to publish a project to a self-hosted registry. This will save an [artifact](/docs/core-concepts/artifacts) to the custom cache containing all of the project's files, then it will create or update tags for the project in the self-hosted registry, associated with the artifact's hash.
 
-Then, running `brioche build -r project_name` will then call the registry to determine the artifact hash associated to `project_name`, then Brioche will retrieve the project's artifact via the cache.
+Then, running `brioche build project_name` will then call the registry to determine the artifact hash associated to `project_name`, then Brioche will retrieve the project's artifact via the cache.

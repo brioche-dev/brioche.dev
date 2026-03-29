@@ -10,10 +10,10 @@ The basic workflow to add a new package is:
 2. Create a new directory for the package with a `project.bri` file, e.g. `packages/my_package/project.bri`
 3. Write the code to build the package!
 4. Test it locally:
-   - Build it: `brioche build -p packages/my_package`
-   - Run it: `brioche run -p packages/my_package -- --help`
-   - Run tests: `brioche build -p packages/my_package -e test`
-   - Test that live updates work: `brioche live-update -p packages/my_package`
+   - Build it: `brioche build ./packages/my_package`
+   - Run it: `brioche run ./packages/my_package -- --help`
+   - Run tests: `brioche build ./packages/my_package -e test`
+   - Test that live updates work: `brioche live-update ./packages/my_package`
 5. Fork the repo and push the new package as a branch
 6. Open a Pull Request to add the package
 

@@ -111,4 +111,4 @@ export function container() {
 }
 ```
 
-In this example, you can run `brioche run` to run the project natively on your machine, or you can run `brioche build -e container -o container.tar` to build an easily-deployable container image.
+In this example, you can run `brioche run` to run the project natively on your machine, or you can run `brioche build ^container -o container.tar` to build an easily-deployable container image.

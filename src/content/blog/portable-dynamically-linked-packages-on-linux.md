@@ -8,7 +8,7 @@ authorUrl: https://kyle.space
 Hey, want to see a magic trick? If you [have Brioche installed](https://brioche.dev/docs/installation/), you can run this command:
 
 ```sh
-brioche build -r curl -o ./output
+brioche build curl -o ./output
 ```
 
 ...to get a copy of curl! Like you can then run `./output/bin/curl --version` and it works!
