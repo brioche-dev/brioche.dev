@@ -38,8 +38,8 @@ interface Announcement {
 }
 
 const announcement = {
-  message: "Brioche v0.1.7: Simplified CLI",
-  href: "/blog/brioche-v0-1-7",
+  message: "Brioche v0.1.8: Preparing for the future",
+  href: "/blog/brioche-v0-1-8",
 } satisfies Announcement | null as Announcement | null;
 ---
 
@@ -65,8 +65,9 @@ const announcement = {
       <div class="md:max-w-96">
         <h1
           class="text-6xl font-extrabold text-center text-accent-600 dark:text-accent-200"
-          >Brioche</h1
         >
+          Brioche
+        </h1>
         <p
           class="font-bold text-xl text-center max-w-sm mx-auto md:max-w-none my-4 md:mx-6 md:my-12"
         >
@@ -82,48 +83,50 @@ const announcement = {
     <section class="md:max-w-2xl md:mx-auto">
       <h2
         class="text-4xl font-extrabold text-accent-600 dark:text-accent-200 md:-ml-12 my-4"
-        >Get Started</h2
       >
+        Get Started
+      </h2>
       <div
         class="flex flex-col gap-y divide-y divide-gray-200 dark:divide-gray-700"
       >
         <div class="pb-6">
-          <p class="text-xl"
-            >Install in seconds, no root permissions required:</p
-          >
+          <p class="text-xl">
+            Install in seconds, no root permissions required:
+          </p>
           <Code code={installSnippet} lang="shell" class="flex-1 my-4" />
-          <p class="text-xl"
-            >...or <Link href="/docs/installation">view the docs</Link> for more installation
-            options</p
-          >
-          <p class="text-gray-400 mt-4 text-center"
-            >(Currently x86-64/aarch64 Linux only, more platforms coming soon)</p
-          >
+          <p class="text-xl">
+            ...or <Link href="/docs/installation">view the docs</Link> for more installation
+            options
+          </p>
+          <p class="text-gray-400 mt-4 text-center">
+            (Currently x86-64/aarch64 Linux only, more platforms coming soon)
+          </p>
         </div>
         <div>
           <p class="text-xl mt-6">Try it out by running Hello World:</p>
           <Code code={helloWorldSnippet} lang="shell" class="flex-1 my-4" />
-        </div></div
-      >
+        </div>
+      </div>
     </section>
     <section class="md:max-w-2xl md:mx-auto">
       <h2
         class="text-4xl font-extrabold text-accent-600 dark:text-accent-200 md:-ml-12 my-4"
-        >Features</h2
       >
+        Features
+      </h2>
       <ul class="list-disc text-xl space-y-4 mx-4 md:mx-0">
-        <li
-          ><strong>Caching</strong> - All build artifacts are saved and re-used between
+        <li>
+          <strong>Caching</strong> - All build artifacts are saved and re-used between
           builds, saving you time when only a part of your project changes. You can
           also use a <Link href="/docs/core-concepts/cache#custom-cache"
             >custom cache</Link
-          > to share artifacts between machines</li
-        >
-        <li
-          ><strong>Lockfiles</strong> - All of your dependencies are automatically
+          > to share artifacts between machines
+        </li>
+        <li>
+          <strong>Lockfiles</strong> - All of your dependencies are automatically
           saved in a lockfile, making your builds super reliable for everyone on your
-          team</li
-        >
+          team
+        </li>
         <li>
           <strong>TypeScript</strong> - Build scripts are written in <Link
             href="https://www.typescriptlang.org/">TypeScript</Link
