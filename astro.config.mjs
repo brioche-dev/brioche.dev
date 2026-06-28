@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import sitemap from "@astrojs/sitemap";
-import { rehypeHeadingIds } from '@astrojs/markdown-remark';
+import { rehypeHeadingIds, unified } from '@astrojs/markdown-remark';
 import tailwindcss from "@tailwindcss/vite";
 import robotsTxt from "astro-robots-txt";
 import rehypeAutolinkHeadings from "./src/plugins/rehype-autolink-headings";
@@ -200,10 +200,12 @@ export default defineConfig({
   ],
 
   markdown: {
-    rehypePlugins: [
-      rehypeHeadingIds,
-      rehypeAutolinkHeadings,
-    ]
+    processor: unified({
+      rehypePlugins: [
+        rehypeHeadingIds,
+        rehypeAutolinkHeadings,
+      ],
+    })
   },
 
   vite: {
