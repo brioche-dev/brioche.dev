@@ -52,16 +52,16 @@ const { Content, headings } = await render(entry);
   <Header />
   <main class="w-full max-w-2xl mx-auto px-4">
     <header class="my-8 space-y-2">
-      <h1 class="text-4xl font-extrabold text-accent-600 dark:text-accent-200"
-        >{entry.data.title}</h1
-      >
+      <h1 class="text-4xl font-extrabold text-accent-600 dark:text-accent-200">
+        {entry.data.title}
+      </h1>
       {
         entry.data.pubDate != null ? (
           <p
             class="text-md font-semibold text-accent-600 dark:text-accent-200 opacity-80"
             title={machineTimestamp(entry.data.pubDate)}
           >
-            Published on
+            {"Published on "}
             <time datetime={machineTimestamp(entry.data.pubDate)}>
               {humanTimestamp(entry.data.pubDate)}
             </time>
@@ -74,13 +74,14 @@ const { Content, headings } = await render(entry);
       }
       <p
         class="text-md font-semibold text-accent-600 dark:text-accent-200 opacity-80"
-        >By
+      >
+        {"By "}
         <a
           href={entry.data.authorUrl}
           class="underline hover:opacity-70 dark:border-accent-200"
           >{entry.data.author}</a
-        ></p
-      >
+        >
+      </p>
     </header>
     {entry.data.showBlurb === true ? <BlogBlurb /> : null}
     {
