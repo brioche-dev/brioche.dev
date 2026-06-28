@@ -27,7 +27,7 @@ blogEntries.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
                 class="text-sm font-semibold text-accent-600 dark:text-accent-200 opacity-80"
                 title={machineTimestamp(entry.data.pubDate)}
               >
-                Published on
+                {"Published on "}
                 <time datetime={machineTimestamp(entry.data.pubDate)}>
                   {humanTimestamp(entry.data.pubDate)}
                 </time>
